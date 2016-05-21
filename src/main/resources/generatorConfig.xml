@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+    <properties resource="generatorConfig.properties"/>
+    <classPathEntry location="${driver.location}" />
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <commentGenerator type="io.github.howiefh.generator.MybatisCommentGenerator">
+        </commentGenerator>
+        <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}"/>
+        <javaModelGenerator targetPackage="${model.package}" targetProject="${model.root}" />
+        <sqlMapGenerator targetPackage="${mapper.package}" targetProject="${mapper.root}" />
+        <javaClientGenerator targetPackage="${dao.package}" targetProject="${dao.root}" type="XMLMAPPER" />
+        <table tableName="user" domainObjectName="User" >
+        </table>
+    </context>
+</generatorConfiguration>

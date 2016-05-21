@@ -1,0 +1,85 @@
+{
+  "author": "fenghao",
+  "version": "1.0",
+  "since": "1.0",
+  "templateDir": "templates",
+  "ignoreTables": [],
+  "types": [
+    {
+      "name": "model",
+      "template": "Entity.java.ftl",
+      "target": "D:/",
+      "pkg": "io.github.howiefh.domain",
+      "suffix": ".java",
+      "dependencies": []
+    },
+    {
+      "name": "dao",
+      "template": "Dao.java.ftl",
+      "target": "D:/",
+      "pkg": "io.github.howiefh.dao",
+      "suffix": "Dao.java",
+      "dependencies": []
+    },
+    {
+      "name": "mapper",
+      "template": "Mapper.xml.ftl",
+      "target": "D:/",
+      "pkg": "mybatis.mappers",
+      "suffix": "Mapper.xml",
+      "dependencies": []
+    },
+    {
+      "name": "dto",
+      "template": "DTO.java.ftl",
+      "target": "D:/",
+      "pkg": "io.github.howiefh.dto",
+      "suffix": ".java",
+      "dependencies": []
+    },
+    {
+      "name": "convert",
+      "template": "Cvt.java.ftl",
+      "target": "D:/",
+      "pkg": "io.github.howiefh.cvt",
+      "suffix": "Convertor.java",
+      "dependencies": [
+        "model",
+        "dto"
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "name": "sys_user",
+      "className": "User",
+      "pk": "id",
+      "updates": [
+        "username",
+        "email"
+      ],
+      "queries":{
+        "username":"=",
+        "email:":"="
+      },
+      "ignoreTypes": [
+        "model",
+        "dao"
+      ],
+      "types": [
+        {
+          "name": "dto",
+          "impls": [
+            {
+              "name": "UserRequest",
+              "columns": [
+                "username",
+                "email"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
