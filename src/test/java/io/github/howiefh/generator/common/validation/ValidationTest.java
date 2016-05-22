@@ -21,19 +21,18 @@ public class ValidationTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
     private Config config = new Config();
-    private Validation validation = new Validation(Config.class);
     @Before
     public void setUp() throws IntrospectionException {
-        validation.register(Sets.newHashSet("author"),Sets.newHashSet("version","since","templateDir","types","ignoreTables","tables","attributes"));
+        Validator.register(io.github.howiefh.generator.common.validation.Rule.REQUIRED, Config.class,Sets.newHashSet("author"));
     }
     @Test
     public void testValidateFail() throws Exception {
         expectedEx.expect(ValidationException.class);
-        validation.validate(config);
+        Validator.validate(config);
     }
     @Test
     public void testValidateSuccess() throws Exception {
         config.setAuthor("fenghao");
-        Assert.assertTrue(validation.validate(config));
+        Assert.assertTrue(Validator.validate(config));
     }
 }

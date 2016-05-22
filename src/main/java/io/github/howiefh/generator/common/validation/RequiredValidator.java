@@ -5,9 +5,9 @@ package io.github.howiefh.generator.common.validation;
  * @version 1.0
  * @since 1.0
  */
-public class RequiredValidator<T> implements Validator<T>{
+public class RequiredValidator implements IValidator {
     @Override
-    public boolean validate(T obj) {
+    public boolean validate(Object obj) {
         if (obj == null){
             return false;
         }

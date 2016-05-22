@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration>
 <!-- status=debug 可以查看log4j的装配过程 -->
-<configuration status="debug" monitorInterval="1800">
+<configuration status="info" monitorInterval="1800">
     <properties>
         <property name="LOG_HOME">log</property>
         <!-- 日志备份目录 -->

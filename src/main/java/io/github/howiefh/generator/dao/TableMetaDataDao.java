@@ -30,5 +30,5 @@ public interface TableMetaDataDao {
      * @param table
      * @return
      */
-    List<String> findTablePK(Table table);
+    List<TableColumn> findTablePks(Table table);
 }

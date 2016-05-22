@@ -29,7 +29,7 @@
     {
       "name": "sys_user",
       "className": "User",
-      "pk": "id",
+      "pks": ["id"],
       "updates": [
         "username",
         "email"

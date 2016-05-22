@@ -7,13 +7,16 @@ import com.google.common.collect.Sets;
 import com.google.common.io.Resources;
 import io.github.howiefh.generator.common.exception.ConfigInitException;
 import io.github.howiefh.generator.common.exception.ValidationException;
-import io.github.howiefh.generator.common.validation.Validation;
+import io.github.howiefh.generator.common.util.StringUtils;
+import io.github.howiefh.generator.common.validation.Rule;
+import io.github.howiefh.generator.common.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.beans.IntrospectionException;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.Set;
 
 /**
  * @author fenghao on 2016/5/20
@@ -35,8 +38,11 @@ public class Configuration {
         return init(DEFAULT_CONFIG);
     }
     public static Config init(String configFile) throws ConfigInitException {
-        load(configFile);
         try {
+            if (StringUtils.isBlank(configFile)) {
+                configFile = DEFAULT_CONFIG;
+            }
+            load(configFile);
             validate();
         } catch (IntrospectionException e) {
             LOGGER.error("Can not get field. {}", e.getMessage());
@@ -114,30 +120,28 @@ public class Configuration {
 
         config = JSON.parseObject(context, Config.class, processor);
     }
-    private static void validate() throws IntrospectionException, ValidationException {
-        Validation cVal = new Validation(Config.class);
-        cVal.register(null, Sets.newHashSet("author", "version", "since", "templateDir", "types", "ignoreTables", "tables", "attributes"));
-        Validation tableVal = new Validation(TableCfg.class);
-        tableVal.register(Sets.newHashSet("name"), Sets.newHashSet("updates", "queries", "ignoreTypes", "types", "attributes"));
-        Validation typeVal = new Validation(TypeCfg.class);
-        typeVal.register(Sets.newHashSet("name", "template"), Sets.newHashSet("target", "pkg", "suffix", "ignoreImpls", "impls", "dependencies", "attributes"));
-        Validation tableTypeVal = new Validation(TypeCfg.class, "table");
-        tableTypeVal.register(Sets.newHashSet("name"), Sets.newHashSet("target", "pkg", "suffix", "ignoreImpls", "impls", "dependencies", "attributes"));
-        Validation implVal = new Validation(ImplementCfg.class);
-        implVal.register(Sets.newHashSet("name", "columns"), Sets.newHashSet("attributes"));
-        cVal.validate(config);
-        for (TypeCfg typeCfg : config.getTypes()){
-            typeVal.validate(typeCfg);
-            for (ImplementCfg implementCfg : typeCfg.getImpls()) {
-                implVal.validate(implementCfg);
-            }
+    private static void validate() throws IntrospectionException, ValidationException, ConfigInitException {
+        String tableTypes = "table.types";
+        config = DefaultConfig.initDefaultConfig(config);
+
+        Validator.register(Rule.REQUIRED, Config.class, null);
+        Validator.register(Rule.REQUIRED, TableCfg.class, Sets.newHashSet("name"));
+        Validator.register(Rule.REQUIRED, tableTypes, TypeCfg.class, Sets.newHashSet("name"));
+        Validator.register(Rule.REQUIRED, TypeCfg.class, Sets.newHashSet("name", "template"));
+        Validator.register(Rule.REQUIRED, ImplementCfg.class, Sets.newHashSet("name", "columns"));
+
+        Validator.validate(config);
+        validateTypes(config.getTypes(), null);
+        for (TableCfg tableCfg : config.getTables()) {
+            Validator.validate(tableCfg);
+            validateTypes(tableCfg.getTypes(), tableTypes);
         }
-        for (TableCfg tableCfg: config.getTables()){
-            for (TypeCfg typeCfg : tableCfg.getTypes()){
-                tableTypeVal.validate(typeCfg);
-                for (ImplementCfg implementCfg : typeCfg.getImpls()) {
-                    implVal.validate(implementCfg);
-                }
+    }
+    private static void validateTypes(Set<TypeCfg> typeCfgs, String typeGroup) throws ValidationException {
+        for (TypeCfg typeCfg : typeCfgs){
+            Validator.validate(typeCfg, typeGroup);
+            for (ImplementCfg implementCfg : typeCfg.getImpls()) {
+                Validator.validate(implementCfg);
             }
         }
     }

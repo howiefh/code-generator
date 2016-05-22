@@ -13,12 +13,12 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptySetIf
 
 /**
  * 1. name字段为必填
- * 2. updates、queries、ignoreTypes、types、attributes都是非必填，有默认值
- * 3. className、pk非必填，没有默认值, className如果为空，则设置为表名的驼峰式名称，pk如果数据库和配置都空，设置第一列为主键
+ * 2. pks、updates、queries、ignoreTypes、types、attributes都是非必填，有默认值，pk如果数据库和配置都空，设置第一列为主键
+ * 3. className非必填，没有默认值, className如果为空，则设置为表名的驼峰式名称
  * {@link DBUtils#fetchTableFormDb(io.github.howiefh.generator.dao.TableMetaDataDao, io.github.howiefh.generator.common.config.TableCfg)},
  * {@link DBUtils#initColumnField(io.github.howiefh.generator.entity.Table, io.github.howiefh.generator.common.config.TableCfg)}
  *
- * 1. updates、ignoreTypes、types默认空集合
+ * 1. pks、updates、ignoreTypes、types默认空集合
  * 2. queries、attributes默认空映射
  *
  * @author fenghao on 2016/5/20
@@ -34,7 +34,7 @@ public class TableCfg implements Serializable{
     /** 类名 */
     private String className;
     /** 主键,配置的主键会覆盖从数据库中的主键 */
-    private String pk;
+    private Set<String> pks;
     /** 更新字段集合 */
     private Set<String> updates;
     /** 查询字段集合 */
@@ -80,18 +80,18 @@ public class TableCfg implements Serializable{
 
     /**
      * 主键,配置的主键会覆盖从数据库中的主键
-     * @return pk
+     * @return pks
      */
-    public String getPk() {
-        return pk;
+    public Set<String> getPks() {
+        return pks;
     }
 
     /**
      * 主键,配置的主键会覆盖从数据库中的主键
-     * @param pk
+     * @param pks
      */
-    public void setPk(String pk) {
-        this.pk = pk;
+    public void setPks(Set<String> pks) {
+        this.pks = emptySetIfNull(pks);
     }
 
     /**
@@ -181,7 +181,7 @@ public class TableCfg implements Serializable{
         TableCfg tableCfg = (TableCfg) o;
         return Objects.equal(name, tableCfg.name) &&
                 Objects.equal(className, tableCfg.className) &&
-                Objects.equal(pk, tableCfg.pk) &&
+                Objects.equal(pks, tableCfg.pks) &&
                 Objects.equal(updates, tableCfg.updates) &&
                 Objects.equal(queries, tableCfg.queries) &&
                 Objects.equal(ignoreTypes, tableCfg.ignoreTypes) &&
@@ -191,7 +191,7 @@ public class TableCfg implements Serializable{
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, className, pk, updates, queries, ignoreTypes, types, attributes);
+        return Objects.hashCode(name, className, pks, updates, queries, ignoreTypes, types, attributes);
     }
 
     @Override
@@ -199,7 +199,7 @@ public class TableCfg implements Serializable{
         return MoreObjects.toStringHelper(this)
                 .add("name", name)
                 .add("className", className)
-                .add("pk", pk)
+                .add("pks", pks)
                 .add("updates", updates)
                 .add("queries", queries)
                 .add("ignoreTypes", ignoreTypes)

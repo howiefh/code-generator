@@ -40,6 +40,16 @@
         </where>
     </sql>
 
+    <sql id="${className}PksWhere">
+        <where>
+        <#list table.pks as pk>
+            <if test="${pk.javaFieldId} != null and ${pk.javaFieldId} != ''">
+                AND ${aliasName}.${pk.name} = ${"#"}{${pk.javaFieldId}}
+            </if>
+        </#list>
+        </where>
+    </sql>
+
     <select id="count" resultType="long">
         SELECT count(0)
         FROM ${table.name}
@@ -49,7 +59,7 @@
         SELECT
         <include refid="${className}Columns"/>
         FROM ${table.name} ${aliasName}
-        WHERE ${aliasName}.${table.pk.name} = ${"#"}{${table.pk.javaFieldId}}
+        <include refid="${className}PksWhere"/>
     </select>
 
     <select id="findAll" resultMap="${className}">
@@ -96,11 +106,11 @@
             </#if>
         </#list>
         </set>
-        WHERE ${table.pk.name} = ${"#"}{${table.pk.javaFieldId}}
+        <include refid="${className}PksWhere"/>
     </update>
 
     <delete id="delete" parameterType="java.lang.String">
         DELETE FROM ${table.name}
-        WHERE ${table.pk.name} = ${"#"}{${table.pk.javaFieldId}}
+        <include refid="${className}PksWhere"/>
     </delete>
 </mapper>

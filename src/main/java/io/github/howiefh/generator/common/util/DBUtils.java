@@ -1,11 +1,11 @@
 package io.github.howiefh.generator.common.util;
 
+import com.google.common.collect.Lists;
 import io.github.howiefh.generator.common.config.TableCfg;
 import io.github.howiefh.generator.dao.TableMetaDataDao;
 import io.github.howiefh.generator.entity.Table;
 import io.github.howiefh.generator.entity.TableColumn;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,13 +40,19 @@ public class DBUtils {
                 table.setColumns(columns);
 
                 // 获取主键
-                table.setPks(tableMetaDataDao.findTablePK(table));
+                table.setPks(tableMetaDataDao.findTablePks(table));
                 // 配置中的主键覆盖数据库的
-                String pk = tableCfg.getPk();
-                if (StringUtils.isNotBlank(pk)) {
-                    if (CollectionUtils.isEmpty(table.getPks())){
-                        table.getPks().clear();
-                        table.getPks().add(pk);
+                Set<String> pks = tableCfg.getPks();
+                if (CollectionUtils.isNotEmpty(pks)) {
+                    // 清空table.pks，设置为配置文件的pks
+                    if (table.getPks() == null) {
+                        table.setPks(Lists.<TableColumn>newArrayList());
+                    }
+                    table.getPks().clear();
+                    for (TableColumn column : columns) {
+                        if (tableCfg.getPks().contains(column.getName())){
+                            table.getPks().add(column);
+                        }
                     }
                 }
 
@@ -97,14 +103,13 @@ public class DBUtils {
             column.setJavaField(StringUtils.toCamelCase(column.getName()));
 
             // 配置中的主键覆盖数据库中的，如果数据库、配置都没有配主键，主键默认是读到的第一列
-            // 是否是主键
-            if (table.getPks() == null) {
-                table.setPks(new ArrayList<String>());
+            // 同时设置列是否是主键
+            if (table.getPks() == null) { //配置文件和数据库中都没有主键，主键默认用第一列
+                table.setPks(Lists.<TableColumn>newArrayList());
                 column.setPk(true);
-                table.setPk(column);
-            } else if (table.getPks().contains(column.getName())) {
+                table.getPks().add(column);
+            } else if (table.getPks().contains(column)) {
                 column.setPk(true);
-                table.setPk(column);
             } else {
                 column.setPk(false);
             }

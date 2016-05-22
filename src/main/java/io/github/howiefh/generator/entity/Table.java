@@ -26,15 +26,10 @@ public class Table extends BasicEntity {
 	private String comments;
     /** 实体类名称*/
     private String className;
-
     /** 表列*/
 	private List<TableColumn> columns = Lists.newArrayList();
-
     /** 当前表主键列表*/
-    private List<String> pks;
-
-    /** TODO 暂时默认没有联合主键的情况 */
-    private TableColumn pk;
+    private List<TableColumn> pks;
 
 	public Table() {
 		super();
@@ -64,21 +59,13 @@ public class Table extends BasicEntity {
 		this.className = className;
 	}
 
-	public List<String> getPks() {
+	public List<TableColumn> getPks() {
 		return pks;
 	}
 
-	public void setPks(List<String> pks) {
+	public void setPks(List<TableColumn> pks) {
 		this.pks = pks;
 	}
-
-    public TableColumn getPk() {
-        return pk;
-    }
-
-    public void setPk(TableColumn pk) {
-        this.pk = pk;
-    }
 
 	public List<TableColumn> getColumns() {
 		return columns;
