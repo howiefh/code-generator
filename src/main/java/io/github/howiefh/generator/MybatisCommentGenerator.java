@@ -1,6 +1,7 @@
 package io.github.howiefh.generator;
 
 import io.github.howiefh.generator.common.config.Config;
+import io.github.howiefh.generator.common.config.Configuration;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
@@ -37,13 +38,13 @@ public class MybatisCommentGenerator extends DefaultCommentGenerator{
     public void addClassComment(InnerClass innerClass,
                                 IntrospectedTable introspectedTable) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Config config = Configuration.getConfig();
         innerClass.addJavaDocLine("/**");
         innerClass.addJavaDocLine(" * " + introspectedTable.getFullyQualifiedTable());
         innerClass.addJavaDocLine(" * ");
-        //TODO 完善配置
-        innerClass.addJavaDocLine(" * @author " + Config.DEFAULT_AUTHOR + " on " + sdf.format(new Date()));
-        innerClass.addJavaDocLine(" * @version " + Config.DEFAULT_VERSION);
-        innerClass.addJavaDocLine(" * @since " + Config.DEFAULT_SINCE);
+        innerClass.addJavaDocLine(" * @author " + config.getAuthor() + " on " + sdf.format(new Date()));
+        innerClass.addJavaDocLine(" * @version " + config.getVersion());
+        innerClass.addJavaDocLine(" * @since " + config.getSince());
         innerClass.addJavaDocLine(" */");
     }
 

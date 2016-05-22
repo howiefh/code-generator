@@ -1,7 +1,5 @@
 package io.github.howiefh.generator.common.util;
 
-import io.github.howiefh.generator.common.config.Config;
-import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.config.TableCfg;
 import io.github.howiefh.generator.dao.TableMetaDataDao;
 import io.github.howiefh.generator.entity.Table;
@@ -19,7 +17,6 @@ import java.util.Set;
  */
 public class DBUtils {
     private static final String DEFAULT_QUERY_TYPE = "=";
-    private static Config config = Configuration.getConfig();
     public static Table fetchTableFormDb(TableMetaDataDao tableMetaDataDao, TableCfg tableCfg){
         // 如果有表名，则获取物理表
         Table table = null;
@@ -30,6 +27,7 @@ public class DBUtils {
             if (list.size() > 0){
                 table = list.get(0);
 
+                // 配置中的类名优先，如果没有配置，使用表名的驼峰式命名
                 String className = tableCfg.getClassName();
                 if (StringUtils.isBlank(className)) {
                     table.setClassName(StringUtils.toCapitalizeCamelCase(table.getName()));
@@ -38,17 +36,17 @@ public class DBUtils {
                 }
 
                 // 添加列
-                List<TableColumn> columns= tableMetaDataDao.findTableColumnList(table);
-                table.setColumnList(columns);
+                List<TableColumn> columns = tableMetaDataDao.findTableColumnList(table);
+                table.setColumns(columns);
 
                 // 获取主键
-                table.setPkList(tableMetaDataDao.findTablePK(table));
+                table.setPks(tableMetaDataDao.findTablePK(table));
                 // 配置中的主键覆盖数据库的
                 String pk = tableCfg.getPk();
                 if (StringUtils.isNotBlank(pk)) {
-                    if (CollectionUtils.isEmpty(table.getPkList())){
-                        table.getPkList().clear();
-                        table.getPkList().add(pk);
+                    if (CollectionUtils.isEmpty(table.getPks())){
+                        table.getPks().clear();
+                        table.getPks().add(pk);
                     }
                 }
 
@@ -65,7 +63,7 @@ public class DBUtils {
     public static void initColumnField(Table table, TableCfg tableCfg){
         Set<String> edits = tableCfg.getUpdates();
         Map<String,String> queries = tableCfg.getQueries();
-        for (TableColumn column : table.getColumnList()){
+        for (TableColumn column : table.getColumns()){
             // 设置java类型
             if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "CHAR")
                     || StringUtils.startsWithIgnoreCase(column.getJdbcType(), "VARCHAR")
@@ -100,11 +98,11 @@ public class DBUtils {
 
             // 配置中的主键覆盖数据库中的，如果数据库、配置都没有配主键，主键默认是读到的第一列
             // 是否是主键
-            if (table.getPkList() == null) {
-                table.setPkList(new ArrayList<String>());
+            if (table.getPks() == null) {
+                table.setPks(new ArrayList<String>());
                 column.setPk(true);
                 table.setPk(column);
-            } else if (table.getPkList().contains(column.getName())) {
+            } else if (table.getPks().contains(column.getName())) {
                 column.setPk(true);
                 table.setPk(column);
             } else {

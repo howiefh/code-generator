@@ -31,6 +31,7 @@ public class Config implements Serializable{
     public static final String DEFAULT_VERSION = "1.0";
     public static final String DEFAULT_SINCE = DEFAULT_VERSION;
     public static final String DEFAULT_TEMPLATE_DIR = "templates";
+    public static final String DEFAULT_DATABASE = "mysql";
     /** 作者 */
     private String author;
     /** 版本 */
@@ -39,6 +40,8 @@ public class Config implements Serializable{
     private String since;
     /** 模板目录 */
     private String templateDir;
+    /** 数据库类型 */
+    private String database;
     /** 类型集合 */
     private Set<TypeCfg> types;
     /** 忽略的表集合 */
@@ -110,6 +113,22 @@ public class Config implements Serializable{
      */
     public void setTemplateDir(String templateDir) {
         this.templateDir = isBlank(templateDir) ? DEFAULT_TEMPLATE_DIR : templateDir;
+    }
+
+    /**
+     * 数据库类型
+     * @return database
+     */
+    public String getDatabase() {
+        return database;
+    }
+
+    /**
+     * 数据库类型
+     * @param database
+     */
+    public void setDatabase(String database) {
+        this.database = isBlank(database) ? DEFAULT_DATABASE : database;
     }
 
     /**

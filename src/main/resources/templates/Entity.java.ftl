@@ -1,8 +1,10 @@
 package ${modelPkg};
 
-<#list table.importList as i>
-import ${i};
-</#list>
+<#if dependencies??>
+    <#list dependencies as i>
+    import ${i};
+    </#list>
+</#if>
 
 /**
  * ${function}
@@ -13,7 +15,7 @@ import ${i};
 public class ${ClassName} extends BasicEntity {
     private static final long serialVersionUID = ${serialVersion};
 <#-- 生成字段属性 -->
-<#list table.columnList as c>
+<#list table.columns as c>
     <#if c.isNotBaseField() >
         <#if c.comments??>
     /** ${c.comments} */
@@ -26,7 +28,7 @@ public class ${ClassName} extends BasicEntity {
     }
 
 <#-- 生成get和set方法 -->
-<#list table.columnList as c>
+<#list table.columns as c>
 <#-- 如果不是基类属性 -->
     <#if c.isNotBaseField() >
     /**

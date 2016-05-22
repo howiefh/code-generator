@@ -1,9 +1,12 @@
 package io.github.howiefh.generator.entity;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.entity.BasicEntity;
 
 import java.util.List;
+import java.util.Set;
 
 import static io.github.howiefh.generator.common.util.StringUtils.indexOf;
 import static io.github.howiefh.generator.common.util.StringUtils.lowerCase;
@@ -25,10 +28,10 @@ public class Table extends BasicEntity {
     private String className;
 
     /** 表列*/
-	private List<TableColumn> columnList = Lists.newArrayList();
+	private List<TableColumn> columns = Lists.newArrayList();
 
     /** 当前表主键列表*/
-    private List<String> pkList;
+    private List<String> pks;
 
     /** TODO 暂时默认没有联合主键的情况 */
     private TableColumn pk;
@@ -61,12 +64,12 @@ public class Table extends BasicEntity {
 		this.className = className;
 	}
 
-	public List<String> getPkList() {
-		return pkList;
+	public List<String> getPks() {
+		return pks;
 	}
 
-	public void setPkList(List<String> pkList) {
-		this.pkList = pkList;
+	public void setPks(List<String> pks) {
+		this.pks = pks;
 	}
 
     public TableColumn getPk() {
@@ -77,12 +80,12 @@ public class Table extends BasicEntity {
         this.pk = pk;
     }
 
-	public List<TableColumn> getColumnList() {
-		return columnList;
+	public List<TableColumn> getColumns() {
+		return columns;
 	}
 
-	public void setColumnList(List<TableColumn> columnList) {
-		this.columnList = columnList;
+	public void setColumns(List<TableColumn> columns) {
+		this.columns = columns;
 	}
 
 	/**
@@ -97,17 +100,17 @@ public class Table extends BasicEntity {
 	 * 获取导入依赖包字符串
 	 * @return
 	 */
-	public List<String> getImportList(){
-		List<String> importList = Lists.newArrayList(); // 引用列表
-		for (TableColumn column : getColumnList()){
+	public Set<String> getImports(){
+		Set<String> imports = Sets.newHashSet(); // 引用列表
+		for (TableColumn column : getColumns()){
 			if (column.isNotBaseField()){
 				// 导入类型依赖包， 如果类型中包含“.”，则需要导入引用。
-				if (indexOf(column.getJavaType(), ".") != -1 && !importList.contains(column.getJavaType())){
-					importList.add(column.getJavaType());
+				if (indexOf(column.getJavaType(), ".") != -1 && !imports.contains(column.getJavaType())){
+					imports.add(column.getJavaType());
 				}
 			}
 		}
-		return importList;
+		return imports;
 	}
 	
 	/**
@@ -115,7 +118,7 @@ public class Table extends BasicEntity {
 	 * @return
 	 */
 	public Boolean isCreatedDateExists(){
-		for (TableColumn c : columnList){
+		for (TableColumn c : columns){
 			if ("created_date".equals(c.getName())){
 				return true;
 			}
@@ -128,7 +131,7 @@ public class Table extends BasicEntity {
 	 * @return
 	 */
 	public Boolean isModifiedDateExists(){
-		for (TableColumn c : columnList){
+		for (TableColumn c : columns){
 			if ("modified_date".equals(c.getName())){
 				return true;
 			}
@@ -141,7 +144,7 @@ public class Table extends BasicEntity {
 	 * @return
 	 */
 	public Boolean isDelFlagExists(){
-		for (TableColumn c : columnList){
+		for (TableColumn c : columns){
 			if ("del_flag".equals(c.getName())){
 				return true;
 			}
@@ -150,8 +153,7 @@ public class Table extends BasicEntity {
 	}
 
     public String getDbType() {
-		//TODO 完善
-        return "mysql";
+        return Configuration.getConfig().getDatabase();
     }
 }
 

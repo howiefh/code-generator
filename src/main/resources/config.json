@@ -3,6 +3,7 @@
   "version": "1.0",
   "since": "1.0",
   "templateDir": "templates",
+  "database": "mysql",
   "ignoreTables": [],
   "types": [
     {
@@ -63,8 +64,6 @@
         "email:":"="
       },
       "ignoreTypes": [
-        "model",
-        "dao"
       ],
       "types": [
         {

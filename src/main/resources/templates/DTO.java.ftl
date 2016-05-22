@@ -1,9 +1,10 @@
 package ${dtoPkg};
 
-<#-- TODO 完善导入 -->
-<#list table.importList as i>
-import ${i};
-</#list>
+<#if dependencies??>
+    <#list dependencies as i>
+    import ${i};
+    </#list>
+</#if>
 import java.io.Serializable;
 
 /**
@@ -15,7 +16,7 @@ import java.io.Serializable;
 public class ${implClassName} implements Serializable {
     private static final long serialVersionUID = ${serialVersion};
 <#-- 生成字段属性 -->
-<#list table.columnList as c>
+<#list table.columns as c>
     <#if implColumns?seq_contains(c.name) >
         <#if c.comments??>
     /** ${c.comments} */
@@ -28,7 +29,7 @@ public class ${implClassName} implements Serializable {
     }
 
 <#-- 生成get和set方法 -->
-<#list table.columnList as c>
+<#list table.columns as c>
     <#if implColumns?seq_contains(c.name) >
 <#-- 如果不是基类属性 -->
     /**

@@ -21,7 +21,6 @@ public class BasicEntity extends AbstractEntity<Long> {
 
     @Override
     public boolean isNew() {
-        // TODO Auto-generated method stub
         return super.isNew();
     }
 }

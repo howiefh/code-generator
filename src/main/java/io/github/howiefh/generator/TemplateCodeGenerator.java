@@ -49,6 +49,7 @@ public class TemplateCodeGenerator {
                 TableMetaDataDao tableMetaDataDao = session.getMapper(TableMetaDataDao.class);
                 for (TableCfg tableCfg : config.getTables()) {
                     if (config.getIgnoreTables() != null && config.getIgnoreTables().contains(tableCfg.getName())){
+                        LOGGER.info("Table {} is ignored!", tableCfg.getName() );
                         continue;
                     }
                     Table table = DBUtils.fetchTableFormDb(tableMetaDataDao, tableCfg);
@@ -58,12 +59,14 @@ public class TemplateCodeGenerator {
                     }
                     for (TypeCfg typeCfg : config.getTypes()) {
                         if (tableCfg.getIgnoreTypes() != null && tableCfg.getIgnoreTypes().contains(typeCfg.getName())){
+                            LOGGER.info("Type {} is ignored!", typeCfg.getName() );
                             continue;
                         }
                         TypeCfg type = GeneratorUtils.unionIfContains(tableCfg.getTypes(), typeCfg);
                         if (CollectionUtils.isNotEmpty(type.getImpls())) {
                             for (ImplementCfg implementCfg : type.getImpls()) {
                                 if (type.getIgnoreImpls() != null && type.getIgnoreImpls().contains(implementCfg.getName())){
+                                    LOGGER.info("Implement {} is ignored!", implementCfg.getName() );
                                     continue;
                                 }
                                 GeneratorContext context = new GeneratorContext(tableCfg, typeCfg, implementCfg, table);
@@ -76,7 +79,7 @@ public class TemplateCodeGenerator {
                     }
                 }
             } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
+                LOGGER.error("Error {}", e.getMessage());
             } finally{
                 session.close();
             }
@@ -98,7 +101,14 @@ public class TemplateCodeGenerator {
         TypeCfg typeCfg = context.getTypeCfg();
         Map model = generateModel(context);
         String filepath = generateTargetFile(context);
-        FreemarkerUtils.generate(model, config.getTemplateDir(), typeCfg.getTemplate(), filepath);
+
+        File dir = mkdirsIfNotExists(typeCfg);
+        if (dir != null) {
+            FreemarkerUtils.generate(model, config.getTemplateDir(), typeCfg.getTemplate(), filepath);
+            LOGGER.info("Generate {}", filepath);
+        } else {
+            LOGGER.error("Create {} fails!", dir);
+        }
     }
     /**
      * 生成数据模型
@@ -132,7 +142,9 @@ public class TemplateCodeGenerator {
         model.put("target", typeCfg.getTarget());
         Map<String, Set<String>> map = GeneratorUtils.parseDependencies(context);
         if (map != null) {
-            model.put("dependencies", map.get("dependencies"));
+            Set<String> dependencies = map.get("dependencies");
+            dependencies.addAll(table.getImports());
+            model.put("dependencies", dependencies);
             model.put("impls", map);
         }
 
@@ -148,6 +160,27 @@ public class TemplateCodeGenerator {
         model.put("table", table);
         return model;
     }
+
+    /**
+     * 如果目标文件存放目录不存在则创建
+     * @param type
+     * @return 如果文件目录存在或创建成功返回File对象，否则返回null
+     */
+    private static File mkdirsIfNotExists(TypeCfg type){
+        String path = type.getTarget()
+                + File.separator
+                + StringUtils.replaceEach(type.getPkg(), new String[]{"."}, new String[]{File.separator});
+        File dir = new File(path);
+        if (!dir.exists()) {
+            if (dir.mkdirs()) {
+                return dir;
+            }
+            return null;
+        } else {
+            return dir;
+        }
+    }
+
     private static String generateTargetFile(GeneratorContext context){
         TypeCfg type = context.getTypeCfg();
         ImplementCfg implementCfg = context.getImplementCfg();
@@ -160,7 +193,7 @@ public class TemplateCodeGenerator {
     }
 
     /**
-     * 生成目标文件名，如果目标文件存放目录不存在则创建
+     * 生成目标文件名
      * @param type
      * @param filename
      * @return
@@ -168,16 +201,9 @@ public class TemplateCodeGenerator {
     private static String generateTargetFile(TypeCfg type, String filename){
         if (type == null || filename == null)
             throw new NullPointerException("Generate target file error, please check config! type:" + type + "filename:" + filename);
-        String path = type.getTarget()
+        return  type.getTarget()
                 + File.separator
-                + StringUtils.replaceEach(type.getPkg(), new String[]{"."}, new String[]{File.separator});
-        File dir = new File(path);
-        if (!dir.exists()) {
-            //TODO 文件夹没创建成功的情况
-            dir.mkdirs();
-        }
-
-        return  path
+                + StringUtils.replaceEach(type.getPkg(), new String[]{"."}, new String[]{File.separator})
                 + File.separator
                 + filename
                 + type.getSuffix();

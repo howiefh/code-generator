@@ -3,14 +3,14 @@
 <mapper namespace="${daoPkg}.${ClassName}Dao">
     <#assign aliasName=table.name?substring(0, 1)>
     <resultMap id="${className}" type="${modelPkg}.${ClassName}" >
-    <#list table.columnList as c>
+    <#list table.columns as c>
         <result column="${c.name}" property="${c.simpleJavaField}" jdbcType="${c.simpleJdbcType}" />
     </#list>
     </resultMap>
     <#-- 输出字段列 -->
     <sql id="${className}Columns">
     <#assign columnField>
-        <#list table.columnList as c>
+        <#list table.columns as c>
             ${aliasName}.${c.name} AS ${c.javaFieldId},
         </#list>
     </#assign>
@@ -19,7 +19,7 @@
 
     <sql id="${className}Where">
         <where>
-    <#list table.columnList as c>
+    <#list table.columns as c>
         <#if c.isQuery()>
             <if test="${c.javaFieldId} != null and ${c.javaFieldId} != ''">
             <#if c.queryType?? && c.queryType == 'like'>
@@ -68,7 +68,7 @@
     <insert id="save">
         INSERT INTO ${table.name}(
     <#assign insertField>
-        <#list table.columnList as c>
+        <#list table.columns as c>
             <#if c.isInsert()>
             ${c.name},
             </#if>
@@ -77,7 +77,7 @@
     ${insertField?substring(0, insertField?last_index_of(","))}
         ) VALUES (
     <#assign insertJavaField>
-        <#list table.columnList as c>
+        <#list table.columns as c>
             <#if c.isInsert()>
             ${"#"}{${c.javaFieldId}},
             </#if>
@@ -90,7 +90,7 @@
     <update id="update">
         UPDATE ${table.name}
         <set>
-        <#list table.columnList as c>
+        <#list table.columns as c>
             <#if c.isEdit()>
             <if test="${c.javaFieldId} != null"> ${c.name} = ${"#"}{${c.javaFieldId}},</if>
             </#if>

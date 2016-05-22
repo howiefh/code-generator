@@ -1,5 +1,6 @@
 package io.github.howiefh.generator;
 
+import io.github.howiefh.generator.common.exception.ConfigInitException;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.api.VerboseProgressCallback;
@@ -86,6 +87,7 @@ public class MybatisGenerator {
         }
 
         try {
+            io.github.howiefh.generator.common.config.Configuration.init("config.json");
             ConfigurationParser cp = new ConfigurationParser(warnings);
             Configuration config = cp.parseConfiguration(configurationFile);
 
@@ -120,6 +122,9 @@ public class MybatisGenerator {
         } catch (InterruptedException e) {
             // ignore (will never happen with the DefaultShellCallback)
             ;
+        } catch (ConfigInitException e) {
+            e.printStackTrace();
+            return;
         }
 
         for (String warning : warnings) {
