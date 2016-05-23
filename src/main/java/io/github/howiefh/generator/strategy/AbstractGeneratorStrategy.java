@@ -71,11 +71,11 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
                                     LOGGER.info("Implement {} is ignored!", implementCfg.getName() );
                                     continue;
                                 }
-                                context = new GeneratorContext(tableCfg, typeCfg, implementCfg, table);
+                                context = new GeneratorContext(tableCfg, type, implementCfg, table);
                                 generateTemplate();
                             }
                         } else {
-                            context = new GeneratorContext(tableCfg, typeCfg, table);
+                            context = new GeneratorContext(tableCfg, type, table);
                             generateTemplate();
                         }
                     }
