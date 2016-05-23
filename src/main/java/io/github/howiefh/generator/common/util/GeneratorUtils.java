@@ -5,6 +5,7 @@ import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.config.ImplementCfg;
 import io.github.howiefh.generator.common.config.TableCfg;
 import io.github.howiefh.generator.common.config.TypeCfg;
+import io.github.howiefh.generator.common.exception.GeneratorException;
 
 import java.util.*;
 
@@ -141,33 +142,37 @@ public class GeneratorUtils {
      * @param context
      * @return map {"dependencies":"...", "${impl.name}":"${impl.columns}"}
      */
-    public static Map<String, Set<String>> parseDependencies(GeneratorContext context) throws CloneNotSupportedException {
-        TableCfg tableCfg = context.getTableCfg();
-        TypeCfg typeCfg = context.getTypeCfg();
-        if (typeCfg != null && isNotEmpty(typeCfg.getDependencies())) {
-            Map<String, Set<String>> result = new HashMap<String, Set<String>>();
-            Set<String> dependencies = new HashSet<String>();
-            for (String dep : typeCfg.getDependencies()) {
-                TypeCfg tmpType = new TypeCfg();
-                tmpType.setName(dep);
-                tmpType = CollectionUtils.search(Configuration.getConfig().getTypes(), tmpType);
-                if (tmpType != null){
-                    // 解析依赖包
-                    dependencies.add(tmpType.getPkg() + ".*");
-                    // 将type.impls加入到返回的map中
-                    TypeCfg tmpType2 = CollectionUtils.search(tableCfg.getTypes(), tmpType);
-                    tmpType = union(tmpType, tmpType2);
-                    if (isNotEmpty(tmpType.getImpls())){
-                        for (ImplementCfg implementCfg : tmpType.getImpls()) {
-                            result.put(implementCfg.getName(), implementCfg.getColumns());
+    public static Map<String, Set<String>> parseDependencies(GeneratorContext context) throws GeneratorException {
+        try {
+            TableCfg tableCfg = context.getTableCfg();
+            TypeCfg typeCfg = context.getTypeCfg();
+            if (typeCfg != null && isNotEmpty(typeCfg.getDependencies())) {
+                Map<String, Set<String>> result = new HashMap<String, Set<String>>();
+                Set<String> dependencies = new HashSet<String>();
+                for (String dep : typeCfg.getDependencies()) {
+                    TypeCfg tmpType = new TypeCfg();
+                    tmpType.setName(dep);
+                    tmpType = CollectionUtils.search(Configuration.getConfig().getTypes(), tmpType);
+                    if (tmpType != null){
+                        // 解析依赖包
+                        dependencies.add(tmpType.getPkg() + ".*");
+                        // 将type.impls加入到返回的map中
+                        TypeCfg tmpType2 = CollectionUtils.search(tableCfg.getTypes(), tmpType);
+                        tmpType = union(tmpType, tmpType2);
+                        if (isNotEmpty(tmpType.getImpls())){
+                            for (ImplementCfg implementCfg : tmpType.getImpls()) {
+                                result.put(implementCfg.getName(), implementCfg.getColumns());
+                            }
                         }
+                    } else {
+                        dependencies.add(dep);
                     }
-                } else {
-                    dependencies.add(dep);
                 }
+                result.put("dependencies", dependencies);
+                return result;
             }
-            result.put("dependencies", dependencies);
-            return result;
+        } catch (CloneNotSupportedException e) {
+            throw new GeneratorException(e);
         }
         return null;
     }

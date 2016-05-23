@@ -5,7 +5,7 @@ package io.github.howiefh.generator.common.exception;
  * @version 1.0
  * @since 1.0
  */
-public class ValidationException extends Exception{
+public class ValidationException extends GeneratorException {
     private static final long serialVersionUID = 6960935604216158885L;
 
     public ValidationException() {

@@ -5,7 +5,7 @@ package io.github.howiefh.generator.common.exception;
  * @version 1.0
  * @since 1.0
  */
-public class ConfigInitException extends Exception{
+public class ConfigInitException extends GeneratorException{
     private static final long serialVersionUID = -5474978392498836243L;
 
     public ConfigInitException() {

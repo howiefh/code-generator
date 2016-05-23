@@ -27,7 +27,7 @@ public class FreemarkerUtils {
      * @param outFile 输出文件
      * @return true/false
      */
-    public static boolean generate(Map model, String ftlPath, String ftlName, String outFile) {
+    public static boolean generate(Map model, String ftlPath, String ftlName, File outFile) {
         boolean result = false;
 
         Writer out = null;
@@ -45,8 +45,7 @@ public class FreemarkerUtils {
             MultiTemplateLoader mtl = new MultiTemplateLoader(loaders);
             configuration.setTemplateLoader(mtl);
             Template template = configuration.getTemplate(ftlName);
-            File file = new File(outFile);
-            out = new OutputStreamWriter(new FileOutputStream(file));
+            out = new OutputStreamWriter(new FileOutputStream(outFile));
             template.process(model, out);
             result = true;
         } catch(Exception e) {
