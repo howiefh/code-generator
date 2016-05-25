@@ -17,6 +17,8 @@ import java.util.Set;
  */
 public class DBUtils {
     private static final String DEFAULT_QUERY_TYPE = "=";
+    private static final String DEFAULT_SHOW_TYPE = "input-text";
+
     public static Table fetchTableFormDb(TableMetaDataDao tableMetaDataDao, TableCfg tableCfg){
         // 如果有表名，则获取物理表
         Table table = null;
@@ -69,6 +71,8 @@ public class DBUtils {
     public static void initColumnField(Table table, TableCfg tableCfg){
         Set<String> edits = tableCfg.getUpdates();
         Map<String,String> queries = tableCfg.getQueries();
+        Map<String,String> showTypes = tableCfg.getShowTypes();
+
         for (TableColumn column : table.getColumns()){
             // 设置java类型
             if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "CHAR")
@@ -123,14 +127,21 @@ public class DBUtils {
             }
             // 查询字段
             String queryType = queries.get(column.getName());
-            if (queryType != null){
-                column.setQuery(true);
+            if (StringUtils.isBlank(queryType)){
                 // 设置默认查询类型为=
-                if (queryType.trim().length() == 0) {
-                    column.setQueryType(DEFAULT_QUERY_TYPE);
-                } else {
-                    column.setQueryType(queryType);
-                }
+                column.setQuery(false);
+                column.setQueryType(DEFAULT_QUERY_TYPE);
+            } else {
+                column.setQuery(true);
+                column.setQueryType(queryType);
+            }
+            // 显示类型
+            String showType = showTypes.get(column.getName());
+            if (StringUtils.isBlank(showType)){
+                // 设置默认显示类型为input-text
+                column.setShowType(DEFAULT_SHOW_TYPE);
+            } else {
+                column.setShowType(showType);
             }
         }
     }

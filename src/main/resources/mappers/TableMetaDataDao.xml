@@ -94,8 +94,8 @@
             SELECT lower(cu.COLUMN_NAME) AS name
             FROM user_cons_columns cu, user_constraints au
             WHERE cu.constraint_name = au.constraint_name
-                AND au.constraint_type = 'P'
-                AND au.table_name = upper(#{name})
+            AND au.constraint_type = 'P'
+            AND au.table_name = upper(#{name})
         </if>
         <if test="dbType == 'mssql'">
             SELECT lower(au.COLUMN_NAME) AS name
@@ -107,7 +107,7 @@
             SELECT lower(au.COLUMN_NAME) AS name
             FROM information_schema.`COLUMNS` au
             WHERE au.TABLE_SCHEMA = (select database())
-            AND au.COLUMN_KEY='PRI' AND au.TABLE_NAME = upper(#{name})
+            AND au.COLUMN_KEY='PRI' AND au.TABLE_NAME = #{name}
         </if>
     </select>
 

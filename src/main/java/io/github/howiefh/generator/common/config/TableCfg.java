@@ -37,8 +37,10 @@ public class TableCfg implements Serializable{
     private Set<String> pks;
     /** 更新字段集合 */
     private Set<String> updates;
-    /** 查询字段集合 */
+    /** 查询字段映射 */
     private Map<String, String> queries;
+    /** 显示类型映射 */
+    private Map<String, String> showTypes;
     /** 忽略的生成类型集合 */
     private Set<String> ignoreTypes;
     /** 类型集合 */
@@ -111,7 +113,7 @@ public class TableCfg implements Serializable{
     }
 
     /**
-     * 查询字段集合
+     * 查询字段映射
      * @return queries
      */
     public Map<String, String> getQueries() {
@@ -119,13 +121,28 @@ public class TableCfg implements Serializable{
     }
 
     /**
-     * 查询字段集合
+     * 查询字段映射
      * @param queries
      */
     public void setQueries(Map<String, String> queries) {
         this.queries = emptyMapIfNull(queries);
     }
 
+    /**
+     * 显示类型映射
+     * @return showTypes
+     */
+    public Map<String, String> getShowTypes() {
+        return showTypes;
+    }
+
+    /**
+     * 显示类型映射
+     * @param showTypes
+     */
+    public void setShowTypes(Map<String, String> showTypes) {
+        this.showTypes = emptyMapIfNull(showTypes);
+    }
     /**
      * 忽略类型集合
      * @return ignoreTypes
@@ -184,6 +201,7 @@ public class TableCfg implements Serializable{
                 Objects.equal(pks, tableCfg.pks) &&
                 Objects.equal(updates, tableCfg.updates) &&
                 Objects.equal(queries, tableCfg.queries) &&
+                Objects.equal(showTypes, tableCfg.showTypes) &&
                 Objects.equal(ignoreTypes, tableCfg.ignoreTypes) &&
                 Objects.equal(types, tableCfg.types) &&
                 Objects.equal(attributes, tableCfg.attributes);
@@ -191,7 +209,7 @@ public class TableCfg implements Serializable{
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, className, pks, updates, queries, ignoreTypes, types, attributes);
+        return Objects.hashCode(name, className, pks, updates, queries, showTypes, ignoreTypes, types, attributes);
     }
 
     @Override
@@ -202,6 +220,7 @@ public class TableCfg implements Serializable{
                 .add("pks", pks)
                 .add("updates", updates)
                 .add("queries", queries)
+                .add("showTypes", showTypes)
                 .add("ignoreTypes", ignoreTypes)
                 .add("types", types)
                 .add("attributes", attributes)
