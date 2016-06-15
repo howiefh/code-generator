@@ -31,15 +31,17 @@ import java.util.Set;
  * @version 1.0
  * @since 1.0
  */
-public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
+public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractGeneratorStrategy.class);
+    public static final String UTF8 = "UTF-8";
     private static Config config = Configuration.getConfig();
     protected GeneratorContext context;
 
-    public AbstractGeneratorStrategy(){
+    public AbstractGeneratorStrategy() {
     }
+
     @Override
-    public void generate() throws GeneratorException{
+    public void generate() throws GeneratorException {
         try {
             String resource = "mybatis-config.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
@@ -50,25 +52,25 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
             try {
                 TableMetaDataDao tableMetaDataDao = session.getMapper(TableMetaDataDao.class);
                 for (TableCfg tableCfg : config.getTables()) {
-                    if (config.getIgnoreTables() != null && config.getIgnoreTables().contains(tableCfg.getName())){
-                        LOGGER.info("Table {} is ignored!", tableCfg.getName() );
+                    if (config.getIgnoreTables() != null && config.getIgnoreTables().contains(tableCfg.getName())) {
+                        LOGGER.info("Table {} is ignored!", tableCfg.getName());
                         continue;
                     }
                     Table table = DBUtils.fetchTableFormDb(tableMetaDataDao, tableCfg);
                     if (table == null || table.getName() == null) {
-                        LOGGER.warn("Table {} not exits!", tableCfg.getName() );
+                        LOGGER.warn("Table {} not exits!", tableCfg.getName());
                         continue;
                     }
                     for (TypeCfg typeCfg : config.getTypes()) {
-                        if (tableCfg.getIgnoreTypes() != null && tableCfg.getIgnoreTypes().contains(typeCfg.getName())){
-                            LOGGER.info("Type {} is ignored!", typeCfg.getName() );
+                        if (tableCfg.getIgnoreTypes() != null && tableCfg.getIgnoreTypes().contains(typeCfg.getName())) {
+                            LOGGER.info("Type {} is ignored!", typeCfg.getName());
                             continue;
                         }
                         TypeCfg type = GeneratorUtils.unionIfContains(tableCfg.getTypes(), typeCfg);
                         if (CollectionUtils.isNotEmpty(type.getImpls())) {
                             for (ImplementCfg implementCfg : type.getImpls()) {
-                                if (type.getIgnoreImpls() != null && type.getIgnoreImpls().contains(implementCfg.getName())){
-                                    LOGGER.info("Implement {} is ignored!", implementCfg.getName() );
+                                if (type.getIgnoreImpls() != null && type.getIgnoreImpls().contains(implementCfg.getName())) {
+                                    LOGGER.info("Implement {} is ignored!", implementCfg.getName());
                                     continue;
                                 }
                                 context = new GeneratorContext(tableCfg, type, implementCfg, table);
@@ -83,10 +85,10 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
                 afterGenerate();
             } catch (CloneNotSupportedException e) {
                 LOGGER.error("Error {}", e.getMessage());
-            } finally{
+            } finally {
                 session.close();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             LOGGER.error("IO error. {}", e.getMessage());
         } catch (ConfigInitException e) {
             LOGGER.error("Config init error. {}", e.getMessage());
@@ -96,24 +98,26 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
             LOGGER.error("Unknown error. {}", e.getMessage());
         }
     }
-    public void generateTemplate() throws GeneratorException{
+
+    public void generateTemplate() throws GeneratorException {
         beforeTemplateGenerate();
         TypeCfg typeCfg = context.getTypeCfg();
-        Map model = generateModel();
-        File filepath = generateTargetFile();
+        Map<String, Object> model = generateModel();
+        File file = generateTargetFile(model);
 
         try {
-            Files.createParentDirs(filepath);
-            FreemarkerUtils.generate(model, config.getTemplateDir(), typeCfg.getTemplate(), filepath);
-            LOGGER.info("Generate {}", filepath);
+            Files.createParentDirs(file);
+            FreemarkerUtils.generate(model, config.getTemplateDir(), typeCfg.getTemplate(), file);
+            LOGGER.info("Generate {}", file);
         } catch (IOException e) {
-            LOGGER.error("Create {}'s parent dir fails!", filepath);
+            LOGGER.error("Create {}'s parent dir fails!", file);
         }
         afterTemplateGenerate();
     }
 
     /**
      * 生成数据模型
+     *
      * @return
      */
     private Map<String, Object> generateModel() throws GeneratorException {
@@ -128,8 +132,9 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
         model.put("statics", beansWrapperBuilder.build().getStaticModels());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         model.put("date", simpleDateFormat.format(new Date()));
-        model.put("serialVersion", (RandomUtils.nextInt(0, 1)==0?"-":"") + RandomUtils.nextLong(1 ,Long.MAX_VALUE) + "L");
+        model.put("serialVersion", (RandomUtils.nextInt(0, 1) == 0 ? "-" : "") + RandomUtils.nextLong(1, Long.MAX_VALUE) + "L");
 
+        model.put("config", config);
         model.put("author", config.getAuthor());
         model.put("version", config.getVersion());
         model.put("since", config.getSince());
@@ -137,6 +142,9 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
         for (TypeCfg type : config.getTypes()) {
             model.put(StringUtils.lowerCase(type.getName()) + "Pkg", type.getPkg());
         }
+        model.put("tableCfg", tableCfg);
+        model.put("typeCfg", typeCfg);
+        model.put("implementCfg", implementCfg);
 
         model.put("tableAttrs", tableCfg.getAttributes());
 
@@ -165,29 +173,27 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy{
 
     /**
      * 生成目标文件名
+     *
      * @return
      */
-    private File generateTargetFile(){
+    private File generateTargetFile(Map<String, Object> model) throws GeneratorException {
         TypeCfg type = context.getTypeCfg();
-        ImplementCfg implementCfg = context.getImplementCfg();
-        Table table = context.getTable();
-        if (implementCfg == null) {
-            return generateTargetFile(type, table.getClassName());
-        } else {
-            return generateTargetFile(type, implementCfg.getName());
-        }
+        return generateTargetFile(model, type);
     }
 
     /**
      * 生成目标文件名
+     *
      * @param type
-     * @param filename
      * @return
      */
-    protected abstract File generateTargetFile(TypeCfg type, String filename);
+    protected abstract File generateTargetFile(Map<String, Object> model, TypeCfg type) throws GeneratorException;
 
     protected abstract void beforeTemplateGenerate() throws GeneratorException;
+
     protected abstract void afterTemplateGenerate() throws GeneratorException;
+
     protected abstract void beforeGenerate() throws GeneratorException;
+
     protected abstract void afterGenerate() throws GeneratorException;
 }

@@ -13,6 +13,7 @@ import java.util.List;
 public interface TableMetaDataDao {
     /**
      * 查询表列表
+     *
      * @param table
      * @return
      */
@@ -20,6 +21,7 @@ public interface TableMetaDataDao {
 
     /**
      * 获取数据表字段
+     *
      * @param table
      * @return
      */
@@ -27,6 +29,7 @@ public interface TableMetaDataDao {
 
     /**
      * 获取数据表主键
+     *
      * @param table
      * @return
      */

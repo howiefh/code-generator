@@ -12,6 +12,7 @@ import java.util.*;
 import static io.github.howiefh.generator.common.util.CollectionUtils.isEmpty;
 import static io.github.howiefh.generator.common.util.CollectionUtils.isNotEmpty;
 import static io.github.howiefh.generator.common.util.StringUtils.isNotBlank;
+
 /**
  * @author fenghao on 2016/5/17
  * @version 1.0
@@ -22,6 +23,7 @@ public class GeneratorUtils {
 
     /**
      * 如果types集合中有和typeCfg相等的对象，就将他们合并，返回合并后的对象
+     *
      * @param types
      * @param typeCfg
      * @return
@@ -32,7 +34,7 @@ public class GeneratorUtils {
             return typeCfg;
         }
         for (TypeCfg type : types) {
-            if (type.equals(typeCfg)){
+            if (type.equals(typeCfg)) {
                 return union(typeCfg, type);
             }
         }
@@ -42,7 +44,7 @@ public class GeneratorUtils {
 
     /**
      * 合并type1和type2，返回合并后的结果
-     *
+     * <p/>
      * 合并规则：
      * * type2中的属性会覆盖type1的属性
      * * 只有dependencies属性是合并两个对象的
@@ -55,6 +57,7 @@ public class GeneratorUtils {
      *     type2 = {"name": "model","template": "","target": "","pkg": "","suffix": "Entity.java", "dependencies": ["bar"]}:
      *     return {"name": "model","template": "Entity.java.ftl","target": "D:/","pkg": "io.github.howiefh.domain","suffix": "Entity.java", "dependencies": ["foo","bar"]}
      * </pre>
+     *
      * @param type1
      * @param type2
      * @return
@@ -70,25 +73,25 @@ public class GeneratorUtils {
             return type1;
         }
         TypeCfg type = type1.clone();
-        if (isNotBlank(type2.getTemplate())){
+        if (isNotBlank(type2.getTemplate())) {
             type.setTemplate(type2.getTemplate());
         }
-        if (isNotBlank(type2.getTarget())){
+        if (isNotBlank(type2.getTarget())) {
             type.setTarget(type2.getTarget());
         }
-        if (isNotBlank(type2.getPkg())){
+        if (isNotBlank(type2.getPkg())) {
             type.setPkg(type2.getPkg());
         }
-        if (isNotBlank(type2.getSuffix())){
+        if (isNotBlank(type2.getSuffix())) {
             type.setSuffix(type2.getSuffix());
         }
-        if (isNotEmpty(type2.getIgnoreImpls())){
+        if (isNotEmpty(type2.getIgnoreImpls())) {
             type.setIgnoreImpls(type2.getIgnoreImpls());
         }
-        if (isNotEmpty(type2.getImpls())){
+        if (isNotEmpty(type2.getImpls())) {
             type.setImpls(type2.getImpls());
         }
-        if (isNotEmpty(type2.getImpls())){
+        if (isNotEmpty(type2.getImpls())) {
             type.setImpls(type2.getImpls());
         }
         Set<String> dependencies1 = type1.getDependencies();
@@ -105,7 +108,7 @@ public class GeneratorUtils {
     /**
      * 解析Type的实际依赖包，如果config.types中定义了type.dependencies中的依赖tmpType，就用tmpType.pkg替换原来type.dependencies中的依赖tmpType；
      * 然后将tmpType和tableCfg.types[tmpType.getName]合并得到t，t.impls加入到返回的map中
-     *
+     * <p/>
      * 比如有
      * <pre>
      * {
@@ -139,6 +142,7 @@ public class GeneratorUtils {
      * "dependencies":["io.github.howiefh.model.*"],
      * "User":["username","email"]
      * }
+     *
      * @param context
      * @return map {"dependencies":"...", "${impl.name}":"${impl.columns}"}
      */
@@ -153,13 +157,13 @@ public class GeneratorUtils {
                     TypeCfg tmpType = new TypeCfg();
                     tmpType.setName(dep);
                     tmpType = CollectionUtils.search(Configuration.getConfig().getTypes(), tmpType);
-                    if (tmpType != null){
+                    if (tmpType != null) {
                         // 解析依赖包
                         dependencies.add(tmpType.getPkg() + ".*");
                         // 将type.impls加入到返回的map中
                         TypeCfg tmpType2 = CollectionUtils.search(tableCfg.getTypes(), tmpType);
                         tmpType = union(tmpType, tmpType2);
-                        if (isNotEmpty(tmpType.getImpls())){
+                        if (isNotEmpty(tmpType.getImpls())) {
                             for (ImplementCfg implementCfg : tmpType.getImpls()) {
                                 result.put(implementCfg.getName(), implementCfg.getColumns());
                             }

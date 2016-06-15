@@ -19,11 +19,17 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptyMapIf
  */
 public class ImplementCfg implements Serializable {
     private static final long serialVersionUID = 9036889977947537906L;
-    /** 实现名称 */
+    /**
+     * 实现名称
+     */
     private String name;
-    /** 实现的所需要的字段 */
+    /**
+     * 实现的所需要的字段
+     */
     private Set<String> columns;
-    /** 扩展字段*/
+    /**
+     * 扩展字段
+     */
     private Map<String, Object> attributes;
 
     /**
@@ -64,6 +70,7 @@ public class ImplementCfg implements Serializable {
 
     /**
      * 扩展字段
+     *
      * @return
      */
     public Map<String, Object> getAttributes() {
@@ -72,9 +79,10 @@ public class ImplementCfg implements Serializable {
 
     /**
      * 扩展字段
+     *
      * @param attributes
      */
-    public void setAttributes(Map<String, Object> attributes){
+    public void setAttributes(Map<String, Object> attributes) {
         this.attributes = emptyMapIfNull(attributes);
     }
 

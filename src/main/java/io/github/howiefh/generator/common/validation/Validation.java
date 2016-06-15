@@ -18,6 +18,7 @@ import java.util.Set;
 /**
  * 反射采用了cglib类库，类似的有<a href="https://github.com/EsotericSoftware/reflectasm/tree/master/test/com/esotericsoftware/reflectasm/benchmark">reflectasm</a>
  * ，性能和cglib差不多，可能还稍微好一些。
+ *
  * @author fenghao on 2016/5/21
  * @version 1.0
  * @since 1.0
@@ -26,11 +27,15 @@ public class Validation {
     private static final Logger LOGGER = LoggerFactory.getLogger(Validation.class);
 
     private static final String GET = "get";
-    /** 缓存get方法 */
+    /**
+     * 缓存get方法
+     */
     private static Map<String, FastMethod> methods = new HashMap<String, FastMethod>();
 
     private Set<String> fields = new HashSet<String>();
-    /** 验证器 */
+    /**
+     * 验证器
+     */
     private IValidator validator;
     private Class clazz;
 
@@ -46,6 +51,7 @@ public class Validation {
 
     /**
      * 注册clazz实例必填字段
+     *
      * @param fields
      * @throws IntrospectionException
      */
@@ -59,10 +65,11 @@ public class Validation {
     }
 
     private void doRegister(Set<String> fields) throws IntrospectionException {
-        for (String field: fields) {
+        for (String field : fields) {
             doRegister(field);
         }
     }
+
     private void doRegister(String field) throws IntrospectionException {
         try {
             cacheMethod(clazz, field);
@@ -72,6 +79,7 @@ public class Validation {
             throw e;
         }
     }
+
     private static void cacheMethod(Class clazz, String field) throws IntrospectionException {
         String key = key(GET, clazz, field);
         FastClass fastClass = FastClass.create(clazz);
@@ -81,6 +89,7 @@ public class Validation {
 
     /**
      * 验证已经注册的字段
+     *
      * @param obj
      * @return
      * @throws ValidationException
@@ -91,7 +100,7 @@ public class Validation {
         }
         boolean isValid = false;
         Class clazz = obj.getClass();
-        if (CollectionUtils.isEmpty(fields)){
+        if (CollectionUtils.isEmpty(fields)) {
             return true;
         }
         for (String field : fields) {
@@ -99,7 +108,7 @@ public class Validation {
             FastMethod getMethod = methods.get(key);
             try {
                 Object o = getMethod.invoke(obj, null);
-                if (!(isValid = validator.validate(o))){
+                if (!(isValid = validator.validate(o))) {
                     throw new ValidationException(clazz + "." + field + " is fields！");
                 }
             } catch (InvocationTargetException e) {
@@ -109,7 +118,7 @@ public class Validation {
         return isValid;
     }
 
-    private static String key(String prefix, Class clazz, String field){
+    private static String key(String prefix, Class clazz, String field) {
         String methodName = prefix + StringUtils.capitalize(field);
         return clazz + "#" + methodName;
     }

@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-public class MybatisCommentGenerator extends DefaultCommentGenerator{
+public class MybatisCommentGenerator extends DefaultCommentGenerator {
 
     public MybatisCommentGenerator() {
         super();
@@ -31,6 +31,7 @@ public class MybatisCommentGenerator extends DefaultCommentGenerator{
     public void addComment(XmlElement xmlElement) {
 
     }
+
     /**
      * 类注释
      */
@@ -57,6 +58,7 @@ public class MybatisCommentGenerator extends DefaultCommentGenerator{
             field.addJavaDocLine("/** " + introspectedColumn.getRemarks() + " */");
         }
     }
+
     @Override
     public void addGetterComment(Method method,
                                  IntrospectedTable introspectedTable,
@@ -126,7 +128,7 @@ public class MybatisCommentGenerator extends DefaultCommentGenerator{
         } else if ("selectAll".equals(methodName)) {
             method.addJavaDocLine(" * 返回找到的所有实体的集合");
         }
-        for (Parameter param:parameters) {
+        for (Parameter param : parameters) {
             StringBuilder sb = new StringBuilder();
             sb.append(" * @param ");
             sb.append(param.getName());

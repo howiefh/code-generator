@@ -8,11 +8,11 @@ package io.github.howiefh.generator.common.validation;
 public class RequiredValidator implements IValidator {
     @Override
     public boolean validate(Object obj) {
-        if (obj == null){
+        if (obj == null) {
             return false;
         }
         if (obj.getClass() == String.class) {
-            return ((String)obj).trim().length() != 0;
+            return ((String) obj).trim().length() != 0;
         }
         return true;
     }

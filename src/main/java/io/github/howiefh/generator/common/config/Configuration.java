@@ -2,6 +2,7 @@ package io.github.howiefh.generator.common.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.google.common.collect.Sets;
 import com.google.common.io.Resources;
@@ -25,18 +26,23 @@ import java.util.Set;
  */
 public class Configuration {
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
-    /** 配置 */
+    /**
+     * 配置
+     */
     private static Config config = null;
     public static final String DEFAULT_CONFIG = "config.json";
+
     public static Config getConfig() {
         if (config == null) {
             throw new NullPointerException("Config is null. Please init config.");
         }
         return config;
     }
+
     public static Config init() throws ConfigInitException {
         return init(DEFAULT_CONFIG);
     }
+
     public static Config init(String configFile) throws ConfigInitException {
         try {
             if (StringUtils.isBlank(configFile)) {
@@ -53,6 +59,7 @@ public class Configuration {
         }
         return config;
     }
+
     private static void load(String configFile) throws ConfigInitException {
         if (config != null) {
             return;
@@ -64,7 +71,7 @@ public class Configuration {
 
             String line = null;
             StringBuilder stringBuilder = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null){
+            while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
 
@@ -97,9 +104,10 @@ public class Configuration {
 
     /**
      * attributes字段必须有默认值
+     *
      * @param context
      */
-    private static void parse(String context){
+    private static void parse(String context) {
         ExtraProcessor processor = new ExtraProcessor() {
             public void processExtra(Object object, String key, Object value) {
                 if (object instanceof Config) {
@@ -118,8 +126,9 @@ public class Configuration {
             }
         };
 
-        config = JSON.parseObject(context, Config.class, processor);
+        config = JSON.parseObject(context, Config.class, processor, Feature.AllowComment);
     }
+
     private static void validate() throws IntrospectionException, ValidationException, ConfigInitException {
         String tableTypes = "table.types";
         config = DefaultConfig.initDefaultConfig(config);
@@ -137,14 +146,16 @@ public class Configuration {
             validateTypes(tableCfg.getTypes(), tableTypes);
         }
     }
+
     private static void validateTypes(Set<TypeCfg> typeCfgs, String typeGroup) throws ValidationException {
-        for (TypeCfg typeCfg : typeCfgs){
+        for (TypeCfg typeCfg : typeCfgs) {
             Validator.validate(typeCfg, typeGroup);
             for (ImplementCfg implementCfg : typeCfg.getImpls()) {
                 Validator.validate(implementCfg);
             }
         }
     }
+
     private static void error(Throwable e, String msg) {
         System.err.println(msg + " : " + e.getMessage());
     }

@@ -13,7 +13,7 @@ import static io.github.howiefh.generator.common.util.StringUtils.isBlank;
 
 /**
  * Config所有字段都非必填，不填的话使用默认值。
- *
+ * <p/>
  * 1. author默认系统用户
  * 2. version默认1.0
  * 3. since默认1.0
@@ -25,34 +25,53 @@ import static io.github.howiefh.generator.common.util.StringUtils.isBlank;
  * @version 1.0
  * @since 1.0
  */
-public class Config implements Serializable{
+public class Config implements Serializable {
     private static final long serialVersionUID = 7773763753328286897L;
     public static final String DEFAULT_AUTHOR = System.getProperty("user.name");
     public static final String DEFAULT_VERSION = "1.0";
     public static final String DEFAULT_SINCE = DEFAULT_VERSION;
     public static final String DEFAULT_TEMPLATE_DIR = "templates";
     public static final String DEFAULT_DATABASE = "mysql";
-    /** 作者 */
+    /**
+     * 作者
+     */
     private String author;
-    /** 版本 */
+    /**
+     * 版本
+     */
     private String version;
-    /** 起始 */
+    /**
+     * 起始
+     */
     private String since;
-    /** 模板目录 */
+    /**
+     * 模板目录
+     */
     private String templateDir;
-    /** 数据库类型 */
+    /**
+     * 数据库类型
+     */
     private String database;
-    /** 类型集合 */
+    /**
+     * 类型集合
+     */
     private Set<TypeCfg> types;
-    /** 忽略的表集合 */
+    /**
+     * 忽略的表集合
+     */
     private Set<String> ignoreTables;
-    /** 表集合 */
+    /**
+     * 表集合
+     */
     private Set<TableCfg> tables;
-    /** 扩展字段*/
+    /**
+     * 扩展字段
+     */
     private Map<String, Object> attributes;
 
     /**
      * 作者
+     *
      * @return author
      */
     public String getAuthor() {
@@ -61,6 +80,7 @@ public class Config implements Serializable{
 
     /**
      * 作者
+     *
      * @param author
      */
     public void setAuthor(String author) {
@@ -69,6 +89,7 @@ public class Config implements Serializable{
 
     /**
      * 版本
+     *
      * @return version
      */
     public String getVersion() {
@@ -77,6 +98,7 @@ public class Config implements Serializable{
 
     /**
      * 版本
+     *
      * @param version
      */
     public void setVersion(String version) {
@@ -85,6 +107,7 @@ public class Config implements Serializable{
 
     /**
      * 起始
+     *
      * @return since
      */
     public String getSince() {
@@ -93,14 +116,16 @@ public class Config implements Serializable{
 
     /**
      * 起始
+     *
      * @param since
      */
     public void setSince(String since) {
-        this.since = isBlank(since) ? DEFAULT_SINCE: since;
+        this.since = isBlank(since) ? DEFAULT_SINCE : since;
     }
 
     /**
      * 模板目录
+     *
      * @return templateDir
      */
     public String getTemplateDir() {
@@ -109,6 +134,7 @@ public class Config implements Serializable{
 
     /**
      * 模板目录
+     *
      * @param templateDir
      */
     public void setTemplateDir(String templateDir) {
@@ -117,6 +143,7 @@ public class Config implements Serializable{
 
     /**
      * 数据库类型
+     *
      * @return database
      */
     public String getDatabase() {
@@ -125,6 +152,7 @@ public class Config implements Serializable{
 
     /**
      * 数据库类型
+     *
      * @param database
      */
     public void setDatabase(String database) {
@@ -133,6 +161,7 @@ public class Config implements Serializable{
 
     /**
      * 类型集合
+     *
      * @return types
      */
     public Set<TypeCfg> getTypes() {
@@ -141,6 +170,7 @@ public class Config implements Serializable{
 
     /**
      * 类型集合
+     *
      * @param types
      */
     public void setTypes(Set<TypeCfg> types) {
@@ -149,6 +179,7 @@ public class Config implements Serializable{
 
     /**
      * 忽略的表集合
+     *
      * @return tables
      */
     public Set<String> getIgnoreTables() {
@@ -157,6 +188,7 @@ public class Config implements Serializable{
 
     /**
      * 忽略的表集合
+     *
      * @param ignoreTables
      */
     public void setIgnoreTables(Set<String> ignoreTables) {
@@ -165,6 +197,7 @@ public class Config implements Serializable{
 
     /**
      * 表集合
+     *
      * @return tables
      */
     public Set<TableCfg> getTables() {
@@ -173,6 +206,7 @@ public class Config implements Serializable{
 
     /**
      * 表集合
+     *
      * @param tables
      */
     public void setTables(Set<TableCfg> tables) {
@@ -181,6 +215,7 @@ public class Config implements Serializable{
 
     /**
      * 扩展字段
+     *
      * @return
      */
     public Map<String, Object> getAttributes() {
@@ -189,9 +224,10 @@ public class Config implements Serializable{
 
     /**
      * 扩展字段
+     *
      * @param attributes
      */
-    public void setAttributes(Map<String, Object> attributes){
+    public void setAttributes(Map<String, Object> attributes) {
         this.attributes = emptyMapIfNull(attributes);
     }
 
@@ -222,6 +258,7 @@ public class Config implements Serializable{
                 .add("version", version)
                 .add("since", since)
                 .add("templateDir", templateDir)
+                .add("database", database)
                 .add("types", types)
                 .add("ignoreTables", ignoreTables)
                 .add("tables", tables)

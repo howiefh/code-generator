@@ -27,7 +27,7 @@ public class DefaultConfig {
             }
             setGet(config);
             initDefaultTypes(config.getTypes());
-            for (TableCfg tableCfg: config.getTables()){
+            for (TableCfg tableCfg : config.getTables()) {
                 setGet(tableCfg);
                 initDefaultTypes(tableCfg.getTypes());
             }
@@ -44,23 +44,25 @@ public class DefaultConfig {
     }
 
     private static void initDefaultTypes(Set<TypeCfg> typeCfgs) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
-        for (TypeCfg typeCfg : typeCfgs){
+        for (TypeCfg typeCfg : typeCfgs) {
             setGet(typeCfg);
             for (ImplementCfg implementCfg : typeCfg.getImpls()) {
                 setGet(implementCfg);
             }
         }
     }
+
     private static void error(Throwable e) throws ConfigInitException {
         LOGGER.error("Error:{}", e.getMessage());
         throw new ConfigInitException("Init default value error.", e);
     }
+
     private static void setGet(Object obj) throws IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException {
         Class clazz = obj.getClass();
         //获得类的所有属性
         Field[] fields = clazz.getDeclaredFields();
 
-        for(Field f : fields){
+        for (Field f : fields) {
             if (Modifier.isStatic(f.getModifiers()))
                 continue;
 
@@ -72,7 +74,7 @@ public class DefaultConfig {
             //获得set方法的参数
             Class[] classes = setMethod.getParameterTypes();
             //判断参数不为空且值唯一
-            if(classes != null && classes.length == 1){
+            if (classes != null && classes.length == 1) {
                 //调用set方法，设置get方法到的值，为null的话就会设置默认值。
                 setMethod.invoke(obj, getMethod.invoke(obj, null));
             }

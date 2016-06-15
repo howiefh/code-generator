@@ -11,20 +11,21 @@ public enum Rule {
     private String name;
     private IValidator validator;
 
-    Rule(String name, IValidator validator){
+    Rule(String name, IValidator validator) {
         this.name = name;
         this.validator = validator;
     }
 
-    public Rule getRule(String name){
-        if(name == null){
+    public Rule getRule(String name) {
+        if (name == null) {
             return null;
         }
-        for(Rule r : Rule.values()) {
+        for (Rule r : Rule.values()) {
             if (r.name.equals(name)) return r;
         }
         throw new IllegalArgumentException("No enum name '" + name + "'. " + Rule.class);
     }
+
     /**
      * @return name
      */

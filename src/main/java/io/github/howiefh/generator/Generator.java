@@ -7,6 +7,5 @@ package io.github.howiefh.generator;
  */
 public class Generator {
     public static void main(String[] args) {
-
     }
 }

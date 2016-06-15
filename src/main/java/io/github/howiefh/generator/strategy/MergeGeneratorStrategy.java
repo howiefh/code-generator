@@ -3,6 +3,7 @@ package io.github.howiefh.generator.strategy;
 import com.google.common.io.Files;
 import io.github.howiefh.generator.common.config.TypeCfg;
 import io.github.howiefh.generator.common.exception.GeneratorException;
+import io.github.howiefh.generator.common.util.FreemarkerUtils;
 import io.github.howiefh.generator.common.util.StringUtils;
 import io.github.howiefh.generator.vcs.Gits;
 import org.apache.commons.lang3.SystemUtils;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-public class MergeGeneratorStrategy extends OverrideGeneratorStrategy{
+public class MergeGeneratorStrategy extends OverrideGeneratorStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(MergeGeneratorStrategy.class);
     private Map<File, File> fromTos;
     private File repoPath;
@@ -30,30 +31,32 @@ public class MergeGeneratorStrategy extends OverrideGeneratorStrategy{
     public MergeGeneratorStrategy() throws GeneratorException {
         this(null);
     }
-    public MergeGeneratorStrategy(File repoPath) throws GeneratorException{
+
+    public MergeGeneratorStrategy(File repoPath) throws GeneratorException {
         this.repoPath = repoPath == null ? Gits.DEFAULT_REPO_PATH : repoPath;
         fromTos = new HashMap<File, File>();
         gits = Gits.open(this.repoPath);
+        if (Gits.isInitialized()) {
+            gits = Gits.open(this.repoPath);
+        } else {
+            gits = Gits.init(this.repoPath);
+        }
     }
 
     @Override
-    protected File generateTargetFile(TypeCfg type, String filename) {
-        File finalFile = super.generateTargetFile(type, filename);
-        File targetFile = new File(repoPath, StringUtils.replaceEach(type.getPkg(), new String[]{"."}, new String[]{File.separator})
-                        + File.separator
-                        + filename
-                        + type.getSuffix());
+    protected File generateTargetFile(Map<String, Object> model, TypeCfg type) throws GeneratorException {
+        File finalFile = super.generateTargetFile(model, type);
+        String targetTemp = StringUtils.replaceEach(type.getPkg(), new String[]{"."}, new String[]{File.separator})
+                + File.separator
+                + type.getSuffix();
+        File targetFile = new File(repoPath, FreemarkerUtils.generateString(model, targetTemp, UTF8));
         fromTos.put(targetFile, finalFile);
         return targetFile;
     }
 
     @Override
-    protected void beforeGenerate() throws GeneratorException {
+    protected void afterGenerate() throws GeneratorException {
         gits.checkout(Gits.GENERATOR_BRANCH);
-    }
-
-    @Override
-    protected void afterGenerate() throws GeneratorException{
         gits.add();
         gits.commit("Start merge : " + new Date());
         gits.beforeMergeWorkspace(fromTos);
@@ -87,7 +90,7 @@ public class MergeGeneratorStrategy extends OverrideGeneratorStrategy{
         stringBuilder.append(Gits.GENERATOR_BRANCH);
         stringBuilder.append("\n");
         for (Map.Entry<File, File> ft : fromTos.entrySet()) {
-            if (SystemUtils.IS_OS_WINDOWS){
+            if (SystemUtils.IS_OS_WINDOWS) {
                 stringBuilder.append("copy \"");
             } else {
                 stringBuilder.append("cp \"");
@@ -105,7 +108,7 @@ public class MergeGeneratorStrategy extends OverrideGeneratorStrategy{
             */
         }
         String resolve = "resolve.sh";
-        if (SystemUtils.IS_OS_WINDOWS){
+        if (SystemUtils.IS_OS_WINDOWS) {
             resolve = "resolve.bat";
         }
         try {

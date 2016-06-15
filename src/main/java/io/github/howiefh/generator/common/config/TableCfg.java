@@ -17,39 +17,58 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptySetIf
  * 3. className非必填，没有默认值, className如果为空，则设置为表名的驼峰式名称
  * {@link DBUtils#fetchTableFormDb(io.github.howiefh.generator.dao.TableMetaDataDao, io.github.howiefh.generator.common.config.TableCfg)},
  * {@link DBUtils#initColumnField(io.github.howiefh.generator.entity.Table, io.github.howiefh.generator.common.config.TableCfg)}
- *
+ * <p/>
  * 1. pks、updates、ignoreTypes、types默认空集合
  * 2. queries、attributes默认空映射
  *
  * @author fenghao on 2016/5/20
  * @version 1.0
- * @since 1.0
  * @see DBUtils#fetchTableFormDb(io.github.howiefh.generator.dao.TableMetaDataDao, io.github.howiefh.generator.common.config.TableCfg)
  * @see DBUtils#initColumnField(io.github.howiefh.generator.entity.Table, io.github.howiefh.generator.common.config.TableCfg)
+ * @since 1.0
  */
-public class TableCfg implements Serializable{
+public class TableCfg implements Serializable {
     private static final long serialVersionUID = -1593705685818161200L;
-    /** 表名 */
+    /**
+     * 表名
+     */
     private String name;
-    /** 类名 */
+    /**
+     * 类名
+     */
     private String className;
-    /** 主键,配置的主键会覆盖从数据库中的主键 */
+    /**
+     * 主键,配置的主键会覆盖从数据库中的主键
+     */
     private Set<String> pks;
-    /** 更新字段集合 */
+    /**
+     * 更新字段集合
+     */
     private Set<String> updates;
-    /** 查询字段映射 */
+    /**
+     * 查询字段映射
+     */
     private Map<String, String> queries;
-    /** 显示类型映射 */
+    /**
+     * 显示类型映射
+     */
     private Map<String, String> showTypes;
-    /** 忽略的生成类型集合 */
+    /**
+     * 忽略的生成类型集合
+     */
     private Set<String> ignoreTypes;
-    /** 类型集合 */
+    /**
+     * 类型集合
+     */
     private Set<TypeCfg> types;
-    /** 扩展字段*/
+    /**
+     * 扩展字段
+     */
     private Map<String, Object> attributes;
 
     /**
      * 表名
+     *
      * @return name
      */
     public String getName() {
@@ -58,6 +77,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 表名
+     *
      * @param name
      */
     public void setName(String name) {
@@ -66,6 +86,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 类名
+     *
      * @return className
      */
     public String getClassName() {
@@ -74,6 +95,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 类名
+     *
      * @param className
      */
     public void setClassName(String className) {
@@ -82,6 +104,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 主键,配置的主键会覆盖从数据库中的主键
+     *
      * @return pks
      */
     public Set<String> getPks() {
@@ -90,6 +113,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 主键,配置的主键会覆盖从数据库中的主键
+     *
      * @param pks
      */
     public void setPks(Set<String> pks) {
@@ -98,6 +122,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 更新字段集合
+     *
      * @return updates
      */
     public Set<String> getUpdates() {
@@ -106,6 +131,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 更新字段集合
+     *
      * @param updates
      */
     public void setUpdates(Set<String> updates) {
@@ -114,6 +140,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 查询字段映射
+     *
      * @return queries
      */
     public Map<String, String> getQueries() {
@@ -122,6 +149,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 查询字段映射
+     *
      * @param queries
      */
     public void setQueries(Map<String, String> queries) {
@@ -130,6 +158,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 显示类型映射
+     *
      * @return showTypes
      */
     public Map<String, String> getShowTypes() {
@@ -138,13 +167,16 @@ public class TableCfg implements Serializable{
 
     /**
      * 显示类型映射
+     *
      * @param showTypes
      */
     public void setShowTypes(Map<String, String> showTypes) {
         this.showTypes = emptyMapIfNull(showTypes);
     }
+
     /**
      * 忽略类型集合
+     *
      * @return ignoreTypes
      */
     public Set<String> getIgnoreTypes() {
@@ -153,6 +185,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 忽略类型集合
+     *
      * @param ignoreTypes
      */
     public void setIgnoreTypes(Set<String> ignoreTypes) {
@@ -161,6 +194,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 实现类型集合
+     *
      * @return types
      */
     public Set<TypeCfg> getTypes() {
@@ -169,6 +203,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 实现类型集合
+     *
      * @param types
      */
     public void setTypes(Set<TypeCfg> types) {
@@ -177,6 +212,7 @@ public class TableCfg implements Serializable{
 
     /**
      * 扩展字段
+     *
      * @return
      */
     public Map<String, Object> getAttributes() {
@@ -185,9 +221,10 @@ public class TableCfg implements Serializable{
 
     /**
      * 扩展字段
+     *
      * @param attributes
      */
-    public void setAttributes(Map<String, Object> attributes){
+    public void setAttributes(Map<String, Object> attributes) {
         this.attributes = emptyMapIfNull(attributes);
     }
 

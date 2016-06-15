@@ -5,6 +5,7 @@ import io.github.howiefh.generator.common.exception.ConfigInitException;
 import io.github.howiefh.generator.common.exception.GeneratorException;
 import io.github.howiefh.generator.strategy.GeneratorStrategy;
 import io.github.howiefh.generator.strategy.MergeGeneratorStrategy;
+import io.github.howiefh.generator.strategy.OverrideGeneratorStrategy;
 import io.github.howiefh.generator.vcs.Gits;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +17,18 @@ import org.slf4j.LoggerFactory;
  */
 public class TemplateCodeGenerator {
 
+    private static final String OVERWRITE = "-over";
     public static final Logger LOGGER = LoggerFactory.getLogger(TemplateCodeGenerator.class);
-
-    private static GeneratorStrategy strategy;
 
     public static void main(String[] args) {
         try {
             Configuration.init("config.json");
-            strategy = new MergeGeneratorStrategy(Gits.DEFAULT_REPO_PATH);
+            GeneratorStrategy strategy;
+            if (args.length > 0 && OVERWRITE.equalsIgnoreCase(args[0])) {
+                strategy = new OverrideGeneratorStrategy();
+            } else {
+                strategy = new MergeGeneratorStrategy(Gits.DEFAULT_REPO_PATH);
+            }
             strategy.generate();
         } catch (ConfigInitException e) {
             LOGGER.error("Config init error. {}", e.getMessage());

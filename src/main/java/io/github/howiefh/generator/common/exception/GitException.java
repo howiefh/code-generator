@@ -5,7 +5,7 @@ package io.github.howiefh.generator.common.exception;
  * @version 1.0
  * @since 1.0
  */
-public class GitException extends GeneratorException{
+public class GitException extends GeneratorException {
 
     private static final long serialVersionUID = -3786712304653862718L;
 

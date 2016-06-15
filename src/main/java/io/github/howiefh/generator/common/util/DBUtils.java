@@ -5,6 +5,7 @@ import io.github.howiefh.generator.common.config.TableCfg;
 import io.github.howiefh.generator.dao.TableMetaDataDao;
 import io.github.howiefh.generator.entity.Table;
 import io.github.howiefh.generator.entity.TableColumn;
+import io.github.howiefh.generator.types.DefaultJavaTypeResolver;
 
 import java.util.List;
 import java.util.Map;
@@ -18,15 +19,16 @@ import java.util.Set;
 public class DBUtils {
     private static final String DEFAULT_QUERY_TYPE = "=";
     private static final String DEFAULT_SHOW_TYPE = "input-text";
+    private static DefaultJavaTypeResolver javaTypeResolver = new DefaultJavaTypeResolver();
 
-    public static Table fetchTableFormDb(TableMetaDataDao tableMetaDataDao, TableCfg tableCfg){
+    public static Table fetchTableFormDb(TableMetaDataDao tableMetaDataDao, TableCfg tableCfg) {
         // 如果有表名，则获取物理表
         Table table = null;
-        if (StringUtils.isNotBlank(tableCfg.getName())){
+        if (StringUtils.isNotBlank(tableCfg.getName())) {
             Table t = new Table();
             t.setName(tableCfg.getName());
             List<Table> list = tableMetaDataDao.findTableList(t);
-            if (list.size() > 0){
+            if (list.size() > 0) {
                 table = list.get(0);
 
                 // 配置中的类名优先，如果没有配置，使用表名的驼峰式命名
@@ -52,7 +54,7 @@ public class DBUtils {
                     }
                     table.getPks().clear();
                     for (TableColumn column : columns) {
-                        if (tableCfg.getPks().contains(column.getName())){
+                        if (tableCfg.getPks().contains(column.getName())) {
                             table.getPks().add(column);
                         }
                     }
@@ -66,42 +68,17 @@ public class DBUtils {
 
     /**
      * 初始化列属性字段
+     *
      * @param table
      */
-    public static void initColumnField(Table table, TableCfg tableCfg){
+    public static void initColumnField(Table table, TableCfg tableCfg) {
         Set<String> edits = tableCfg.getUpdates();
-        Map<String,String> queries = tableCfg.getQueries();
-        Map<String,String> showTypes = tableCfg.getShowTypes();
+        Map<String, String> queries = tableCfg.getQueries();
+        Map<String, String> showTypes = tableCfg.getShowTypes();
 
-        for (TableColumn column : table.getColumns()){
+        for (TableColumn column : table.getColumns()) {
             // 设置java类型
-            if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "CHAR")
-                    || StringUtils.startsWithIgnoreCase(column.getJdbcType(), "VARCHAR")
-                    || StringUtils.startsWithIgnoreCase(column.getJdbcType(), "NARCHAR")){
-                column.setJavaType("String");
-            }else if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "DATETIME")
-                    || StringUtils.startsWithIgnoreCase(column.getJdbcType(), "DATE")
-                    || StringUtils.startsWithIgnoreCase(column.getJdbcType(), "TIMESTAMP")){
-                column.setJavaType("java.util.Date");
-                column.setShowType("dateselect");
-            }else if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "BIGINT")
-                    || StringUtils.startsWithIgnoreCase(column.getJdbcType(), "NUMBER")){
-                // 如果是浮点型
-                String[] ss = StringUtils.split(StringUtils.substringBetween(column.getJdbcType(), "(", ")"), ",");
-                if (ss != null && ss.length == 2 && Integer.parseInt(ss[1])>0){
-                    column.setJavaType("Double");
-                }
-                // 如果是整形
-                else if (ss != null && ss.length == 1 && Integer.parseInt(ss[0])<=10){
-                    column.setJavaType("Integer");
-                }
-                // 长整形
-                else{
-                    column.setJavaType("Long");
-                }
-            }else if (StringUtils.startsWithIgnoreCase(column.getJdbcType(), "TINYINT")) {
-                column.setJavaType("Boolean");
-            }
+            column.setJavaType(javaTypeResolver.calculateJavaType(column));
 
             // 设置java字段名
             column.setJavaField(StringUtils.toCamelCase(column.getName()));
@@ -122,12 +99,12 @@ public class DBUtils {
             column.setInsert(true);
 
             // 编辑字段
-            if (edits.contains(column.getName())){
+            if (edits.contains(column.getName())) {
                 column.setEdit(true);
             }
             // 查询字段
             String queryType = queries.get(column.getName());
-            if (StringUtils.isBlank(queryType)){
+            if (StringUtils.isBlank(queryType)) {
                 // 设置默认查询类型为=
                 column.setQuery(false);
                 column.setQueryType(DEFAULT_QUERY_TYPE);
@@ -137,7 +114,7 @@ public class DBUtils {
             }
             // 显示类型
             String showType = showTypes.get(column.getName());
-            if (StringUtils.isBlank(showType)){
+            if (StringUtils.isBlank(showType)) {
                 // 设置默认显示类型为input-text
                 column.setShowType(DEFAULT_SHOW_TYPE);
             } else {

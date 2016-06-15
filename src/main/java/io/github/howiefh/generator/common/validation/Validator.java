@@ -19,20 +19,25 @@ public class Validator {
     public static void register(Rule rule, Class clazz, Set<String> fields) throws IntrospectionException {
         register(rule, DEFAULT_GROUP, clazz, fields);
     }
+
     public static void register(Rule rule, String group, Class clazz, Set<String> fields) throws IntrospectionException {
         register(rule.getValidator(), group, clazz, fields);
     }
+
     public static void register(IValidator validator, Class clazz, Set<String> fields) throws IntrospectionException {
         register(validator, DEFAULT_GROUP, clazz, fields);
     }
+
     public static void register(IValidator validator, String group, Class clazz, Set<String> fields) throws IntrospectionException {
         String key = group + "." + clazz;
         Validation validation = new Validation(clazz, validator, fields);
         validations.put(key, validation);
     }
+
     public static boolean validate(Object obj) throws ValidationException {
         return validate(obj, DEFAULT_GROUP);
     }
+
     public static boolean validate(Object obj, String group) throws ValidationException {
         if (obj == null) {
             throw new ValidationException("Object is null!");
