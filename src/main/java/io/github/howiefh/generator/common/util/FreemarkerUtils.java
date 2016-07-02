@@ -48,7 +48,7 @@ public class FreemarkerUtils {
             template.process(model, out);
             result = true;
         } catch (Exception e) {
-            throw new GeneratorException("Generate " + outFile + " with " + ftlName + " error.", e);
+            throw new GeneratorException("Freemarker generate " + outFile + " with " + ftlName + " error.", e);
         } finally {
             try {
                 out.close();
@@ -74,7 +74,7 @@ public class FreemarkerUtils {
             template.process(model, out);
             return out.toString();
         } catch (Exception e) {
-            throw new GeneratorException("Generate " + templateString + " error.", e);
+            throw new GeneratorException("Freemarker generate " + templateString + " error.", e);
         }
     }
 }

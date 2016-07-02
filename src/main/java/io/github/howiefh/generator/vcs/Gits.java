@@ -17,6 +17,11 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * @author fenghao on 2016/5/23
+ * @version 1.0
+ * @since 1.0
+ */
 public class Gits {
     private static final Logger LOGGER = LoggerFactory.getLogger(Gits.class);
     public static final String GENERATOR_BRANCH = "generator";

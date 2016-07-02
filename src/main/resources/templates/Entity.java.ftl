@@ -1,5 +1,7 @@
 package ${modelPkg};
 
+import com.google.common.base.Objects;
+
 <#if dependencies??>
     <#list dependencies as i>
     import ${i};
@@ -46,8 +48,51 @@ public class ${ClassName} extends BasicEntity {
      * @param ${c.simpleJavaField} <#if c.comments??> ${c.comments}  </#if>
      */
     public void set${c.simpleJavaField?cap_first}(${c.simpleJavaType} ${c.simpleJavaField}) {
+    <#if c.javaType == 'java.lang.String'>
+        this.${c.simpleJavaField} = ${c.simpleJavaField} == null ? null : ${c.simpleJavaField}.trim();
+    <#else>
         this.${c.simpleJavaField} = ${c.simpleJavaField};
+    </#if>
     }
     </#if>
 </#list>
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ${ClassName} ${className} = (${ClassName}) o;
+        <#assign fields>
+            <#list table.columns as c>
+                <#if c.isNotBaseField() >
+                Objects.equal(${c.javaFieldId}, ${className}.${c.javaFieldId}) &&
+                </#if>
+            </#list>
+        </#assign>
+        return ${fields?substring(0, fields?last_index_of("&&"))?trim};
+    }
+
+    @Override
+    public int hashCode() {
+    <#assign fields>
+        <#list table.columns as c>
+            <#if c.isNotBaseField() >
+        ${c.javaFieldId},
+            </#if>
+        </#list>
+    </#assign>
+        return Objects.hashCode(${fields?substring(0, fields?last_index_of(","))?trim});
+    }
+
+    @Override
+    public String toString() {
+        <#assign fields>
+            <#list table.columns as c>
+                <#if c.isNotBaseField() >
+            + "'${c.javaFieldId}': '" + ${c.javaFieldId} + "',"
+                </#if>
+            </#list>
+        </#assign>
+        return this.getClass().getSimpleName() + "{" ${fields?substring(0, fields?last_index_of(" + \"',\""))?trim} + "}";
+    }
 }

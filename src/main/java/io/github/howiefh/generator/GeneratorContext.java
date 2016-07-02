@@ -1,10 +1,15 @@
 package io.github.howiefh.generator;
 
 import com.google.common.base.MoreObjects;
-import io.github.howiefh.generator.entity.Table;
+import com.google.common.collect.Sets;
 import io.github.howiefh.generator.common.config.ImplementCfg;
 import io.github.howiefh.generator.common.config.TableCfg;
 import io.github.howiefh.generator.common.config.TypeCfg;
+import io.github.howiefh.generator.common.util.StringUtils;
+import io.github.howiefh.generator.entity.Table;
+import io.github.howiefh.generator.entity.TableColumn;
+
+import java.util.Set;
 
 /**
  * @author fenghao on 2016/5/20
@@ -34,6 +39,15 @@ public class GeneratorContext {
     }
 
     public GeneratorContext(TableCfg tableCfg, TypeCfg typeCfg, ImplementCfg implementCfg, Table table) {
+        if (implementCfg == null) { // 如果没有设置类型的实现，则设置默认类型实现
+            implementCfg = new ImplementCfg();
+            implementCfg.setName("Default" + table.getClassName() + StringUtils.toCapitalizeCamelCase(typeCfg.getName()));
+            Set<String> columns = Sets.newHashSet();
+            for (TableColumn column: table.getPks()) {
+                columns.add(column.getName());
+            }
+            implementCfg.setColumns(columns);
+        }
         this.tableCfg = tableCfg;
         this.typeCfg = typeCfg;
         this.implementCfg = implementCfg;

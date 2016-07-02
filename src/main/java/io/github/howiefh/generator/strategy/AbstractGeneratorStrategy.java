@@ -147,6 +147,8 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
         model.put("implementCfg", implementCfg);
 
         model.put("tableAttrs", tableCfg.getAttributes());
+        model.put("typeAttrs", typeCfg.getAttributes());
+        model.put("implementAttrs", implementCfg.getAttributes());
 
         model.put("package", typeCfg.getPkg());
         model.put("target", typeCfg.getTarget());
@@ -158,10 +160,8 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
             model.put("impls", map);
         }
 
-        if (implementCfg != null) {
-            model.put("implColumns", implementCfg.getColumns());
-            model.put("implClassName", implementCfg.getName());
-        }
+        model.put("implColumns", implementCfg.getColumns());
+        model.put("implClassName", implementCfg.getName());
 
         model.put("className", StringUtils.uncapitalize(table.getClassName()));
         model.put("ClassName", StringUtils.capitalize(table.getClassName()));

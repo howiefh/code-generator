@@ -46,8 +46,8 @@ public class GeneratorUtils {
      * 合并type1和type2，返回合并后的结果
      * <p/>
      * 合并规则：
-     * * type2中的属性会覆盖type1的属性
-     * * 只有dependencies属性是合并两个对象的
+     * 1. type2中的属性会覆盖type1的属性
+     * 2. 只有dependencies属性是合并两个对象的
      * <pre>
      *     type1 == null, type2 == null; return null
      *     type1 == null, type2 != null; return type2
@@ -106,8 +106,8 @@ public class GeneratorUtils {
     }
 
     /**
-     * 解析Type的实际依赖包，如果config.types中定义了type.dependencies中的依赖tmpType，就用tmpType.pkg替换原来type.dependencies中的依赖tmpType；
-     * 然后将tmpType和tableCfg.types[tmpType.getName]合并得到t，t.impls加入到返回的map中
+     * 解析Type的实际依赖包，如果config.types中定义了type.dependencies中的依赖foo（foo是另一个type实例的name），就用foo.pkg替换原来type.dependencies中的依赖foo；
+     * 然后将config.types[foo.name]和config.tableCfg.types[foo.name]合并得到t，t.impls加入到返回的map中
      * <p/>
      * 比如有
      * <pre>

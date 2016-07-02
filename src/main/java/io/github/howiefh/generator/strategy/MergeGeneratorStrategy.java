@@ -35,7 +35,6 @@ public class MergeGeneratorStrategy extends OverrideGeneratorStrategy {
     public MergeGeneratorStrategy(File repoPath) throws GeneratorException {
         this.repoPath = repoPath == null ? Gits.DEFAULT_REPO_PATH : repoPath;
         fromTos = new HashMap<File, File>();
-        gits = Gits.open(this.repoPath);
         if (Gits.isInitialized()) {
             gits = Gits.open(this.repoPath);
         } else {
