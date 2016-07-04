@@ -20,7 +20,7 @@ public class OverrideGeneratorStrategy extends AbstractGeneratorStrategy {
     /**
      * 生成目标文件名
      *
-     * @param modle
+     * @param model
      * @param type
      * @return
      */

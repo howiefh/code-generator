@@ -1,6 +1,5 @@
 package io.github.howiefh.generator.common.config;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import java.io.Serializable;
@@ -32,6 +31,9 @@ public class Config implements Serializable {
     public static final String DEFAULT_SINCE = DEFAULT_VERSION;
     public static final String DEFAULT_TEMPLATE_DIR = "templates";
     public static final String DEFAULT_DATABASE = "mysql";
+    public static final String DEFAULT_JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String DEFAULT_JDBC_USERNAME = "root";
+    public static final String DEFAULT_JDBC_PASSWORD = "";
     /**
      * 作者
      */
@@ -52,6 +54,22 @@ public class Config implements Serializable {
      * 数据库类型
      */
     private String database;
+    /**
+     * 数据库驱动
+     */
+    private String jdbcDriver;
+    /**
+     * 数据库Url
+     */
+    private String jdbcUrl;
+    /**
+     * 数据库用户名
+     */
+    private String jdbcUsername;
+    /**
+     * 数据库密码
+     */
+    private String jdbcPassword;
     /**
      * 类型集合
      */
@@ -160,6 +178,78 @@ public class Config implements Serializable {
     }
 
     /**
+     * 数据库驱动
+     *
+     * @return
+     */
+    public String getJdbcDriver() {
+        return jdbcDriver;
+    }
+
+    /**
+     * 数据库驱动
+     *
+     * @param jdbcDriver
+     */
+    public void setJdbcDriver(String jdbcDriver) {
+        this.jdbcDriver = isBlank(jdbcDriver) ? DEFAULT_JDBC_DRIVER : jdbcDriver;
+    }
+
+    /**
+     * 数据库URL
+     *
+     * @return
+     */
+    public String getJdbcUrl() {
+        return jdbcUrl;
+    }
+
+    /**
+     * 数据库URL
+     *
+     * @param jdbcUrl
+     */
+    public void setJdbcUrl(String jdbcUrl) {
+        this.jdbcUrl = jdbcUrl;
+    }
+
+    /**
+     * 数据库用户名
+     *
+     * @return
+     */
+    public String getJdbcUsername() {
+        return jdbcUsername;
+    }
+
+    /**
+     * 数据库用户名
+     *
+     * @param jdbcUsername
+     */
+    public void setJdbcUsername(String jdbcUsername) {
+        this.jdbcUsername = isBlank(jdbcUsername) ? DEFAULT_JDBC_USERNAME : jdbcUsername;
+    }
+
+    /**
+     * 数据库密码
+     *
+     * @return
+     */
+    public String getJdbcPassword() {
+        return jdbcPassword;
+    }
+
+    /**
+     * 数据库密码
+     *
+     * @param jdbcPassword
+     */
+    public void setJdbcPassword(String jdbcPassword) {
+        this.jdbcPassword = jdbcPassword == null ? DEFAULT_JDBC_PASSWORD : jdbcPassword;
+    }
+
+    /**
      * 类型集合
      *
      * @return types
@@ -240,6 +330,11 @@ public class Config implements Serializable {
                 Objects.equal(version, config.version) &&
                 Objects.equal(since, config.since) &&
                 Objects.equal(templateDir, config.templateDir) &&
+                Objects.equal(database, config.database) &&
+                Objects.equal(jdbcDriver, config.jdbcDriver) &&
+                Objects.equal(jdbcUrl, config.jdbcUrl) &&
+                Objects.equal(jdbcUsername, config.jdbcUsername) &&
+                Objects.equal(jdbcPassword, config.jdbcPassword) &&
                 Objects.equal(types, config.types) &&
                 Objects.equal(ignoreTables, config.ignoreTables) &&
                 Objects.equal(tables, config.tables) &&
@@ -248,21 +343,25 @@ public class Config implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(author, version, since, templateDir, types, ignoreTables, tables, attributes);
+        return Objects.hashCode(author, version, since, templateDir, database, jdbcDriver, jdbcUrl, jdbcUsername, jdbcPassword, types, ignoreTables, tables, attributes);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("author", author)
-                .add("version", version)
-                .add("since", since)
-                .add("templateDir", templateDir)
-                .add("database", database)
-                .add("types", types)
-                .add("ignoreTables", ignoreTables)
-                .add("tables", tables)
-                .add("attributes", attributes)
-                .toString();
+        return "Config{" +
+                "author='" + author + '\'' +
+                ", version='" + version + '\'' +
+                ", since='" + since + '\'' +
+                ", templateDir='" + templateDir + '\'' +
+                ", database='" + database + '\'' +
+                ", jdbcDriver='" + jdbcDriver + '\'' +
+                ", jdbcUrl='" + jdbcUrl + '\'' +
+                ", jdbcUsername='" + jdbcUsername + '\'' +
+                ", jdbcPassword='" + jdbcPassword + '\'' +
+                ", types=" + types +
+                ", ignoreTables=" + ignoreTables +
+                ", tables=" + tables +
+                ", attributes=" + attributes +
+                '}';
     }
 }

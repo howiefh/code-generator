@@ -5,9 +5,9 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
 import com.google.common.collect.Sets;
-import com.google.common.io.Resources;
 import io.github.howiefh.generator.common.exception.ConfigInitException;
 import io.github.howiefh.generator.common.exception.ValidationException;
+import io.github.howiefh.generator.common.util.ResourceUtils;
 import io.github.howiefh.generator.common.util.StringUtils;
 import io.github.howiefh.generator.common.validation.Rule;
 import io.github.howiefh.generator.common.validation.Validator;
@@ -17,7 +17,10 @@ import org.slf4j.LoggerFactory;
 import java.beans.IntrospectionException;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.Properties;
 import java.util.Set;
+
+import static io.github.howiefh.generator.TemplateCodeGenerator.DEFAULT_CONFIG;
 
 /**
  * @author fenghao on 2016/5/20
@@ -30,17 +33,12 @@ public class Configuration {
      * 配置
      */
     private static Config config = null;
-    public static final String DEFAULT_CONFIG = "config.json";
 
     public static Config getConfig() {
         if (config == null) {
             throw new NullPointerException("Config is null. Please init config.");
         }
         return config;
-    }
-
-    public static Config init() throws ConfigInitException {
-        return init(DEFAULT_CONFIG);
     }
 
     public static Config init(String configFile) throws ConfigInitException {
@@ -60,13 +58,15 @@ public class Configuration {
         return config;
     }
 
-    private static void load(String configFile) throws ConfigInitException {
+    private static void load(String configFileName) throws ConfigInitException {
         if (config != null) {
             return;
         }
         Reader reader = null;
         try {
-            reader = new FileReader(new File(Resources.getResource(configFile).toURI()));
+            File configFile = ResourceUtils.getResourceFile(configFileName);
+            LOGGER.info("Begin load config from file {}", configFile.getAbsolutePath());
+            reader = new FileReader(configFile);
             BufferedReader bufferedReader = new BufferedReader(reader);
 
             String line = null;
@@ -129,11 +129,20 @@ public class Configuration {
         config = JSON.parseObject(context, Config.class, processor, Feature.AllowComment);
     }
 
+    public static Properties jdbcProperties(){
+        Properties properties = new Properties();
+        properties.setProperty("jdbc.driver", config.getJdbcDriver());
+        properties.setProperty("jdbc.url", config.getJdbcUrl());
+        properties.setProperty("jdbc.username", config.getJdbcUsername());
+        properties.setProperty("jdbc.password", config.getJdbcPassword());
+        return properties;
+    }
+
     private static void validate() throws IntrospectionException, ValidationException, ConfigInitException {
         String tableTypes = "table.types";
         config = DefaultConfig.initDefaultConfig(config);
 
-        Validator.register(Rule.REQUIRED, Config.class, null);
+        Validator.register(Rule.REQUIRED, Config.class, Sets.<String>newHashSet("jdbcUrl"));
         Validator.register(Rule.REQUIRED, TableCfg.class, Sets.newHashSet("name"));
         Validator.register(Rule.REQUIRED, tableTypes, TypeCfg.class, Sets.newHashSet("name"));
         Validator.register(Rule.REQUIRED, TypeCfg.class, Sets.newHashSet("name", "template"));

@@ -33,6 +33,7 @@ public class DefaultJavaTypeResolver {
         typeMap.put("DOUBLE", Double.class.getName());
         typeMap.put("FLOAT", Double.class.getName());
         typeMap.put("INTEGER", Integer.class.getName());
+        typeMap.put("INT", Integer.class.getName());
         typeMap.put("JAVA_OBJECT", Object.class.getName());
         typeMap.put("LONGNVARCHAR", String.class.getName());
         typeMap.put("LONGVARBINARY", "byte[]");
@@ -46,6 +47,7 @@ public class DefaultJavaTypeResolver {
         typeMap.put("REF", Object.class.getName());
         typeMap.put("SMALLINT", Short.class.getName());
         typeMap.put("STRUCT", Object.class.getName());
+        typeMap.put("DATETIME", Date.class.getName());
         typeMap.put("TIME", Date.class.getName());
         typeMap.put("TIMESTAMP", Date.class.getName());
         typeMap.put("TINYINT", Byte.class.getName());

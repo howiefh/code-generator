@@ -3,6 +3,10 @@
   "version": "1.0",
   "since": "1.0",
   "templateDir": "templates",
+  "jdbcDriver": "com.mysql.jdbc.Driver",
+  "jdbcUrl": "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8",
+  "jdbcUsername": "root",
+  "jdbcPassword": "",
   "database": "mysql",
   "ignoreTables": [],
   "types": [
@@ -11,7 +15,7 @@
       "template": "Entity.java.ftl",
       "target": "D:/",
       "pkg": "io.github.howiefh.domain",
-      "suffix": ".java",
+      "suffix": "${ClassName}.java",
       "dependencies": []
     },
     {
@@ -19,7 +23,7 @@
       "template": "Dao.java.ftl",
       "target": "D:/",
       "pkg": "io.github.howiefh.dao",
-      "suffix": "Dao.java",
+      "suffix": "${ClassName}Dao.java",
       "dependencies": []
     },
     {
@@ -27,7 +31,7 @@
       "template": "Mapper.xml.ftl",
       "target": "D:/",
       "pkg": "mybatis.mappers",
-      "suffix": "Mapper.xml",
+      "suffix": "${ClassName}Mapper.xml",
       "dependencies": []
     },
     {
@@ -35,7 +39,7 @@
       "template": "DTO.java.ftl",
       "target": "D:/",
       "pkg": "io.github.howiefh.dto",
-      "suffix": ".java",
+      "suffix": "${implClassName}.java",
       "dependencies": []
     },
     {
@@ -43,7 +47,7 @@
       "template": "Cvt.java.ftl",
       "target": "D:/",
       "pkg": "io.github.howiefh.cvt",
-      "suffix": "Convertor.java",
+      "suffix": "${ClassName}Convertor.java",
       "dependencies": [
         "model",
         "dto"

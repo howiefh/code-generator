@@ -45,7 +45,7 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
         try {
             String resource = "mybatis-config.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, Configuration.jdbcProperties());
             SqlSession session = sqlSessionFactory.openSession();
 
             beforeGenerate();
