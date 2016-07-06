@@ -95,7 +95,7 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
         } catch (GeneratorException e) {
             LOGGER.error("Generate error. {}", e.getMessage());
         } catch (Exception e) {
-            LOGGER.error("Unknown error. {}", e.getMessage());
+            LOGGER.error("Unknown error. {}", e.getStackTrace());
         }
     }
 
