@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -64,12 +64,12 @@ new FormModel {
 						}, new FormLayoutConstraints( null ) {
 							"title": new FormMessage( null, "Generator.MainFrame.baseCofigPanel.tab.title" )
 						} )
-						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+						add( new FormComponent( "io.github.howiefh.generator.ui.TypeConfigPanel" ) {
 							name: "typeConfigPanel"
 						}, new FormLayoutConstraints( null ) {
 							"title": new FormMessage( null, "Generator.MainFrame.typeConfigPanel.tab.title" )
 						} )
-						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+						add( new FormComponent( "io.github.howiefh.generator.ui.TableConfigPanel" ) {
 							name: "tableConfigPanel"
 						}, new FormLayoutConstraints( null ) {
 							"title": new FormMessage( null, "Generator.MainFrame.tableConfigPanel.tab.title" )

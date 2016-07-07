@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.ResourceBundle;
 
 /**
- * @author fenghao, Thu Jul 07 21:11:16 CST 2016
+ * @author fenghao
  * @version 1.0
  * @since 1.0
  */

@@ -1,0 +1,50 @@
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "lang"
+	"i18n.bundleName": "language"
+	"i18n.keyPrefix": "TypeConfigPanel"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0:1.0, 0"
+			"$rowSpecs": "0, 0, 0, 0:1.0"
+			"$alignTop": true
+			"$alignLeft": true
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "typeConfigTable"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridheight": 4
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "addButton"
+				"text": new FormMessage( null, "TypeConfigPanel.addButton.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "editButton"
+				"text": new FormMessage( null, "TypeConfigPanel.editButton.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "deleteBbutton"
+				"text": new FormMessage( null, "TypeConfigPanel.deleteBbutton.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+				"gridy": 2
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

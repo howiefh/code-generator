@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.ResourceBundle;
 
 /**
- * @author fenghao, Thu Jul 07 21:06:56 CST 2016
+ * @author fenghao
  * @version 1.0
  * @since 1.0
  */
@@ -24,8 +24,8 @@ public class MainFrame extends JFrame {
     private JPanel cardPanel;
     private JTabbedPane configTabbedPane;
     private BaseConfigPanel baseCofigPanel;
-    private JPanel typeConfigPanel;
-    private JPanel tableConfigPanel;
+    private TypeConfigPanel typeConfigPanel;
+    private TableConfigPanel tableConfigPanel;
     private JPanel generatorPanel;
     // End of variables declaration  //GEN-END:variables
 
@@ -49,8 +49,8 @@ public class MainFrame extends JFrame {
         cardPanel = new JPanel();
         configTabbedPane = new JTabbedPane();
         baseCofigPanel = new BaseConfigPanel();
-        typeConfigPanel = new JPanel();
-        tableConfigPanel = new JPanel();
+        typeConfigPanel = new TypeConfigPanel();
+        tableConfigPanel = new TableConfigPanel();
         generatorPanel = new JPanel();
 
         //======== this ========
@@ -107,17 +107,7 @@ public class MainFrame extends JFrame {
                 //======== configTabbedPane ========
                 {
                     configTabbedPane.addTab(bundle.getString("Generator.MainFrame.baseCofigPanel.tab.title"), baseCofigPanel);
-
-                    //======== typeConfigPanel ========
-                    {
-                        typeConfigPanel.setLayout(new BorderLayout());
-                    }
                     configTabbedPane.addTab(bundle.getString("Generator.MainFrame.typeConfigPanel.tab.title"), typeConfigPanel);
-
-                    //======== tableConfigPanel ========
-                    {
-                        tableConfigPanel.setLayout(new BorderLayout());
-                    }
                     configTabbedPane.addTab(bundle.getString("Generator.MainFrame.tableConfigPanel.tab.title"), tableConfigPanel);
                 }
                 cardPanel.add(configTabbedPane, "card1");
