@@ -1,0 +1,96 @@
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "lang"
+	"i18n.bundleName": "language"
+	"i18n.keyPrefix": "Generator.MainFrame"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"minimumSize": new java.awt.Dimension( 976, 678 )
+			"title": new FormMessage( null, "Generator.MainFrame.title" )
+			add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+				name: "toolBar"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addButton"
+					"text": new FormMessage( null, "Generator.MainFrame.addButton.text" )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "copyButton"
+					"text": new FormMessage( null, "Generator.MainFrame.copyButton.text" )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "deleteButton"
+					"text": new FormMessage( null, "Generator.MainFrame.deleteButton.text" )
+				} )
+				add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+					name: "separator"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "configButton"
+					"text": new FormMessage( null, "Generator.MainFrame.configButton.text" )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "generatorButton"
+					"text": new FormMessage( null, "Generator.MainFrame.generatorButton.text" )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "aboutButton"
+					"text": new FormMessage( null, "Generator.MainFrame.aboutButton.text" )
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "North"
+			} )
+			add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
+				name: "splitPane"
+				"dividerLocation": 200
+				"oneTouchExpandable": true
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "projectScrollPane"
+					add( new FormComponent( "javax.swing.JTree" ) {
+						name: "projectTree"
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "left"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.CardLayout ) ) {
+					name: "cardPanel"
+					add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+						name: "configTabbedPane"
+						add( new FormComponent( "io.github.howiefh.generator.ui.BaseConfigPanel" ) {
+							name: "baseCofigPanel"
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "Generator.MainFrame.baseCofigPanel.tab.title" )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+							name: "typeConfigPanel"
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "Generator.MainFrame.typeConfigPanel.tab.title" )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+							name: "tableConfigPanel"
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "Generator.MainFrame.tableConfigPanel.tab.title" )
+						} )
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "card1"
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+						name: "generatorPanel"
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "card2"
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "right"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 1095, 655 )
+		} )
+	}
+}
