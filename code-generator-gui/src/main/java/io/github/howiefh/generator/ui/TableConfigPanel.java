@@ -34,15 +34,15 @@ public class TableConfigPanel extends JPanel {
         //======== this ========
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0};
-        ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
+        ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0};
         ((GridBagLayout)getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0E-4};
-        ((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0, 1.0E-4};
+        ((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
 
         //======== scrollPane ========
         {
             scrollPane.setViewportView(typeConfigTable);
         }
-        add(scrollPane, new GridBagConstraints(0, 0, 1, 4, 0.0, 0.0,
+        add(scrollPane, new GridBagConstraints(0, 0, 1, 5, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 

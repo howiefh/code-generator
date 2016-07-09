@@ -1,6 +1,7 @@
 package io.github.howiefh.generator.common.config;
 
 import com.google.common.base.Objects;
+import io.github.howiefh.generator.common.enums.DBType;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class Config implements Serializable {
     public static final String DEFAULT_VERSION = "1.0";
     public static final String DEFAULT_SINCE = DEFAULT_VERSION;
     public static final String DEFAULT_TEMPLATE_DIR = "templates";
-    public static final String DEFAULT_DATABASE = "mysql";
+    public static final String DEFAULT_DATABASE = DBType.MYSQL.getCode();
     public static final String DEFAULT_JDBC_DRIVER = "com.mysql.jdbc.Driver";
     public static final String DEFAULT_JDBC_USERNAME = "root";
     public static final String DEFAULT_JDBC_PASSWORD = "";

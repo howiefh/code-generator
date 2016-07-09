@@ -9,7 +9,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "0:1.0, 0, 0, 0:1.0, 0, 0:1.0"
-			"$rowSpecs": "0:1.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0:1.0"
+			"$rowSpecs": "0:1.0, 0:1.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0:1.0, 0:1.0"
 			"$hGap": 5
 			"$vGap": 5
 			"$alignLeft": true
@@ -21,128 +21,153 @@ new FormModel {
 				"text": new FormMessage( null, "BaseConfigPanel.authorLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 1
+				"gridy": 2
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "authorTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
-				"gridy": 1
+				"gridy": 2
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "versionLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.versionLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 2
+				"gridy": 3
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "versionTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
-				"gridy": 2
+				"gridy": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "sinceLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.sinceLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 3
+				"gridy": 4
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "sinceTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
-				"gridy": 3
+				"gridy": 4
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "templateDirLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.templateDirLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 4
+				"gridy": 5
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "templateDirTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
-				"gridy": 4
+				"gridy": 5
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "selectFileButton"
 				"text": new FormMessage( null, "BaseConfigPanel.selectFileButton.text" )
+				"toolTipText": new FormMessage( null, "BaseConfigPanel.selectFileButton.toolTipText" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "selectFileActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 4
-				"gridy": 4
+				"gridy": 5
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "databaseLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.databaseLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 5
+				"gridy": 6
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
+			add( new FormComponent( "javax.swing.JComboBox" ) {
 				name: "databaseTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 6
 				"gridx": 3
-				"gridy": 5
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "jdbcDriverLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.jdbcDriverLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 6
+				"gridy": 7
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "jdbcDriverTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 7
 				"gridx": 3
-				"gridy": 6
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "jdbcUrlLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.jdbcUrlLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 7
+				"gridy": 8
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "jdbcUrlTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
-				"gridy": 7
+				"gridy": 8
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "jdbcUsernameLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.jdbcUsernameLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 8
+				"gridy": 9
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "jdbcUsernameTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
-				"gridy": 8
+				"gridy": 9
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "jdbcPasswordLabel"
 				"text": new FormMessage( null, "BaseConfigPanel.jdbcPasswordLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 9
+				"gridy": 10
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "jdbcPasswordTextField"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
-				"gridy": 9
+				"gridy": 10
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
 			"size": new java.awt.Dimension( 400, 300 )
+		} )
+		add( new FormNonVisual( "io.github.howiefh.generator.ui.model.ConfigModel" ) {
+			name: "configModel"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 5, 315 )
+		} )
+		add( new FormNonVisual( "java.util.List" ) {
+			name: "dbTypes"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 5, 380 )
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "bindingGroup"
+			addBinding( new FormBinding( "configModel", "author", "authorTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "configModel", "version", "versionTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "configModel", "since", "sinceTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "configModel", "templateDir", "templateDirTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "configModel", "database", "databaseTextField", "selectedItem" ) )
+			addBinding( new FormBinding( "configModel", "jdbcDriver", "jdbcDriverTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "configModel", "jdbcUrl", "jdbcUrlTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "configModel", "jdbcUsername", "jdbcUsernameTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "configModel", "jdbcPassword", "jdbcPasswordTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "dbTypes", null, "databaseTextField", "elements" ) )
 		} )
 	}
 }

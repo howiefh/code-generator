@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -9,7 +9,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "0:1.0, 0"
-			"$rowSpecs": "0, 0, 0, 0:1.0"
+			"$rowSpecs": "0, 0, 0, 0:1.0, 0:1.0"
 			"$alignTop": true
 			"$alignLeft": true
 		} ) {
@@ -42,9 +42,72 @@ new FormModel {
 				"gridx": 1
 				"gridy": 2
 			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0, 0"
+				"$rowSpecs": "0, 0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignLeft": true
+				"$alignTop": true
+			} ) {
+				name: "typeConfigFormPanel"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 4
+				"gridwidth": 2
+			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"size": new java.awt.Dimension( 655, 380 )
+		} )
+		add( new FormNonVisual( "org.jdesktop.observablecollections.ObservableList" ) {
+			name: "typeCfgs"
+			auxiliary() {
+				"JavaCodeGenerator.typeParameters": "io.github.howiefh.generator.common.config.TypeCfg"
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 80, 445 )
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "bindingGroup"
+			addBinding( new FormBinding( "typeCfgs", null, "typeConfigTable", "elements" ) {
+				"subBindings": new com.jformdesigner.model.FormBinding[ new FormBinding( null, "attributes", null, null ) {
+					"sourcePathType": class java.util.Map
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName.1" )
+					"columnClass": "java.util.Map"
+				}, new FormBinding( null, "dependencies", null, null ) {
+					"sourcePathType": class java.util.Set
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_2" )
+					"columnClass": "java.util.Set"
+				}, new FormBinding( null, "ignoreImpls", null, null ) {
+					"sourcePathType": class java.util.Set
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_3" )
+					"columnClass": "java.util.Set"
+				}, new FormBinding( null, "impls", null, null ) {
+					"sourcePathType": class java.util.Set
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_4" )
+					"columnClass": "java.util.Set"
+				}, new FormBinding( null, "name", null, null ) {
+					"sourcePathType": class java.lang.String
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_5" )
+					"columnClass": "java.lang.String"
+				}, new FormBinding( null, "pkg", null, null ) {
+					"sourcePathType": class java.lang.String
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_6" )
+					"columnClass": "java.lang.String"
+				}, new FormBinding( null, "suffix", null, null ) {
+					"sourcePathType": class java.lang.String
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_7" )
+					"columnClass": "java.lang.String"
+				}, new FormBinding( null, "target", null, null ) {
+					"sourcePathType": class java.lang.String
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_8" )
+					"columnClass": "java.lang.String"
+				}, new FormBinding( null, "template", null, null ) {
+					"sourcePathType": class java.lang.String
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_9" )
+					"columnClass": "java.lang.String"
+				} ]
+			} )
 		} )
 	}
 }

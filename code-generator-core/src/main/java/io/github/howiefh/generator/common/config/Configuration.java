@@ -36,7 +36,12 @@ public class Configuration {
 
     public static Config getConfig() {
         if (config == null) {
-            throw new NullPointerException("Config is null. Please init config.");
+            LOGGER.warn("Config is null. Init default config.");
+            try {
+                config = DefaultConfig.initDefaultConfig(null);
+            } catch (ConfigInitException e) {
+                LOGGER.warn("Init default config error.");
+            }
         }
         return config;
     }

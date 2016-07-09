@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -11,34 +11,24 @@ new FormModel {
 			name: "this"
 			"minimumSize": new java.awt.Dimension( 976, 678 )
 			"title": new FormMessage( null, "Generator.MainFrame.title" )
+			"defaultCloseOperation": 0
+			addEvent( new FormEvent( "java.awt.event.WindowListener", "windowClosing", "effectsOnClosing", true ) )
 			add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
 				name: "toolBar"
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "addButton"
-					"text": new FormMessage( null, "Generator.MainFrame.addButton.text" )
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "copyButton"
-					"text": new FormMessage( null, "Generator.MainFrame.copyButton.text" )
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "deleteButton"
-					"text": new FormMessage( null, "Generator.MainFrame.deleteButton.text" )
-				} )
-				add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
-					name: "separator"
-				} )
-				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "configButton"
 					"text": new FormMessage( null, "Generator.MainFrame.configButton.text" )
+					"toolTipText": new FormMessage( null, "Generator.MainFrame.configButton.toolTipText" )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "generatorButton"
 					"text": new FormMessage( null, "Generator.MainFrame.generatorButton.text" )
+					"toolTipText": new FormMessage( null, "Generator.MainFrame.generatorButton.toolTipText" )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "aboutButton"
 					"text": new FormMessage( null, "Generator.MainFrame.aboutButton.text" )
+					"toolTipText": new FormMessage( null, "Generator.MainFrame.aboutButton.toolTipText" )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "North"
@@ -47,10 +37,55 @@ new FormModel {
 				name: "splitPane"
 				"dividerLocation": 200
 				"oneTouchExpandable": true
-				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-					name: "projectScrollPane"
-					add( new FormComponent( "javax.swing.JTree" ) {
-						name: "projectTree"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+					"$columnSpecs": "0, 0, 0, 0, 0:1.0"
+					"$rowSpecs": "0, 0:1.0"
+					"$alignTop": true
+					"$alignLeft": true
+				} ) {
+					name: "projectPanel"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "addButton"
+						"toolTipText": new FormMessage( null, "Generator.MainFrame.addButton.toolTipText" )
+						"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/new.png" )
+						"preferredSize": new java.awt.Dimension( 42, 28 )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "deleteButton"
+						"toolTipText": new FormMessage( null, "Generator.MainFrame.deleteButton.toolTipText" )
+						"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/delete.png" )
+						"preferredSize": new java.awt.Dimension( 42, 28 )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "copyButton"
+						"toolTipText": new FormMessage( null, "Generator.MainFrame.copyButton.toolTipText" )
+						"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/copy.png" )
+						"preferredSize": new java.awt.Dimension( 42, 28 )
+						"maximumSize": new java.awt.Dimension( 42, 28 )
+						"minimumSize": new java.awt.Dimension( 42, 28 )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 2
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "saveButton"
+						"toolTipText": new FormMessage( null, "Generator.MainFrame.saveButton.toolTipText" )
+						"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/save.png" )
+						"preferredSize": new java.awt.Dimension( 42, 28 )
+						"maximumSize": new java.awt.Dimension( 42, 28 )
+						"minimumSize": new java.awt.Dimension( 42, 28 )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 3
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "projectScrollPane"
+						add( new FormComponent( "javax.swing.JTree" ) {
+							name: "projectTree"
+						} )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 1
+						"gridwidth": 5
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "left"
