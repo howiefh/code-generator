@@ -97,43 +97,43 @@ public class BaseConfigPanel extends JPanel {
         //======== this ========
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0};
-        ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         ((GridBagLayout)getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0E-4};
-        ((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0E-4};
+        ((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
 
         //---- authorLabel ----
         authorLabel.setText(bundle.getString("BaseConfigPanel.authorLabel.text"));
-        add(authorLabel, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+        add(authorLabel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(authorTextField, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
+        add(authorTextField, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- versionLabel ----
         versionLabel.setText(bundle.getString("BaseConfigPanel.versionLabel.text"));
-        add(versionLabel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+        add(versionLabel, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(versionTextField, new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0,
+        add(versionTextField, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- sinceLabel ----
         sinceLabel.setText(bundle.getString("BaseConfigPanel.sinceLabel.text"));
-        add(sinceLabel, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
+        add(sinceLabel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(sinceTextField, new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0,
+        add(sinceTextField, new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- templateDirLabel ----
         templateDirLabel.setText(bundle.getString("BaseConfigPanel.templateDirLabel.text"));
-        add(templateDirLabel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+        add(templateDirLabel, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(templateDirTextField, new GridBagConstraints(3, 5, 1, 1, 0.0, 0.0,
+        add(templateDirTextField, new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -146,52 +146,52 @@ public class BaseConfigPanel extends JPanel {
                 selectFileActionPerformed(e);
             }
         });
-        add(selectFileButton, new GridBagConstraints(4, 5, 1, 1, 0.0, 0.0,
+        add(selectFileButton, new GridBagConstraints(4, 4, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- databaseLabel ----
         databaseLabel.setText(bundle.getString("BaseConfigPanel.databaseLabel.text"));
-        add(databaseLabel, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
+        add(databaseLabel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(databaseTextField, new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0,
+        add(databaseTextField, new GridBagConstraints(3, 5, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- jdbcDriverLabel ----
         jdbcDriverLabel.setText(bundle.getString("BaseConfigPanel.jdbcDriverLabel.text"));
-        add(jdbcDriverLabel, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0,
+        add(jdbcDriverLabel, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(jdbcDriverTextField, new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0,
+        add(jdbcDriverTextField, new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- jdbcUrlLabel ----
         jdbcUrlLabel.setText(bundle.getString("BaseConfigPanel.jdbcUrlLabel.text"));
-        add(jdbcUrlLabel, new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0,
+        add(jdbcUrlLabel, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(jdbcUrlTextField, new GridBagConstraints(3, 8, 1, 1, 0.0, 0.0,
+        add(jdbcUrlTextField, new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- jdbcUsernameLabel ----
         jdbcUsernameLabel.setText(bundle.getString("BaseConfigPanel.jdbcUsernameLabel.text"));
-        add(jdbcUsernameLabel, new GridBagConstraints(1, 9, 1, 1, 0.0, 0.0,
+        add(jdbcUsernameLabel, new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(jdbcUsernameTextField, new GridBagConstraints(3, 9, 1, 1, 0.0, 0.0,
+        add(jdbcUsernameTextField, new GridBagConstraints(3, 8, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- jdbcPasswordLabel ----
         jdbcPasswordLabel.setText(bundle.getString("BaseConfigPanel.jdbcPasswordLabel.text"));
-        add(jdbcPasswordLabel, new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0,
+        add(jdbcPasswordLabel, new GridBagConstraints(1, 9, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
-        add(jdbcPasswordTextField, new GridBagConstraints(3, 10, 1, 1, 0.0, 0.0,
+        add(jdbcPasswordTextField, new GridBagConstraints(3, 9, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 

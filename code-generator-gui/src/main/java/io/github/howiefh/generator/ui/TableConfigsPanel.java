@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
  * @version 1.0
  * @since 1.0
  */
-public class TableConfigPanel extends JPanel {
+public class TableConfigsPanel extends JPanel {
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane scrollPane;
     private JTable typeConfigTable;
@@ -18,7 +18,7 @@ public class TableConfigPanel extends JPanel {
     private JButton deleteBbutton;
     // End of variables declaration  //GEN-END:variables
 
-    public TableConfigPanel() {
+    public TableConfigsPanel() {
         initComponents();
     }
 
@@ -47,19 +47,19 @@ public class TableConfigPanel extends JPanel {
             new Insets(0, 0, 0, 0), 0, 0));
 
         //---- addButton ----
-        addButton.setText(bundle.getString("TableConfigPanel.addButton.text"));
+        addButton.setText(bundle.getString("TableConfigsPanel.addButton.text"));
         add(addButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
         //---- editButton ----
-        editButton.setText(bundle.getString("TableConfigPanel.editButton.text"));
+        editButton.setText(bundle.getString("TableConfigsPanel.editButton.text"));
         add(editButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
         //---- deleteBbutton ----
-        deleteBbutton.setText(bundle.getString("TableConfigPanel.deleteBbutton.text"));
+        deleteBbutton.setText(bundle.getString("TableConfigsPanel.deleteBbutton.text"));
         add(deleteBbutton, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));

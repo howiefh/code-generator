@@ -5,8 +5,6 @@ import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.config.TableCfg;
 import io.github.howiefh.generator.common.config.TypeCfg;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,19 +13,22 @@ import java.util.Set;
  * @version 1.0
  * @since 1.0
  */
-public class ConfigModel extends Config{
+public class ConfigModel extends AbstractModel {
     private static final long serialVersionUID = 1349713680725743246L;
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+    private Config config;
+
+    public ConfigModel() {
+        config = Configuration.getConfig();
+    }
 
     /**
      * 作者
      *
      * @param author
      */
-    @Override
     public void setAuthor(String author) {
-        String oldValue = Configuration.getConfig().getAuthor();
-        Configuration.getConfig().setAuthor(author);
+        String oldValue = config.getAuthor();
+        config.setAuthor(author);
         changeSupport.firePropertyChange("author", oldValue, author);
     }
 
@@ -36,9 +37,8 @@ public class ConfigModel extends Config{
      *
      * @return author
      */
-    @Override
     public String getAuthor() {
-        return Configuration.getConfig().getAuthor();
+        return config.getAuthor();
     }
 
     /**
@@ -46,10 +46,9 @@ public class ConfigModel extends Config{
      *
      * @param version
      */
-    @Override
     public void setVersion(String version) {
-        String oldValue = Configuration.getConfig().getVersion();
-        Configuration.getConfig().setVersion(version);
+        String oldValue = config.getVersion();
+        config.setVersion(version);
         changeSupport.firePropertyChange("version", oldValue, version);
     }
 
@@ -58,9 +57,8 @@ public class ConfigModel extends Config{
      *
      * @return version
      */
-    @Override
     public String getVersion() {
-        return Configuration.getConfig().getVersion();
+        return config.getVersion();
     }
 
     /**
@@ -68,10 +66,9 @@ public class ConfigModel extends Config{
      *
      * @param since
      */
-    @Override
     public void setSince(String since) {
-        String oldValue = Configuration.getConfig().getSince();
-        Configuration.getConfig().setSince(since);
+        String oldValue = config.getSince();
+        config.setSince(since);
         changeSupport.firePropertyChange("since", oldValue, since);
     }
 
@@ -80,9 +77,8 @@ public class ConfigModel extends Config{
      *
      * @return since
      */
-    @Override
     public String getSince() {
-        return Configuration.getConfig().getSince();
+        return config.getSince();
     }
 
     /**
@@ -90,10 +86,9 @@ public class ConfigModel extends Config{
      *
      * @param templateDir
      */
-    @Override
     public void setTemplateDir(String templateDir) {
-        String oldValue = Configuration.getConfig().getTemplateDir();
-        Configuration.getConfig().setTemplateDir(templateDir);
+        String oldValue = config.getTemplateDir();
+        config.setTemplateDir(templateDir);
         changeSupport.firePropertyChange("templateDir", oldValue, templateDir);
     }
 
@@ -102,9 +97,8 @@ public class ConfigModel extends Config{
      *
      * @return templateDir
      */
-    @Override
     public String getTemplateDir() {
-        return Configuration.getConfig().getTemplateDir();
+        return config.getTemplateDir();
     }
     
     /**
@@ -112,10 +106,9 @@ public class ConfigModel extends Config{
      *
      * @param database
      */
-    @Override
     public void setDatabase(String database) {
-        String oldValue = Configuration.getConfig().getDatabase();
-        Configuration.getConfig().setDatabase(database);
+        String oldValue = config.getDatabase();
+        config.setDatabase(database);
         changeSupport.firePropertyChange("database", oldValue, database);
     }
 
@@ -124,9 +117,8 @@ public class ConfigModel extends Config{
      *
      * @return database
      */
-    @Override
     public String getDatabase() {
-        return Configuration.getConfig().getDatabase();
+        return config.getDatabase();
     }
 
     /**
@@ -134,10 +126,9 @@ public class ConfigModel extends Config{
      *
      * @param jdbcDriver
      */
-    @Override
     public void setJdbcDriver(String jdbcDriver) {
-        String oldValue = Configuration.getConfig().getJdbcDriver();
-        Configuration.getConfig().setJdbcDriver(jdbcDriver);
+        String oldValue = config.getJdbcDriver();
+        config.setJdbcDriver(jdbcDriver);
         changeSupport.firePropertyChange("jdbcDriver", oldValue, jdbcDriver);
     }
 
@@ -146,9 +137,8 @@ public class ConfigModel extends Config{
      *
      * @return jdbcDriver
      */
-    @Override
     public String getJdbcDriver(){
-        return Configuration.getConfig().getJdbcDriver();
+        return config.getJdbcDriver();
     }
 
     /**
@@ -156,10 +146,9 @@ public class ConfigModel extends Config{
      *
      * @param jdbcUrl
      */
-    @Override
     public void setJdbcUrl(String jdbcUrl) {
-        String oldValue = Configuration.getConfig().getJdbcUrl();
-        Configuration.getConfig().setJdbcUrl(jdbcUrl);
+        String oldValue = config.getJdbcUrl();
+        config.setJdbcUrl(jdbcUrl);
         changeSupport.firePropertyChange("jdbcUrl", oldValue, jdbcUrl);
     }
 
@@ -168,9 +157,8 @@ public class ConfigModel extends Config{
      *
      * @return
      */
-    @Override
     public String getJdbcUrl() {
-        return Configuration.getConfig().getJdbcUrl();
+        return config.getJdbcUrl();
     }
     
     /**
@@ -178,10 +166,9 @@ public class ConfigModel extends Config{
      *
      * @param jdbcUsername
      */
-    @Override
     public void setJdbcUsername(String jdbcUsername) {
-        String oldValue = Configuration.getConfig().getJdbcUsername();
-        Configuration.getConfig().setJdbcUsername(jdbcUsername);
+        String oldValue = config.getJdbcUsername();
+        config.setJdbcUsername(jdbcUsername);
         changeSupport.firePropertyChange("jdbcUsername", oldValue, jdbcUsername);
     }
 
@@ -190,9 +177,8 @@ public class ConfigModel extends Config{
      *
      * @return
      */
-    @Override
     public String getJdbcUsername() {
-        return Configuration.getConfig().getJdbcUsername();
+        return config.getJdbcUsername();
     }
 
     /**
@@ -200,10 +186,9 @@ public class ConfigModel extends Config{
      *
      * @param jdbcPassword
      */
-    @Override
     public void setJdbcPassword(String jdbcPassword) {
-        String oldValue = Configuration.getConfig().getJdbcPassword();
-        Configuration.getConfig().setJdbcPassword(jdbcPassword);
+        String oldValue = config.getJdbcPassword();
+        config.setJdbcPassword(jdbcPassword);
         changeSupport.firePropertyChange("jdbcPassword", oldValue, jdbcPassword);
     }
 
@@ -212,9 +197,8 @@ public class ConfigModel extends Config{
      *
      * @return
      */
-    @Override
     public String getJdbcPassword() {
-        return Configuration.getConfig().getJdbcPassword();
+        return config.getJdbcPassword();
     }
 
     /**
@@ -222,10 +206,9 @@ public class ConfigModel extends Config{
      *
      * @param types
      */
-    @Override
     public void setTypes(Set<TypeCfg> types) {
-        Set<TypeCfg> oldValue = Configuration.getConfig().getTypes();
-        Configuration.getConfig().setTypes(types);
+        Set<TypeCfg> oldValue = config.getTypes();
+        config.setTypes(types);
         changeSupport.firePropertyChange("types", oldValue, types);
     }
 
@@ -234,9 +217,8 @@ public class ConfigModel extends Config{
      *
      * @return types
      */
-    @Override
     public Set<TypeCfg> getTypes() {
-        return Configuration.getConfig().getTypes();
+        return config.getTypes();
     }
 
     /**
@@ -244,10 +226,9 @@ public class ConfigModel extends Config{
      *
      * @param ignoreTables
      */
-    @Override
     public void setIgnoreTables(Set<String> ignoreTables) {
-        Set<String> oldValue = Configuration.getConfig().getIgnoreTables();
-        Configuration.getConfig().setIgnoreTables(ignoreTables);
+        Set<String> oldValue = config.getIgnoreTables();
+        config.setIgnoreTables(ignoreTables);
         changeSupport.firePropertyChange("ignoreTables", oldValue, ignoreTables);
     }
 
@@ -256,9 +237,8 @@ public class ConfigModel extends Config{
      *
      * @return tables
      */
-    @Override
     public Set<String> getIgnoreTables() {
-        return Configuration.getConfig().getIgnoreTables();
+        return config.getIgnoreTables();
     }
 
     /**
@@ -266,10 +246,9 @@ public class ConfigModel extends Config{
      *
      * @param tables
      */
-    @Override
     public void setTables(Set<TableCfg> tables) {
-        Set<TableCfg> oldValue = Configuration.getConfig().getTables();
-        Configuration.getConfig().setTables(tables);
+        Set<TableCfg> oldValue = config.getTables();
+        config.setTables(tables);
         changeSupport.firePropertyChange("tables", oldValue, tables);
     }
 
@@ -278,9 +257,8 @@ public class ConfigModel extends Config{
      *
      * @return tables
      */
-    @Override
     public Set<TableCfg> getTables() {
-        return Configuration.getConfig().getTables();
+        return config.getTables();
     }
 
     /**
@@ -288,10 +266,9 @@ public class ConfigModel extends Config{
      *
      * @param attributes
      */
-    @Override
     public void setAttributes(Map<String, Object> attributes) {
-        Map<String, Object> oldValue = Configuration.getConfig().getAttributes();
-        Configuration.getConfig().setAttributes(attributes);
+        Map<String, Object> oldValue = config.getAttributes();
+        config.setAttributes(attributes);
         changeSupport.firePropertyChange("attributes", oldValue, attributes);
     }
 
@@ -300,16 +277,8 @@ public class ConfigModel extends Config{
      *
      * @return
      */
-    @Override
     public Map<String, Object> getAttributes() {
-        return Configuration.getConfig().getAttributes();
+        return config.getAttributes();
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
-    }
 }

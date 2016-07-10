@@ -27,13 +27,15 @@ public class MainFrame extends JFrame {
     private JTree projectTree;
     private JPanel cardPanel;
     private JTabbedPane configTabbedPane;
-    private BaseConfigPanel baseCofigPanel;
-    private TypeConfigPanel typeConfigPanel;
-    private TableConfigPanel tableConfigPanel;
+    private BaseConfigPanel baseConfigPanel;
+    private JScrollPane typeScrollPane;
+    private TypeConfigsPanel typeConfigsPanel;
+    private TableConfigsPanel tableConfigsPanel;
     private JPanel generatorPanel;
     // End of variables declaration  //GEN-END:variables
 
     public MainFrame() {
+        setPreferredSize(new Dimension(976, 678));
         initComponents();
     }
 
@@ -93,15 +95,17 @@ public class MainFrame extends JFrame {
         projectTree = new JTree();
         cardPanel = new JPanel();
         configTabbedPane = new JTabbedPane();
-        baseCofigPanel = new BaseConfigPanel();
-        typeConfigPanel = new TypeConfigPanel();
-        tableConfigPanel = new TableConfigPanel();
+        baseConfigPanel = new BaseConfigPanel();
+        typeScrollPane = new JScrollPane();
+        typeConfigsPanel = new TypeConfigsPanel();
+        tableConfigsPanel = new TableConfigsPanel();
         generatorPanel = new JPanel();
 
         //======== this ========
         setMinimumSize(new Dimension(976, 678));
         setTitle(bundle.getString("Generator.MainFrame.title"));
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setName("frame");
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -196,9 +200,14 @@ public class MainFrame extends JFrame {
 
                 //======== configTabbedPane ========
                 {
-                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.baseCofigPanel.tab.title"), baseCofigPanel);
-                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.typeConfigPanel.tab.title"), typeConfigPanel);
-                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.tableConfigPanel.tab.title"), tableConfigPanel);
+                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.baseConfigPanel.tab.title"), baseConfigPanel);
+
+                    //======== typeScrollPane ========
+                    {
+                        typeScrollPane.setViewportView(typeConfigsPanel);
+                    }
+                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.typeConfigsPanel.tab.title"), typeScrollPane);
+                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.tableConfigsPanel.tab.title"), tableConfigsPanel);
                 }
                 cardPanel.add(configTabbedPane, "card1");
 

@@ -30,6 +30,9 @@ public class App {
                 //Windows下设置全局字体，否则weblaf会乱码,其他可供选择的字体Helvetica,Arial,sans-serif
                 initGlobalFont(new Font("Helvetica", 0, 12));
             }
+
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
         } catch (ClassNotFoundException e){
             LOGGER.error(e.getMessage());
         } catch (IllegalAccessException e) {
@@ -42,8 +45,6 @@ public class App {
             LOGGER.error(e.getMessage());
         }
 
-        MainFrame mainFrame = new MainFrame();
-        mainFrame.setVisible(true);
     }
 
 

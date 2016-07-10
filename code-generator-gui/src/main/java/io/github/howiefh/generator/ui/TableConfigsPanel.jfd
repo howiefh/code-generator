@@ -24,20 +24,20 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "addButton"
-				"text": new FormMessage( null, "TableConfigPanel.addButton.text" )
+				"text": new FormMessage( null, "TableConfigsPanel.addButton.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "editButton"
-				"text": new FormMessage( null, "TableConfigPanel.editButton.text" )
+				"text": new FormMessage( null, "TableConfigsPanel.editButton.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 1
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "deleteBbutton"
-				"text": new FormMessage( null, "TableConfigPanel.deleteBbutton.text" )
+				"text": new FormMessage( null, "TableConfigsPanel.deleteBbutton.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 2

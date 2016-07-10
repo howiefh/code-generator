@@ -8,106 +8,218 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-			"$columnSpecs": "0:1.0, 0"
-			"$rowSpecs": "0, 0, 0, 0:1.0, 0:1.0"
-			"$alignTop": true
+			"$columnSpecs": "0, 0, 0:1.0, 0, 0, 0:1.0"
+			"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0:1.0"
+			"$hGap": 5
+			"$vGap": 5
 			"$alignLeft": true
+			"$alignTop": true
 		} ) {
 			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "nameLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.nameLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "nameTextField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "templateLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.templateLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "templateTextField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "templateButton"
+				"toolTipText": "打开模板文件"
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/edit.png" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 3
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "targetLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.targetLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "targetTextField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "targetDirButton"
+				"text": new FormMessage( null, "TypeConfigPanel.targetDirButton.text" )
+				"toolTipText": "选择目标目录"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 3
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "packageLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.packageLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 3
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "packageTextField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "suffixLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.suffixLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 4
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "suffixTextField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 4
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "dependenciesLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.dependenciesLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 5
+			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane"
-				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "typeConfigTable"
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "dependenciesList"
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridheight": 4
+				"gridx": 2
+				"gridy": 5
 			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "addButton"
-				"text": new FormMessage( null, "TypeConfigPanel.addButton.text" )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0"
+				"$rowSpecs": "0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignTop": true
+				"$alignLeft": true
+			} ) {
+				name: "dependenciesBtnPanel"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addDependenceButton"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/new.png" )
+					"toolTipText": new FormMessage( null, "TypeConfigPanel.addDependenceButton.toolTipText" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addDependence", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "deleteDependenceButton"
+					"toolTipText": new FormMessage( null, "TypeConfigPanel.deleteDependenceButton.toolTipText" )
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/delete.png" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridy": 1
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
+				"gridx": 3
+				"gridy": 5
 			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "editButton"
-				"text": new FormMessage( null, "TypeConfigPanel.editButton.text" )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "implsLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.implsLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 6
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane2"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "implsList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 6
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ignoreImplsLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.ignoreImplsLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 7
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane3"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "ignoreImplsList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 7
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 5 )
+			"size": new java.awt.Dimension( 460, 330 )
+		} )
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0, 0, 0:1.0, 0"
+			"$rowSpecs": "0, 0, 0"
+			"$hGap": 5
+			"$vGap": 5
+			"$alignLeft": true
+			"$alignTop": true
+		} ) {
+			name: "addDependenceDialog"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "dependenceLabel"
+				"text": new FormMessage( null, "TypeConfigPanel.dependenceLabel.text" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 1
 			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "deleteBbutton"
-				"text": new FormMessage( null, "TypeConfigPanel.deleteBbutton.text" )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "dependenciesComboBox"
+				"editable": true
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
-				"gridy": 2
-			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-				"$columnSpecs": "0, 0"
-				"$rowSpecs": "0, 0, 0"
-				"$hGap": 5
-				"$vGap": 5
-				"$alignLeft": true
-				"$alignTop": true
-			} ) {
-				name: "typeConfigFormPanel"
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridy": 4
-				"gridwidth": 2
+				"gridx": 2
+				"gridy": 1
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 655, 380 )
+			"location": new java.awt.Point( 615, 0 )
+			"size": new java.awt.Dimension( 415, 125 )
 		} )
-		add( new FormNonVisual( "org.jdesktop.observablecollections.ObservableList" ) {
-			name: "typeCfgs"
+		add( new FormNonVisual( "io.github.howiefh.generator.ui.model.TypeCfgModel" ) {
+			name: "typeCfgModel"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 15, 400 )
+		} )
+		add( new FormNonVisual( "java.util.List" ) {
+			name: "types"
 			auxiliary() {
-				"JavaCodeGenerator.typeParameters": "io.github.howiefh.generator.common.config.TypeCfg"
+				"JavaCodeGenerator.typeParameters": "java.lang.String"
 			}
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 80, 445 )
+			"location": new java.awt.Point( 130, 400 )
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "bindingGroup"
-			addBinding( new FormBinding( "typeCfgs", null, "typeConfigTable", "elements" ) {
-				"subBindings": new com.jformdesigner.model.FormBinding[ new FormBinding( null, "attributes", null, null ) {
-					"sourcePathType": class java.util.Map
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName.1" )
-					"columnClass": "java.util.Map"
-				}, new FormBinding( null, "dependencies", null, null ) {
-					"sourcePathType": class java.util.Set
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_2" )
-					"columnClass": "java.util.Set"
-				}, new FormBinding( null, "ignoreImpls", null, null ) {
-					"sourcePathType": class java.util.Set
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_3" )
-					"columnClass": "java.util.Set"
-				}, new FormBinding( null, "impls", null, null ) {
-					"sourcePathType": class java.util.Set
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_4" )
-					"columnClass": "java.util.Set"
-				}, new FormBinding( null, "name", null, null ) {
-					"sourcePathType": class java.lang.String
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_5" )
-					"columnClass": "java.lang.String"
-				}, new FormBinding( null, "pkg", null, null ) {
-					"sourcePathType": class java.lang.String
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_6" )
-					"columnClass": "java.lang.String"
-				}, new FormBinding( null, "suffix", null, null ) {
-					"sourcePathType": class java.lang.String
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_7" )
-					"columnClass": "java.lang.String"
-				}, new FormBinding( null, "target", null, null ) {
-					"sourcePathType": class java.lang.String
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_8" )
-					"columnClass": "java.lang.String"
-				}, new FormBinding( null, "template", null, null ) {
-					"sourcePathType": class java.lang.String
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_9" )
-					"columnClass": "java.lang.String"
-				} ]
-			} )
+			addBinding( new FormBinding( "this", "typeCfgModel.name", "nameTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.template", "templateTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.target", "targetTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.pkg", "packageTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.suffix", "suffixTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.dependencies", "dependenciesList", "elements" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.impls", "implsList", "elements" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.ignoreImpls", "ignoreImplsList", "elements" ) )
+			addBinding( new FormBinding( "this", "types", "dependenciesComboBox", "elements" ) )
+			addBinding( new FormBinding( "dependenciesList", "${selectedElement != null}", "deleteDependenceButton", "enabled" ) )
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "enablementBindingGroup"
+			addBinding( new FormBinding( "this", "${typeCfgModel != null}", "this", "enabled" ) )
 		} )
 	}
 }

@@ -1,0 +1,103 @@
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "lang"
+	"i18n.bundleName": "language"
+	"i18n.keyPrefix": "TypeConfigPanel"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0:1.0, 0"
+			"$rowSpecs": "0, 0, 0, 0:1.0, 0:1.0"
+			"$alignTop": true
+			"$alignLeft": true
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "typeConfigTable"
+					"preferredScrollableViewportSize": new java.awt.Dimension( 450, 300 )
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridheight": 4
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "addButton"
+				"toolTipText": new FormMessage( null, "TypeConfigPanel.addButton.toolTipText" )
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/new.png" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "newTypeConfig", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "deleteButton"
+				"toolTipText": new FormMessage( null, "TypeConfigPanel.deleteButton.toolTipText" )
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/delete.png" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "deleteTypeConfig", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 1
+				"gridy": 1
+			} )
+			add( new FormComponent( "io.github.howiefh.generator.ui.TypeConfigPanel" ) {
+				name: "typeConfigFormPanel"
+				"border": new javax.swing.border.TitledBorder( "i18nKey=TypeConfigPanel.typeConfigFormPanel.border" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 4
+				"gridwidth": 2
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 655, 380 )
+		} )
+		add( new FormNonVisual( "java.util.List" ) {
+			name: "typeCfgs"
+			auxiliary() {
+				"JavaCodeGenerator.typeParameters": "io.github.howiefh.generator.ui.model.TypeCfgModel"
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 10, 450 )
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "bindingGroup"
+			addBinding( new FormBinding( "this", "typeCfgs", "typeConfigTable", "elements" ) {
+				"subBindings": new com.jformdesigner.model.FormBinding[ new FormBinding( null, "name", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_5" )
+					"columnClass": "java.lang.String"
+					"editable": false
+				}, new FormBinding( null, "template", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_9" )
+					"columnClass": "java.lang.String"
+					"editable": false
+				}, new FormBinding( null, "target", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_8" )
+					"columnClass": "java.lang.String"
+					"editable": false
+				}, new FormBinding( null, "pkg", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_6" )
+					"columnClass": "java.lang.String"
+					"editable": false
+				}, new FormBinding( null, "suffix", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_7" )
+					"columnClass": "java.lang.String"
+					"editable": false
+				}, new FormBinding( null, "dependencies", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_2" )
+					"columnClass": "java.util.List"
+					"editable": false
+				}, new FormBinding( null, "impls", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_4" )
+					"columnClass": "java.util.List"
+					"editable": false
+				}, new FormBinding( null, "ignoreImpls", null, null ) {
+					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_3" )
+					"columnClass": "java.util.List"
+					"editable": false
+				} ]
+			} )
+			addBinding( new FormBinding( "typeConfigTable", "${selectedElement != null}", "deleteButton", "enabled" ) )
+			addBinding( new FormBinding( "typeConfigTable", "selectedElement", "typeConfigFormPanel", "typeCfgModel" ) )
+		} )
+	}
+}
