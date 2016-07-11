@@ -1,9 +1,15 @@
 package io.github.howiefh.generator.ui;
 
+import io.github.howiefh.generator.ui.model.TableCfgModel;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.BindingGroup;
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.swingbinding.SwingBindings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -18,26 +24,83 @@ public class TableConfigPanel extends JPanel {
     private JLabel classNameLabel;
     private JTextField classNameTextField;
     private JLabel pksLabel;
-    private JScrollPane scrollPane4;
+    private JPanel panel1;
+    private JComboBox pkComboBox;
+    private JButton addPkButton;
+    private JButton deletePkButton;
+    private JScrollPane scrollPane1;
     private JList pksList;
     private JLabel updatesLabel;
-    private JScrollPane scrollPane5;
+    private JPanel panel2;
+    private JComboBox updateComboBox;
+    private JButton addUpdateColumnsButton;
+    private JButton deleteUpdateColumnsButton;
+    private JScrollPane scrollPane2;
     private JList updatesList;
     private JLabel queriesLabel;
-    private JScrollPane scrollPane6;
+    private JPanel panel3;
+    private JComboBox queriesComboBox;
+    private JComboBox queryTypesComboBox;
+    private JButton addQueryColumnButton;
+    private JButton deleteQueryColumnsButton;
+    private JScrollPane scrollPane3;
     private JList queriesList;
     private JLabel showTypesLabel;
-    private JScrollPane scrollPane1;
+    private JPanel panel4;
+    private JComboBox showTypeColumnsComboBox;
+    private JComboBox showTypesComboBox;
+    private JButton addShowTypeButton2;
+    private JButton deleteShowTypesButton2;
+    private JScrollPane scrollPane4;
     private JList showTypesList;
     private JLabel typesLabel;
-    private JScrollPane scrollPane2;
+    private JScrollPane scrollPane5;
     private JList typesList;
+    private JPanel panel5;
+    private JButton addTypeButton;
+    private JButton ignoreTypesButton3;
     private JLabel ignoreTypesLabel;
-    private JScrollPane scrollPane3;
+    private JScrollPane scrollPane6;
     private JList ignoreTypesList;
+    private JPanel panel6;
+    private JButton deleteIgnoreTypesButton4;
+    private List<java.lang.String> columns;
+    private TableCfgModel tableCfgModel;
+    private JButton addTypeButton2;
     private BindingGroup bindingGroup;
     private BindingGroup enablementBindingGroup;
     // End of variables declaration  //GEN-END:variables
+
+
+    /**
+     * @return tableCfgModel
+     */
+    public TableCfgModel getTableCfgModel() {
+        return tableCfgModel;
+    }
+
+    /**
+     * @param tableCfgModel
+     */
+    public void setTableCfgModel(TableCfgModel tableCfgModel) {
+        TableCfgModel oldValue = getTableCfgModel();
+        this.tableCfgModel = tableCfgModel;
+        firePropertyChange("tableCfgModel", oldValue, tableCfgModel);
+    }
+
+    /**
+     * @return typesList
+     */
+    public JList getTypesList() {
+        return typesList;
+    }
+
+    /**
+     * @param typesList
+     */
+    public void setTypesList(JList typesList) {
+        this.typesList = typesList;
+    }
 
     public TableConfigPanel() {
         initComponents();
@@ -51,30 +114,55 @@ public class TableConfigPanel extends JPanel {
         classNameLabel = new JLabel();
         classNameTextField = new JTextField();
         pksLabel = new JLabel();
-        scrollPane4 = new JScrollPane();
+        panel1 = new JPanel();
+        pkComboBox = new JComboBox();
+        addPkButton = new JButton();
+        deletePkButton = new JButton();
+        scrollPane1 = new JScrollPane();
         pksList = new JList();
         updatesLabel = new JLabel();
-        scrollPane5 = new JScrollPane();
+        panel2 = new JPanel();
+        updateComboBox = new JComboBox();
+        addUpdateColumnsButton = new JButton();
+        deleteUpdateColumnsButton = new JButton();
+        scrollPane2 = new JScrollPane();
         updatesList = new JList();
         queriesLabel = new JLabel();
-        scrollPane6 = new JScrollPane();
+        panel3 = new JPanel();
+        queriesComboBox = new JComboBox();
+        queryTypesComboBox = new JComboBox();
+        addQueryColumnButton = new JButton();
+        deleteQueryColumnsButton = new JButton();
+        scrollPane3 = new JScrollPane();
         queriesList = new JList();
         showTypesLabel = new JLabel();
-        scrollPane1 = new JScrollPane();
+        panel4 = new JPanel();
+        showTypeColumnsComboBox = new JComboBox();
+        showTypesComboBox = new JComboBox();
+        addShowTypeButton2 = new JButton();
+        deleteShowTypesButton2 = new JButton();
+        scrollPane4 = new JScrollPane();
         showTypesList = new JList();
         typesLabel = new JLabel();
-        scrollPane2 = new JScrollPane();
+        scrollPane5 = new JScrollPane();
         typesList = new JList();
+        panel5 = new JPanel();
+        addTypeButton = new JButton();
+        ignoreTypesButton3 = new JButton();
         ignoreTypesLabel = new JLabel();
-        scrollPane3 = new JScrollPane();
+        scrollPane6 = new JScrollPane();
         ignoreTypesList = new JList();
+        panel6 = new JPanel();
+        deleteIgnoreTypesButton4 = new JButton();
+        tableCfgModel = new TableCfgModel();
+        addTypeButton2 = new JButton();
 
         //======== this ========
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0};
-        ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         ((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0E-4};
-        ((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+        ((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
 
         //---- nameLabel ----
         nameLabel.setText(bundle.getString("TableConfigPanel.nameLabel.text"));
@@ -100,11 +188,38 @@ public class TableConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
-        //======== scrollPane4 ========
+        //======== panel1 ========
         {
-            scrollPane4.setViewportView(pksList);
+            panel1.setLayout(new GridBagLayout());
+            ((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+            ((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0, 0};
+            ((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+            panel1.add(pkComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- addPkButton ----
+            addPkButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            panel1.add(addPkButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- deletePkButton ----
+            deletePkButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            panel1.add(deletePkButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+
+            //======== scrollPane1 ========
+            {
+                scrollPane1.setViewportView(pksList);
+            }
+            panel1.add(scrollPane1, new GridBagConstraints(0, 1, 3, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         }
-        add(scrollPane4, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+        add(panel1, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -114,11 +229,38 @@ public class TableConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
-        //======== scrollPane5 ========
+        //======== panel2 ========
         {
-            scrollPane5.setViewportView(updatesList);
+            panel2.setLayout(new GridBagLayout());
+            ((GridBagLayout)panel2.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+            ((GridBagLayout)panel2.getLayout()).rowHeights = new int[] {0, 0, 0};
+            ((GridBagLayout)panel2.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout)panel2.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+            panel2.add(updateComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- addUpdateColumnsButton ----
+            addUpdateColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            panel2.add(addUpdateColumnsButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- deleteUpdateColumnsButton ----
+            deleteUpdateColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            panel2.add(deleteUpdateColumnsButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+
+            //======== scrollPane2 ========
+            {
+                scrollPane2.setViewportView(updatesList);
+            }
+            panel2.add(scrollPane2, new GridBagConstraints(0, 1, 3, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         }
-        add(scrollPane5, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
+        add(panel2, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -128,11 +270,41 @@ public class TableConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
-        //======== scrollPane6 ========
+        //======== panel3 ========
         {
-            scrollPane6.setViewportView(queriesList);
+            panel3.setLayout(new GridBagLayout());
+            ((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
+            ((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {0, 0, 0};
+            ((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+            panel3.add(queriesComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+            panel3.add(queryTypesComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- addQueryColumnButton ----
+            addQueryColumnButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            panel3.add(addQueryColumnButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- deleteQueryColumnsButton ----
+            deleteQueryColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            panel3.add(deleteQueryColumnsButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+
+            //======== scrollPane3 ========
+            {
+                scrollPane3.setViewportView(queriesList);
+            }
+            panel3.add(scrollPane3, new GridBagConstraints(0, 1, 4, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         }
-        add(scrollPane6, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0,
+        add(panel3, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -142,11 +314,41 @@ public class TableConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
-        //======== scrollPane1 ========
+        //======== panel4 ========
         {
-            scrollPane1.setViewportView(showTypesList);
+            panel4.setLayout(new GridBagLayout());
+            ((GridBagLayout)panel4.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
+            ((GridBagLayout)panel4.getLayout()).rowHeights = new int[] {0, 0, 0};
+            ((GridBagLayout)panel4.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout)panel4.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+            panel4.add(showTypeColumnsComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+            panel4.add(showTypesComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- addShowTypeButton2 ----
+            addShowTypeButton2.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            panel4.add(addShowTypeButton2, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- deleteShowTypesButton2 ----
+            deleteShowTypesButton2.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            panel4.add(deleteShowTypesButton2, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+
+            //======== scrollPane4 ========
+            {
+                scrollPane4.setViewportView(showTypesList);
+            }
+            panel4.add(scrollPane4, new GridBagConstraints(0, 1, 4, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         }
-        add(scrollPane1, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0,
+        add(panel4, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -156,11 +358,35 @@ public class TableConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
-        //======== scrollPane2 ========
+        //======== scrollPane5 ========
         {
-            scrollPane2.setViewportView(typesList);
+            scrollPane5.setViewportView(typesList);
         }
-        add(scrollPane2, new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0,
+        add(scrollPane5, new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 5, 5), 0, 0));
+
+        //======== panel5 ========
+        {
+            panel5.setLayout(new GridBagLayout());
+            ((GridBagLayout)panel5.getLayout()).columnWidths = new int[] {0, 0};
+            ((GridBagLayout)panel5.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+            ((GridBagLayout)panel5.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+            ((GridBagLayout)panel5.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+            //---- addTypeButton ----
+            addTypeButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            panel5.add(addTypeButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+
+            //---- ignoreTypesButton3 ----
+            ignoreTypesButton3.setIcon(new ImageIcon(getClass().getResource("/icons/exclude.png")));
+            panel5.add(ignoreTypesButton3, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+        }
+        add(panel5, new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -170,16 +396,55 @@ public class TableConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
-        //======== scrollPane3 ========
+        //======== scrollPane6 ========
         {
-            scrollPane3.setViewportView(ignoreTypesList);
+            scrollPane6.setViewportView(ignoreTypesList);
         }
-        add(scrollPane3, new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0,
+        add(scrollPane6, new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
+        //======== panel6 ========
+        {
+            panel6.setLayout(new GridBagLayout());
+            ((GridBagLayout)panel6.getLayout()).columnWidths = new int[] {0, 0};
+            ((GridBagLayout)panel6.getLayout()).rowHeights = new int[] {0, 0, 0};
+            ((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+            ((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+
+            //---- deleteIgnoreTypesButton4 ----
+            deleteIgnoreTypesButton4.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            panel6.add(deleteIgnoreTypesButton4, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+        }
+        add(panel6, new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 5, 5), 0, 0));
+
+        //---- addTypeButton2 ----
+        addTypeButton2.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+
         //---- bindings ----
         bindingGroup = new BindingGroup();
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("tableCfgModel.name"),
+            nameTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("tableCfgModel.className"),
+            classNameTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
+        bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
+            this, (BeanProperty) BeanProperty.create("tableCfgModel.pks"), pksList));
+        bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
+            this, (BeanProperty) BeanProperty.create("tableCfgModel.updates"), updatesList));
+        bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
+            this, (BeanProperty) BeanProperty.create("tableCfgModel.queries"), queriesList));
+        bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
+            this, (BeanProperty) BeanProperty.create("tableCfgModel.showTypes"), showTypesList));
+        bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
+            this, (BeanProperty) BeanProperty.create("tableCfgModel.types"), typesList));
+        bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
+            this, (BeanProperty) BeanProperty.create("tableCfgModel.ignoreTypes"), ignoreTypesList));
         bindingGroup.bind();
         enablementBindingGroup = new BindingGroup();
         enablementBindingGroup.bind();

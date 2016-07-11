@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -9,7 +9,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "0:1.0, 0"
-			"$rowSpecs": "0, 0, 0, 0, 0:1.0"
+			"$rowSpecs": "0, 0, 0, 0:1.0, 0:1.0"
 			"$alignTop": true
 			"$alignLeft": true
 		} ) {
@@ -17,34 +17,93 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "typeConfigTable"
+					name: "tableConfigTable"
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridheight": 5
+				"gridheight": 4
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "addButton"
-				"text": new FormMessage( null, "TableConfigsPanel.addButton.text" )
+				"toolTipText": new FormMessage( null, "TableConfigPanel.addButton.toolTipText" )
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/new.png" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "editButton"
-				"text": new FormMessage( null, "TableConfigsPanel.editButton.text" )
+				name: "deleteBbutton"
+				"toolTipText": "删除"
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/delete.png" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 1
 			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "deleteBbutton"
-				"text": new FormMessage( null, "TableConfigsPanel.deleteBbutton.text" )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0, 0:1.0"
+				"$rowSpecs": "0:1.0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignLeft": true
+				"$alignTop": true
+			} ) {
+				name: "tableAndTypeConfigPanel"
+				add( new FormComponent( "io.github.howiefh.generator.ui.TableConfigPanel" ) {
+					name: "tableConfigPanel"
+					"border": new javax.swing.border.TitledBorder( "i18nKey=TableConfigPanel.tableConfigPanel.border" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "io.github.howiefh.generator.ui.TypeConfigPanel" ) {
+					name: "typeConfigPanel"
+					"border": new javax.swing.border.TitledBorder( "i18nKey=TableConfigPanel.typeConfigPanel.border" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 1
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
-				"gridy": 2
+				"gridy": 4
+				"gridwidth": 2
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"size": new java.awt.Dimension( 530, 365 )
+		} )
+		add( new FormNonVisual( "java.util.List" ) {
+			name: "tableCfgs"
+			auxiliary() {
+				"JavaCodeGenerator.typeParameters": "io.github.howiefh.generator.ui.model.TableCfgModel"
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 70, 455 )
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "bindingGroup"
+			addBinding( new FormBinding( "tableCfgs", null, "tableConfigTable", "elements" ) {
+				"subBindings": new com.jformdesigner.model.FormBinding[ new FormBinding( null, "name", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_4" )
+					"columnClass": "java.lang.String"
+				}, new FormBinding( null, "className", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_2" )
+					"columnClass": "java.lang.String"
+				}, new FormBinding( null, "pks", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_5" )
+					"columnClass": "java.util.List"
+				}, new FormBinding( null, "updates", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_10" )
+					"columnClass": "java.util.List"
+				}, new FormBinding( null, "queries", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_6" )
+					"columnClass": "java.util.List"
+				}, new FormBinding( null, "showTypes", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_7" )
+					"columnClass": "java.util.List"
+				}, new FormBinding( null, "types", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_9" )
+					"columnClass": "java.util.List"
+				}, new FormBinding( null, "ignoreTypes", null, null ) {
+					"columnName": new FormMessage( null, "TableConfigPanel.tableConfigTable.columnName_3" )
+					"columnClass": "java.util.List"
+				} ]
+			} )
+			addBinding( new FormBinding( "tableConfigTable", "${selectedElements != null}", "deleteBbutton", "enabled" ) )
+			addBinding( new FormBinding( "tableConfigTable", "selectedElement", "tableConfigPanel", "tableCfgModel" ) )
+			addBinding( new FormBinding( "tableConfigPanel", "typesList.selectedElement", "typeConfigPanel", "typeCfgModel" ) )
 		} )
 	}
 }

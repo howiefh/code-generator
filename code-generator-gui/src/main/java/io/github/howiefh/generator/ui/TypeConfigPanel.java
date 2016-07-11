@@ -492,7 +492,7 @@ public class TypeConfigPanel extends JPanel {
 
             //---- ignoreImplementButton ----
             ignoreImplementButton.setToolTipText(bundle.getString("TypeConfigPanel.ignoreImplementButton.toolTipText"));
-            ignoreImplementButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            ignoreImplementButton.setIcon(new ImageIcon(getClass().getResource("/icons/exclude.png")));
             ignoreImplementButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

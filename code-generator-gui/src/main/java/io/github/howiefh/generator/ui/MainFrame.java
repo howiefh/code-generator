@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
     private BaseConfigPanel baseConfigPanel;
     private JScrollPane typeScrollPane;
     private TypeConfigsPanel typeConfigsPanel;
+    private JScrollPane tableScrollPane;
     private TableConfigsPanel tableConfigsPanel;
     private JPanel generatorPanel;
     // End of variables declaration  //GEN-END:variables
@@ -98,6 +99,7 @@ public class MainFrame extends JFrame {
         baseConfigPanel = new BaseConfigPanel();
         typeScrollPane = new JScrollPane();
         typeConfigsPanel = new TypeConfigsPanel();
+        tableScrollPane = new JScrollPane();
         tableConfigsPanel = new TableConfigsPanel();
         generatorPanel = new JPanel();
 
@@ -207,7 +209,12 @@ public class MainFrame extends JFrame {
                         typeScrollPane.setViewportView(typeConfigsPanel);
                     }
                     configTabbedPane.addTab(bundle.getString("Generator.MainFrame.typeConfigsPanel.tab.title"), typeScrollPane);
-                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.tableConfigsPanel.tab.title"), tableConfigsPanel);
+
+                    //======== tableScrollPane ========
+                    {
+                        tableScrollPane.setViewportView(tableConfigsPanel);
+                    }
+                    configTabbedPane.addTab(bundle.getString("Generator.MainFrame.tableConfigsPanel.tab.title"), tableScrollPane);
                 }
                 cardPanel.add(configTabbedPane, "card1");
 

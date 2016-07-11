@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -9,7 +9,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "0, 0, 0:1.0, 0, 0, 0:1.0"
-			"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0:1.0"
+			"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0, 0:1.0"
 			"$hGap": 5
 			"$vGap": 5
 			"$alignLeft": true
@@ -43,10 +43,38 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 2
 			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane4"
-				add( new FormComponent( "javax.swing.JList" ) {
-					name: "pksList"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0, 0, 0"
+				"$rowSpecs": "0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignTop": true
+				"$alignLeft": true
+			} ) {
+				name: "panel1"
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "pkComboBox"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addPkButton"
+					"icon": &SwingIcon0 new com.jformdesigner.model.SwingIcon( 0, "/icons/new.png" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "deletePkButton"
+					"icon": &SwingIcon1 new com.jformdesigner.model.SwingIcon( 0, "/icons/delete.png" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 2
+				} )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane1"
+					add( new FormComponent( "javax.swing.JList" ) {
+						name: "pksList"
+					} )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridy": 1
+					"gridwidth": 3
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
@@ -58,10 +86,38 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 3
 			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane5"
-				add( new FormComponent( "javax.swing.JList" ) {
-					name: "updatesList"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0, 0, 0"
+				"$rowSpecs": "0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignTop": true
+				"$alignLeft": true
+			} ) {
+				name: "panel2"
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "updateComboBox"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addUpdateColumnsButton"
+					"icon": #SwingIcon0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "deleteUpdateColumnsButton"
+					"icon": #SwingIcon1
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 2
+				} )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane2"
+					add( new FormComponent( "javax.swing.JList" ) {
+						name: "updatesList"
+					} )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridy": 1
+					"gridwidth": 3
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
@@ -73,10 +129,43 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 4
 			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane6"
-				add( new FormComponent( "javax.swing.JList" ) {
-					name: "queriesList"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0, 0, 0, 0"
+				"$rowSpecs": "0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignTop": true
+				"$alignLeft": true
+			} ) {
+				name: "panel3"
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "queriesComboBox"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "queryTypesComboBox"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addQueryColumnButton"
+					"icon": #SwingIcon0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 2
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "deleteQueryColumnsButton"
+					"icon": #SwingIcon1
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 3
+				} )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane3"
+					add( new FormComponent( "javax.swing.JList" ) {
+						name: "queriesList"
+					} )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridy": 1
+					"gridwidth": 4
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
@@ -88,10 +177,43 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 5
 			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane1"
-				add( new FormComponent( "javax.swing.JList" ) {
-					name: "showTypesList"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0, 0, 0, 0"
+				"$rowSpecs": "0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignTop": true
+				"$alignLeft": true
+			} ) {
+				name: "panel4"
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "showTypeColumnsComboBox"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "showTypesComboBox"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addShowTypeButton2"
+					"icon": #SwingIcon0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 2
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "deleteShowTypesButton2"
+					"icon": #SwingIcon1
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 3
+				} )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane4"
+					add( new FormComponent( "javax.swing.JList" ) {
+						name: "showTypesList"
+					} )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridy": 1
+					"gridwidth": 4
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
@@ -104,12 +226,35 @@ new FormModel {
 				"gridy": 6
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane2"
+				name: "scrollPane5"
 				add( new FormComponent( "javax.swing.JList" ) {
 					name: "typesList"
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
+				"gridy": 6
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0"
+				"$rowSpecs": "0, 0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignLeft": true
+				"$alignTop": true
+			} ) {
+				name: "panel5"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addTypeButton"
+					"icon": #SwingIcon0
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "ignoreTypesButton3"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/exclude.png" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridy": 1
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 3
 				"gridy": 6
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -119,7 +264,7 @@ new FormModel {
 				"gridy": 7
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane3"
+				name: "scrollPane6"
 				add( new FormComponent( "javax.swing.JList" ) {
 					name: "ignoreTypesList"
 				} )
@@ -127,12 +272,56 @@ new FormModel {
 				"gridx": 2
 				"gridy": 7
 			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0"
+				"$rowSpecs": "0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignLeft": true
+				"$alignTop": true
+			} ) {
+				name: "panel6"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "deleteIgnoreTypesButton4"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/delete.png" )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 3
+				"gridy": 7
+			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 5 )
-			"size": new java.awt.Dimension( 475, 355 )
+			"size": new java.awt.Dimension( 490, 435 )
+		} )
+		add( new FormNonVisual( "java.util.List" ) {
+			name: "columns"
+			auxiliary() {
+				"JavaCodeGenerator.typeParameters": "java.lang.String"
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 5, 475 )
+		} )
+		add( new FormNonVisual( "io.github.howiefh.generator.ui.model.TableCfgModel" ) {
+			name: "tableCfgModel"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 85, 470 )
+		} )
+		add( new FormComponent( "javax.swing.JButton" ) {
+			name: "addTypeButton2"
+			"icon": #SwingIcon0
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 75, 525 )
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "bindingGroup"
+			addBinding( new FormBinding( "this", "tableCfgModel.name", "nameTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "tableCfgModel.className", "classNameTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "tableCfgModel.pks", "pksList", "elements" ) )
+			addBinding( new FormBinding( "this", "tableCfgModel.updates", "updatesList", "elements" ) )
+			addBinding( new FormBinding( "this", "tableCfgModel.queries", "queriesList", "elements" ) )
+			addBinding( new FormBinding( "this", "tableCfgModel.showTypes", "showTypesList", "elements" ) )
+			addBinding( new FormBinding( "this", "tableCfgModel.types", "typesList", "elements" ) )
+			addBinding( new FormBinding( "this", "tableCfgModel.ignoreTypes", "ignoreTypesList", "elements" ) )
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "enablementBindingGroup"
