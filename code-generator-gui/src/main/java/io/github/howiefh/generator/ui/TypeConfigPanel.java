@@ -1,18 +1,26 @@
 package io.github.howiefh.generator.ui;
 
+import com.google.common.io.Files;
+import io.github.howiefh.generator.common.config.Configuration;
+import io.github.howiefh.generator.common.config.ImplementCfg;
 import io.github.howiefh.generator.common.util.StringUtils;
+import io.github.howiefh.generator.ui.handle.SelectFileHandler;
 import io.github.howiefh.generator.ui.model.TypeCfgModel;
-import org.jdesktop.beansbinding.*;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.swingbinding.SwingBindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,6 +31,8 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class TypeConfigPanel extends JPanel {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TypeConfigPanel.class);
+    private SelectFileHandler selectFileHandler;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JLabel nameLabel;
     private JTextField nameTextField;
@@ -45,12 +55,28 @@ public class TypeConfigPanel extends JPanel {
     private JLabel implsLabel;
     private JScrollPane scrollPane2;
     private JList implsList;
+    private JPanel implementBtnPanel;
+    private JButton addImplementButton;
+    private JButton ignoreImplementButton;
     private JLabel ignoreImplsLabel;
     private JScrollPane scrollPane3;
     private JList ignoreImplsList;
+    private JPanel ignoreImplsButtonPanel;
+    private JButton deleteIgnoreImplButton;
     private JPanel addDependenceDialog;
     private JLabel dependenceLabel;
     private JComboBox dependenciesComboBox;
+    private JPanel addImplementDialog;
+    private JLabel implementNameLabel;
+    private JTextField implementNameTextField;
+    private JLabel columnsLabel;
+    private JPanel panel1;
+    private JScrollPane scrollPane4;
+    private JList columnsList;
+    private JButton addColumnsButton;
+    private JScrollPane scrollPane5;
+    private JList implColumnsList;
+    private JButton deleteColumnsButton;
     private TypeCfgModel typeCfgModel;
     private List<java.lang.String> types;
     private BindingGroup bindingGroup;
@@ -113,14 +139,17 @@ public class TypeConfigPanel extends JPanel {
         templateButton.setEnabled(enabled);
         targetDirButton.setEnabled(enabled);
         addDependenceButton.setEnabled(enabled);
+        addImplementButton.setEnabled(enabled);
     }
 
     public TypeConfigPanel() {
         initComponents();
+
+        selectFileHandler = new SelectFileHandler(targetTextField);
     }
 
     private void addDependence(ActionEvent e) {
-        String dep = showTaskDialog("Add dependence");
+        String dep = showDependenciesDialog("Add dependence");
         if (StringUtils.isBlank(dep))
             return;
 
@@ -139,7 +168,7 @@ public class TypeConfigPanel extends JPanel {
         dependenciesList.scrollRectToVisible(dependenciesList.getCellBounds(row, row));
     }
 
-    private String showTaskDialog(String title) {
+    private String showDependenciesDialog(String title) {
         JOptionPane optionPane = new JOptionPane(addDependenceDialog, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
         JDialog dialog = optionPane.createDialog(null, title);
         dialog.setResizable(true);
@@ -149,6 +178,103 @@ public class TypeConfigPanel extends JPanel {
             return null;
 
         return (String) dependenciesComboBox.getSelectedItem();
+    }
+
+    private void deleteDependence(ActionEvent e) {
+        int[] selectedRows = dependenciesList.getSelectedIndices();
+        if (selectedRows.length == 0)
+            return;
+
+        List<String> dependencies = typeCfgModel.getDependencies();
+        // remove items
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            dependencies.remove(selectedRows[i]);
+        }
+        typeCfgModel.setDependencies(dependencies);
+
+        // select row
+        if (dependencies.size() > 0) {
+            int newSel = Math.min(selectedRows[0], dependencies.size() - 1);
+            dependenciesList.setSelectedIndex(newSel);
+            dependenciesList.scrollRectToVisible(dependenciesList.getCellBounds(newSel, newSel));
+        }
+    }
+
+    private void selectTargetDir(ActionEvent e) {
+        selectFileHandler.handleSelectFile();
+    }
+
+    private void editTemplate(ActionEvent e) {
+        String templateDir = Configuration.getConfig().getTemplateDir();
+        File template = new File(templateDir, templateTextField.getText());
+        if (!template.getParentFile().exists()) {
+            try {
+                Files.createParentDirs(template);
+                if (!template.exists()) {
+                    Files.touch(template);
+                    Desktop.getDesktop().open(template);
+                }
+            } catch (IOException e1) {
+                LOGGER.warn("Open {} error.", template.getAbsolutePath());
+            }
+        }
+    }
+
+    private void addImplement(ActionEvent e) {
+        // TODO
+        showImplementsDialog("Add implements");
+    }
+
+    private String showImplementsDialog(String title) {
+        JOptionPane optionPane = new JOptionPane(addImplementDialog, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        JDialog dialog = optionPane.createDialog(null, title);
+        dialog.setResizable(true);
+        dialog.setVisible(true);
+
+        // TODO
+        if (!new Integer(JOptionPane.OK_OPTION).equals(optionPane.getValue()))
+            return null;
+
+        return "";
+    }
+    private void ignoreImplement(ActionEvent e) {
+        int[] selectedRows = implsList.getSelectedIndices();
+        if (selectedRows.length == 0)
+            return;
+
+        List<ImplementCfg> implementCfgs = typeCfgModel.getImpls();
+        List<String> ignoreImpls = typeCfgModel.getIgnoreImpls();
+        // remove items
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            ImplementCfg implementCfg = implementCfgs.get(selectedRows[i]);
+            ignoreImpls.add(implementCfg.getName());
+        }
+        typeCfgModel.setIgnoreImpls(ignoreImpls);
+
+        // select row
+        int row = selectedRows[selectedRows.length - 1];
+        implsList.setSelectedIndex(row);
+        implsList.scrollRectToVisible(implsList.getCellBounds(row, row));
+    }
+
+    private void deleteIgnoreImpl(ActionEvent e) {
+        int[] selectedRows = ignoreImplsList.getSelectedIndices();
+        if (selectedRows.length == 0)
+            return;
+
+        List<String> ignoreImpls = typeCfgModel.getIgnoreImpls();
+        // remove items
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            ignoreImpls.remove(selectedRows[i]);
+        }
+        typeCfgModel.setIgnoreImpls(ignoreImpls);
+
+        // select row
+        if (ignoreImpls.size() > 0) {
+            int newSel = Math.min(selectedRows[0], ignoreImpls.size() - 1);
+            ignoreImplsList.setSelectedIndex(newSel);
+            ignoreImplsList.scrollRectToVisible(ignoreImplsList.getCellBounds(newSel, newSel));
+        }
     }
 
     private void initComponents() {
@@ -175,12 +301,28 @@ public class TypeConfigPanel extends JPanel {
         implsLabel = new JLabel();
         scrollPane2 = new JScrollPane();
         implsList = new JList();
+        implementBtnPanel = new JPanel();
+        addImplementButton = new JButton();
+        ignoreImplementButton = new JButton();
         ignoreImplsLabel = new JLabel();
         scrollPane3 = new JScrollPane();
         ignoreImplsList = new JList();
+        ignoreImplsButtonPanel = new JPanel();
+        deleteIgnoreImplButton = new JButton();
         addDependenceDialog = new JPanel();
         dependenceLabel = new JLabel();
         dependenciesComboBox = new JComboBox();
+        addImplementDialog = new JPanel();
+        implementNameLabel = new JLabel();
+        implementNameTextField = new JTextField();
+        columnsLabel = new JLabel();
+        panel1 = new JPanel();
+        scrollPane4 = new JScrollPane();
+        columnsList = new JList();
+        addColumnsButton = new JButton();
+        scrollPane5 = new JScrollPane();
+        implColumnsList = new JList();
+        deleteColumnsButton = new JButton();
         typeCfgModel = new TypeCfgModel();
 
         //======== this ========
@@ -211,6 +353,12 @@ public class TypeConfigPanel extends JPanel {
         //---- templateButton ----
         templateButton.setToolTipText("\u6253\u5f00\u6a21\u677f\u6587\u4ef6");
         templateButton.setIcon(new ImageIcon(getClass().getResource("/icons/edit.png")));
+        templateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editTemplate(e);
+            }
+        });
         add(templateButton, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
@@ -227,6 +375,12 @@ public class TypeConfigPanel extends JPanel {
         //---- targetDirButton ----
         targetDirButton.setText(bundle.getString("TypeConfigPanel.targetDirButton.text"));
         targetDirButton.setToolTipText("\u9009\u62e9\u76ee\u6807\u76ee\u5f55");
+        targetDirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectTargetDir(e);
+            }
+        });
         add(targetDirButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
@@ -287,6 +441,12 @@ public class TypeConfigPanel extends JPanel {
             //---- deleteDependenceButton ----
             deleteDependenceButton.setToolTipText(bundle.getString("TypeConfigPanel.deleteDependenceButton.toolTipText"));
             deleteDependenceButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            deleteDependenceButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    deleteDependence(e);
+                }
+            });
             dependenciesBtnPanel.add(deleteDependenceButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
@@ -309,6 +469,44 @@ public class TypeConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
+        //======== implementBtnPanel ========
+        {
+            implementBtnPanel.setLayout(new GridBagLayout());
+            ((GridBagLayout)implementBtnPanel.getLayout()).columnWidths = new int[] {0, 0};
+            ((GridBagLayout)implementBtnPanel.getLayout()).rowHeights = new int[] {0, 0, 0};
+            ((GridBagLayout)implementBtnPanel.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+            ((GridBagLayout)implementBtnPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
+
+            //---- addImplementButton ----
+            addImplementButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            addImplementButton.setToolTipText(bundle.getString("TypeConfigPanel.addImplementButton.toolTipText"));
+            addImplementButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addImplement(e);
+                }
+            });
+            implementBtnPanel.add(addImplementButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 0), 0, 0));
+
+            //---- ignoreImplementButton ----
+            ignoreImplementButton.setToolTipText(bundle.getString("TypeConfigPanel.ignoreImplementButton.toolTipText"));
+            ignoreImplementButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            ignoreImplementButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ignoreImplement(e);
+                }
+            });
+            implementBtnPanel.add(ignoreImplementButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
+        }
+        add(implementBtnPanel, new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 5, 5), 0, 0));
+
         //---- ignoreImplsLabel ----
         ignoreImplsLabel.setText(bundle.getString("TypeConfigPanel.ignoreImplsLabel.text"));
         add(ignoreImplsLabel, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0,
@@ -320,6 +518,31 @@ public class TypeConfigPanel extends JPanel {
             scrollPane3.setViewportView(ignoreImplsList);
         }
         add(scrollPane3, new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 5, 5), 0, 0));
+
+        //======== ignoreImplsButtonPanel ========
+        {
+            ignoreImplsButtonPanel.setLayout(new GridBagLayout());
+            ((GridBagLayout)ignoreImplsButtonPanel.getLayout()).columnWidths = new int[] {0, 0};
+            ((GridBagLayout)ignoreImplsButtonPanel.getLayout()).rowHeights = new int[] {0, 0};
+            ((GridBagLayout)ignoreImplsButtonPanel.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
+            ((GridBagLayout)ignoreImplsButtonPanel.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+
+            //---- deleteIgnoreImplButton ----
+            deleteIgnoreImplButton.setToolTipText(bundle.getString("TypeConfigPanel.deleteIgnoreImplButton.toolTipText"));
+            deleteIgnoreImplButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            deleteIgnoreImplButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    deleteIgnoreImpl(e);
+                }
+            });
+            ignoreImplsButtonPanel.add(deleteIgnoreImplButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
+        }
+        add(ignoreImplsButtonPanel, new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -344,6 +567,70 @@ public class TypeConfigPanel extends JPanel {
                 new Insets(0, 0, 5, 5), 0, 0));
         }
 
+        //======== addImplementDialog ========
+        {
+            addImplementDialog.setLayout(new GridBagLayout());
+            ((GridBagLayout)addImplementDialog.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
+            ((GridBagLayout)addImplementDialog.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+            ((GridBagLayout)addImplementDialog.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 1.0E-4};
+            ((GridBagLayout)addImplementDialog.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+
+            //---- implementNameLabel ----
+            implementNameLabel.setText(bundle.getString("TypeConfigPanel.implementNameLabel.text"));
+            addImplementDialog.add(implementNameLabel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+            addImplementDialog.add(implementNameTextField, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+
+            //---- columnsLabel ----
+            columnsLabel.setText(bundle.getString("TypeConfigPanel.columnsLabel.text"));
+            addImplementDialog.add(columnsLabel, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 5), 0, 0));
+
+            //======== panel1 ========
+            {
+                panel1.setLayout(new GridBagLayout());
+                ((GridBagLayout)panel1.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+                ((GridBagLayout)panel1.getLayout()).rowHeights = new int[] {0, 0, 0, 0};
+                ((GridBagLayout)panel1.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+                ((GridBagLayout)panel1.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0, 1.0E-4};
+
+                //======== scrollPane4 ========
+                {
+                    scrollPane4.setViewportView(columnsList);
+                }
+                panel1.add(scrollPane4, new GridBagConstraints(0, 0, 1, 3, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 5), 0, 0));
+
+                //---- addColumnsButton ----
+                addColumnsButton.setText(bundle.getString("TypeConfigPanel.addColumnsButton.text"));
+                panel1.add(addColumnsButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 5, 5), 0, 0));
+
+                //======== scrollPane5 ========
+                {
+                    scrollPane5.setViewportView(implColumnsList);
+                }
+                panel1.add(scrollPane5, new GridBagConstraints(2, 0, 1, 3, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+
+                //---- deleteColumnsButton ----
+                deleteColumnsButton.setText(bundle.getString("TypeConfigPanel.deleteColumnsButton.text"));
+                panel1.add(deleteColumnsButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 5, 5), 0, 0));
+            }
+            addImplementDialog.add(panel1, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 5), 0, 0));
+        }
+
         //---- bindings ----
         bindingGroup = new BindingGroup();
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
@@ -354,7 +641,7 @@ public class TypeConfigPanel extends JPanel {
             templateTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             this, BeanProperty.create("typeCfgModel.target"),
-            targetTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
+            targetTextField, BeanProperty.create("text")));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             this, BeanProperty.create("typeCfgModel.pkg"),
             packageTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
@@ -369,14 +656,20 @@ public class TypeConfigPanel extends JPanel {
             this, (BeanProperty) BeanProperty.create("typeCfgModel.ignoreImpls"), ignoreImplsList));
         bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
             this, (BeanProperty) BeanProperty.create("types"), dependenciesComboBox));
-        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
-            dependenciesList, ELProperty.create("${selectedElement != null}"),
-            deleteDependenceButton, BeanProperty.create("enabled")));
         bindingGroup.bind();
         enablementBindingGroup = new BindingGroup();
         enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            ignoreImplsList, ELProperty.create("${selectedElements != null}"),
+            deleteIgnoreImplButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            implsList, ELProperty.create("${selectedElements != null}"),
+            ignoreImplementButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             this, ELProperty.create("${typeCfgModel != null}"),
             this, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            dependenciesList, ELProperty.create("${selectedElements != null}"),
+            deleteDependenceButton, BeanProperty.create("enabled")));
         enablementBindingGroup.bind();
         // End of component initialization  //GEN-END:initComponents
     }

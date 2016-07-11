@@ -40,7 +40,17 @@
       "target": "D:/",
       "pkg": "io.github.howiefh.dto",
       "suffix": "${implClassName}.java",
-      "dependencies": []
+      "dependencies": [],
+      "impls": [
+        {
+          "name": "UserRequest",
+          "columns": [
+            "username",
+            "password",
+            "email"
+          ]
+        }
+      ]
     },
     {
       "name": "convert",

@@ -1,6 +1,7 @@
 package io.github.howiefh.generator.ui;
 
 import io.github.howiefh.generator.common.enums.DBType;
+import io.github.howiefh.generator.ui.handle.SelectFileHandler;
 import io.github.howiefh.generator.ui.model.ConfigModel;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -12,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class BaseConfigPanel extends JPanel {
+    private SelectFileHandler  selectFileHandler;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JLabel authorLabel;
     private JTextField authorTextField;
@@ -53,21 +54,14 @@ public class BaseConfigPanel extends JPanel {
         for (DBType dbType: DBType.values()){
             dbTypes.add(dbType.getCode());
         }
+
         initComponents();
+
+        selectFileHandler = new SelectFileHandler(templateDirTextField);
     }
 
     private void selectFileActionPerformed(ActionEvent e) {
-        final JTextField textField = templateDirTextField;
-        JFileChooser fileChooser = new JFileChooser();
-        File currentDir = new File(System.getProperty("user.dir"));
-        fileChooser.setCurrentDirectory(currentDir);
-        fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int returnVal = fileChooser.showOpenDialog(textField.getRootPane());
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            textField.setText(selectedFile.getAbsolutePath());
-        }
+        selectFileHandler.handleSelectFile();
     }
 
     private void initComponents() {
@@ -208,7 +202,7 @@ public class BaseConfigPanel extends JPanel {
             sinceTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             configModel, BeanProperty.create("templateDir"),
-            templateDirTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
+            templateDirTextField, BeanProperty.create("text")));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             configModel, BeanProperty.create("database"),
             databaseTextField, BeanProperty.create("selectedItem")));
