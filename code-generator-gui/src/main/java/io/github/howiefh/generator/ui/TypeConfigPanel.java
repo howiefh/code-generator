@@ -607,7 +607,8 @@ public class TypeConfigPanel extends JPanel {
                     new Insets(0, 0, 0, 5), 0, 0));
 
                 //---- addColumnsButton ----
-                addColumnsButton.setText(bundle.getString("TypeConfigPanel.addColumnsButton.text"));
+                addColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/arrow_right.png")));
+                addColumnsButton.setToolTipText(bundle.getString("TypeConfigPanel.addColumnsButton.toolTipText"));
                 panel1.add(addColumnsButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
                     GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                     new Insets(0, 0, 5, 5), 0, 0));
@@ -621,7 +622,8 @@ public class TypeConfigPanel extends JPanel {
                     new Insets(0, 0, 0, 0), 0, 0));
 
                 //---- deleteColumnsButton ----
-                deleteColumnsButton.setText(bundle.getString("TypeConfigPanel.deleteColumnsButton.text"));
+                deleteColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+                deleteColumnsButton.setToolTipText(bundle.getString("TypeConfigPanel.deleteColumnsButton.toolTipText"));
                 panel1.add(deleteColumnsButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
                     GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                     new Insets(0, 0, 5, 5), 0, 0));

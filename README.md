@@ -14,7 +14,7 @@
  configAttrs       | `Map<String, Object>`                                  | 配置文件对应的config实例的扩展字段
  type.name + 'Pkg' | String                                                 | 配置文件中类型的目标文件的类包
  tableCfg          | io.github.howiefh.generator.common.config.TableCfg     | 配置文件中的当前表配置
- typeCfg           | io.github.howiefh.generator.common.config.TypeCfg      | 配置文件中的当前类型配置
+ tableCfg           | io.github.howiefh.generator.common.config.TypeCfg      | 配置文件中的当前类型配置
  implementCfg      | io.github.howiefh.generator.common.config.ImplementCfg | 配置文件中的当前类型的实现配置
  tableAttrs        | `Map<String, Object>`                                  | 配置文件中当前表配置的扩展字段
  typeAttrs         | `Map<String, Object>`                                  | 配置文件中当前类型配置的扩展字段

@@ -2,6 +2,7 @@ package io.github.howiefh.generator.ui.model;
 
 import io.github.howiefh.generator.common.config.ImplementCfg;
 import io.github.howiefh.generator.common.config.TypeCfg;
+import io.github.howiefh.generator.common.util.CollectionUtils;
 
 import java.util.*;
 
@@ -139,7 +140,7 @@ public class TypeCfgModel extends AbstractModel {
      * @return ignoreImpls
      */
     public List<String> getIgnoreImpls() {
-        return typeCfg.getIgnoreImpls() == null ? null : new ArrayList<String>(typeCfg.getIgnoreImpls());
+        return CollectionUtils.convertSetToList(typeCfg.getIgnoreImpls());
     }
 
     /**
@@ -149,7 +150,7 @@ public class TypeCfgModel extends AbstractModel {
      */
     public void setIgnoreImpls(List<String> ignoreImpls) {
         List<String> oldValue = getIgnoreImpls();
-        typeCfg.setIgnoreImpls(ignoreImpls == null ? null : new HashSet<String>(ignoreImpls));
+        typeCfg.setIgnoreImpls(CollectionUtils.convertListToSet(ignoreImpls));
         changeSupport.firePropertyChange("ignoreImpls", oldValue, ignoreImpls);
     }
 
@@ -159,7 +160,7 @@ public class TypeCfgModel extends AbstractModel {
      * @return impls
      */
     public List<ImplementCfg> getImpls() {
-        return typeCfg.getImpls() == null ? null : new ArrayList<ImplementCfg>(typeCfg.getImpls());
+        return CollectionUtils.convertSetToList(typeCfg.getImpls());
     }
 
     /**
@@ -169,7 +170,7 @@ public class TypeCfgModel extends AbstractModel {
      */
     public void setImpls(List<ImplementCfg> impls) {
         List<ImplementCfg> oldValue = getImpls();
-        typeCfg.setImpls(impls == null ? null : new HashSet<ImplementCfg>(impls));
+        typeCfg.setImpls(CollectionUtils.convertListToSet(impls));
         changeSupport.firePropertyChange("impls", oldValue, impls);
     }
 
@@ -179,7 +180,7 @@ public class TypeCfgModel extends AbstractModel {
      * @return dependencies
      */
     public List<String> getDependencies() {
-        return typeCfg.getDependencies() == null ? null : new ArrayList<String>(typeCfg.getDependencies());
+        return CollectionUtils.convertSetToList(typeCfg.getDependencies());
     }
 
     /**
@@ -189,7 +190,7 @@ public class TypeCfgModel extends AbstractModel {
      */
     public void setDependencies(List<String> dependencies) {
         List<String> oldValue = getDependencies();
-        typeCfg.setDependencies(dependencies == null ? null : new HashSet<String>(dependencies));
+        typeCfg.setDependencies(CollectionUtils.convertListToSet(dependencies));
         changeSupport.firePropertyChange("dependencies", oldValue, dependencies);
     }
 

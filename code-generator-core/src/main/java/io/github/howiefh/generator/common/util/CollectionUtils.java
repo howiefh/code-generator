@@ -72,4 +72,54 @@ public class CollectionUtils {
     public static <K, V> Map<K, V> emptyMapIfNull(final Map<K, V> map) {
         return map == null ? Collections.<K, V>emptyMap() : map;
     }
+
+    /**
+     * 将map转换为实体列表
+     *
+     * @param map
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public static <K, V> List<Map.Entry<K, V>> convertMapToEntryList(final Map<K, V> map) {
+        return map == null ? null : new ArrayList<Map.Entry<K, V>>(map.entrySet());
+    }
+
+    /**
+     * 将实体列表转换为map
+     * @param list
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public static <K, V> Map<K, V> convertEntryListToMap(final List<Map.Entry<K, V>> list) {
+        if (list == null) {
+            return null;
+        }
+        Map<K,V> map = new HashMap<K, V>();
+        for (Map.Entry<K,V> entry: list) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return map;
+    }
+
+    /**
+     * List转Set
+     * @param list
+     * @param <E>
+     * @return
+     */
+    public static <E> Set<E> convertListToSet(final List<E> list) {
+        return list == null ? null : new HashSet<E>(list);
+    }
+
+    /**
+     * Set转List
+     * @param set
+     * @param <E>
+     * @return
+     */
+    public static <E> List<E> convertSetToList(final Set<E> set) {
+        return set == null ? null : new ArrayList<E>(set);
+    }
 }

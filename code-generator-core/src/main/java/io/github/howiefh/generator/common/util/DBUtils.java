@@ -38,7 +38,7 @@ public class DBUtils {
                 if (StringUtils.isBlank(className)) {
                     table.setClassName(StringUtils.toCapitalizeCamelCase(table.getName()));
                 } else {
-                    table.setClassName(StringUtils.toCapitalizeCamelCase(className));
+                    table.setClassName(className);
                 }
 
                 // 添加列

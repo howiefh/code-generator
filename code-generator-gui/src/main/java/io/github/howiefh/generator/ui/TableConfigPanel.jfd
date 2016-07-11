@@ -1,0 +1,141 @@
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "lang"
+	"i18n.bundleName": "language"
+	"i18n.keyPrefix": "TableConfigPanel"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0, 0, 0:1.0, 0, 0, 0:1.0"
+			"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0:1.0"
+			"$hGap": 5
+			"$vGap": 5
+			"$alignLeft": true
+			"$alignTop": true
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "nameLabel"
+				"text": new FormMessage( null, "TableConfigPanel.nameLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "nameTextField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "classNameLabel"
+				"text": new FormMessage( null, "TableConfigPanel.classNameLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "classNameTextField"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "pksLabel"
+				"text": new FormMessage( null, "TableConfigPanel.pksLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 2
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane4"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "pksList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "updatesLabel"
+				"text": new FormMessage( null, "TableConfigPanel.updatesLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 3
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane5"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "updatesList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "queriesLabel"
+				"text": new FormMessage( null, "TableConfigPanel.queriesLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 4
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane6"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "queriesList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 4
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "showTypesLabel"
+				"text": new FormMessage( null, "TableConfigPanel.showTypesLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 5
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "showTypesList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "typesLabel"
+				"text": new FormMessage( null, "TableConfigPanel.typesLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 6
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane2"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "typesList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 6
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ignoreTypesLabel"
+				"text": new FormMessage( null, "TableConfigPanel.ignoreTypesLabel.text" )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 7
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane3"
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "ignoreTypesList"
+				} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 7
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 5 )
+			"size": new java.awt.Dimension( 475, 355 )
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "bindingGroup"
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "enablementBindingGroup"
+		} )
+	}
+}
