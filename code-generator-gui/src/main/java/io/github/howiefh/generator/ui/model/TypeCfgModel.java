@@ -11,26 +11,32 @@ import java.util.*;
  * @version 1.0
  * @since 1.0
  */
-public class TypeCfgModel extends AbstractModel {
+public class TypeCfgModel extends AbstractModel<TypeCfg> {
     private static final long serialVersionUID = -2446985629137449536L;
 
     private TypeCfg typeCfg;
 
     public TypeCfgModel() {
-        typeCfg = new TypeCfg();
+        this(new TypeCfg());
+    }
+
+    public TypeCfgModel(TypeCfg typeCfg) {
+        this.typeCfg = typeCfg;
     }
 
     /**
      * @return typeCfg
      */
-    public TypeCfg getTypeCfg() {
+    @Override
+    public TypeCfg getEntry() {
         return typeCfg;
     }
 
     /**
      * @param typeCfg
      */
-    public void setTypeCfg(TypeCfg typeCfg) {
+    @Override
+    public void setEntry(TypeCfg typeCfg) {
         this.typeCfg = typeCfg;
     }
 

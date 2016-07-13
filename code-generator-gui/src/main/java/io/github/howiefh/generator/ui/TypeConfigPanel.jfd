@@ -290,6 +290,7 @@ new FormModel {
 					name: "addColumnsButton"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/arrow_right.png" )
 					"toolTipText": new FormMessage( null, "TypeConfigPanel.addColumnsButton.toolTipText" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addImplColumns", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 					"gridx": 1
 				} )
@@ -306,6 +307,7 @@ new FormModel {
 					name: "deleteColumnsButton"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/delete.png" )
 					"toolTipText": new FormMessage( null, "TypeConfigPanel.deleteColumnsButton.toolTipText" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "deleteImplColumns", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 					"gridx": 1
 					"gridy": 1

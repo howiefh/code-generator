@@ -13,12 +13,26 @@ import java.util.Set;
  * @version 1.0
  * @since 1.0
  */
-public class ConfigModel extends AbstractModel {
+public class ConfigModel extends AbstractModel<Config> {
     private static final long serialVersionUID = 1349713680725743246L;
     private Config config;
 
+    public ConfigModel(Config config) {
+        this.config = config;
+    }
+
     public ConfigModel() {
-        config = Configuration.getConfig();
+        this(Configuration.getConfig());
+    }
+
+    @Override
+    public Config getEntry() {
+        return config;
+    }
+
+    @Override
+    public void setEntry(Config config) {
+        this.config = config;
     }
 
     /**

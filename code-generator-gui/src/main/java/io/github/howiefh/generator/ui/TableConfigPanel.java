@@ -9,6 +9,8 @@ import org.jdesktop.swingbinding.SwingBindings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -33,7 +35,7 @@ public class TableConfigPanel extends JPanel {
     private JLabel updatesLabel;
     private JPanel panel2;
     private JComboBox updateComboBox;
-    private JButton addUpdateColumnsButton;
+    private JButton addUpdateColumnButton;
     private JButton deleteUpdateColumnsButton;
     private JScrollPane scrollPane2;
     private JList updatesList;
@@ -49,8 +51,8 @@ public class TableConfigPanel extends JPanel {
     private JPanel panel4;
     private JComboBox showTypeColumnsComboBox;
     private JComboBox showTypesComboBox;
-    private JButton addShowTypeButton2;
-    private JButton deleteShowTypesButton2;
+    private JButton addShowTypeButton;
+    private JButton deleteShowTypesButton;
     private JScrollPane scrollPane4;
     private JList showTypesList;
     private JLabel typesLabel;
@@ -63,7 +65,7 @@ public class TableConfigPanel extends JPanel {
     private JScrollPane scrollPane6;
     private JList ignoreTypesList;
     private JPanel panel6;
-    private JButton deleteIgnoreTypesButton4;
+    private JButton deleteIgnoreTypesButton;
     private List<java.lang.String> columns;
     private TableCfgModel tableCfgModel;
     private JButton addTypeButton2;
@@ -106,6 +108,50 @@ public class TableConfigPanel extends JPanel {
         initComponents();
     }
 
+    private void addPk(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void deletePks(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void addUpdateColumn(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void deleteUpdateColumns(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void addQueryColumn(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void deleteQueryColumns(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void addShowType(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void deleteShowTypes(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void addType(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void ignoreTypes(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void deleteIgnoreTypes(ActionEvent e) {
+        // TODO add your code here
+    }
+
     private void initComponents() {
         // Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         ResourceBundle bundle = ResourceBundle.getBundle("lang.language");
@@ -123,7 +169,7 @@ public class TableConfigPanel extends JPanel {
         updatesLabel = new JLabel();
         panel2 = new JPanel();
         updateComboBox = new JComboBox();
-        addUpdateColumnsButton = new JButton();
+        addUpdateColumnButton = new JButton();
         deleteUpdateColumnsButton = new JButton();
         scrollPane2 = new JScrollPane();
         updatesList = new JList();
@@ -139,8 +185,8 @@ public class TableConfigPanel extends JPanel {
         panel4 = new JPanel();
         showTypeColumnsComboBox = new JComboBox();
         showTypesComboBox = new JComboBox();
-        addShowTypeButton2 = new JButton();
-        deleteShowTypesButton2 = new JButton();
+        addShowTypeButton = new JButton();
+        deleteShowTypesButton = new JButton();
         scrollPane4 = new JScrollPane();
         showTypesList = new JList();
         typesLabel = new JLabel();
@@ -153,7 +199,7 @@ public class TableConfigPanel extends JPanel {
         scrollPane6 = new JScrollPane();
         ignoreTypesList = new JList();
         panel6 = new JPanel();
-        deleteIgnoreTypesButton4 = new JButton();
+        deleteIgnoreTypesButton = new JButton();
         tableCfgModel = new TableCfgModel();
         addTypeButton2 = new JButton();
 
@@ -201,12 +247,24 @@ public class TableConfigPanel extends JPanel {
 
             //---- addPkButton ----
             addPkButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            addPkButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addPk(e);
+                }
+            });
             panel1.add(addPkButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
 
             //---- deletePkButton ----
             deletePkButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            deletePkButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    deletePks(e);
+                }
+            });
             panel1.add(deletePkButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
@@ -240,14 +298,26 @@ public class TableConfigPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
 
-            //---- addUpdateColumnsButton ----
-            addUpdateColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
-            panel2.add(addUpdateColumnsButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+            //---- addUpdateColumnButton ----
+            addUpdateColumnButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            addUpdateColumnButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addUpdateColumn(e);
+                }
+            });
+            panel2.add(addUpdateColumnButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
 
             //---- deleteUpdateColumnsButton ----
             deleteUpdateColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            deleteUpdateColumnsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    deleteUpdateColumns(e);
+                }
+            });
             panel2.add(deleteUpdateColumnsButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
@@ -286,12 +356,24 @@ public class TableConfigPanel extends JPanel {
 
             //---- addQueryColumnButton ----
             addQueryColumnButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            addQueryColumnButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addQueryColumn(e);
+                }
+            });
             panel3.add(addQueryColumnButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
 
             //---- deleteQueryColumnsButton ----
             deleteQueryColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            deleteQueryColumnsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    deleteQueryColumns(e);
+                }
+            });
             panel3.add(deleteQueryColumnsButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
@@ -328,15 +410,27 @@ public class TableConfigPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
 
-            //---- addShowTypeButton2 ----
-            addShowTypeButton2.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
-            panel4.add(addShowTypeButton2, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+            //---- addShowTypeButton ----
+            addShowTypeButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            addShowTypeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addShowType(e);
+                }
+            });
+            panel4.add(addShowTypeButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 5), 0, 0));
 
-            //---- deleteShowTypesButton2 ----
-            deleteShowTypesButton2.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
-            panel4.add(deleteShowTypesButton2, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+            //---- deleteShowTypesButton ----
+            deleteShowTypesButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            deleteShowTypesButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    deleteShowTypes(e);
+                }
+            });
+            panel4.add(deleteShowTypesButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
 
@@ -376,12 +470,24 @@ public class TableConfigPanel extends JPanel {
 
             //---- addTypeButton ----
             addTypeButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+            addTypeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addType(e);
+                }
+            });
             panel5.add(addTypeButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
 
             //---- ignoreTypesButton3 ----
             ignoreTypesButton3.setIcon(new ImageIcon(getClass().getResource("/icons/exclude.png")));
+            ignoreTypesButton3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ignoreTypes(e);
+                }
+            });
             panel5.add(ignoreTypesButton3, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
@@ -412,9 +518,15 @@ public class TableConfigPanel extends JPanel {
             ((GridBagLayout)panel6.getLayout()).columnWeights = new double[] {0.0, 1.0E-4};
             ((GridBagLayout)panel6.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
 
-            //---- deleteIgnoreTypesButton4 ----
-            deleteIgnoreTypesButton4.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
-            panel6.add(deleteIgnoreTypesButton4, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+            //---- deleteIgnoreTypesButton ----
+            deleteIgnoreTypesButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+            deleteIgnoreTypesButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    deleteIgnoreTypes(e);
+                }
+            });
+            panel6.add(deleteIgnoreTypesButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
         }

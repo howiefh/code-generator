@@ -43,8 +43,7 @@ public class TableConfigsPanel extends JPanel {
         config = Configuration.getConfig();
         tableCfgs = ObservableCollections.observableList(new ArrayList<TableCfgModel>());
         for (TableCfg tableCfg : config.getTables()) {
-            TableCfgModel tableCfgModel = new TableCfgModel();
-            tableCfgModel.setTableCfg(tableCfg);
+            TableCfgModel tableCfgModel = new TableCfgModel(tableCfg);
             tableCfgs.add(tableCfgModel);
         }
 

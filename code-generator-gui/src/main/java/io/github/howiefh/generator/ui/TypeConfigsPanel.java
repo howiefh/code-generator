@@ -48,8 +48,7 @@ public class TypeConfigsPanel extends JPanel {
         for (TypeCfg typeCfg : config.getTypes()) {
             types.add(typeCfg.getName());
 
-            TypeCfgModel typeCfgModel = new TypeCfgModel();
-            typeCfgModel.setTypeCfg(typeCfg);
+            TypeCfgModel typeCfgModel = new TypeCfgModel(typeCfg);
             typeCfgs.add(typeCfgModel);
         }
 
@@ -77,7 +76,7 @@ public class TypeConfigsPanel extends JPanel {
     private void newTypeConfig(ActionEvent e) {
         TypeCfgModel typeCfgModel = new TypeCfgModel();
         typeCfgs.add(typeCfgModel);
-        config.getTypes().add(typeCfgModel.getTypeCfg());
+        config.getTypes().add(typeCfgModel.getEntry());
 
         // select new task in table and scroll row to visible area
         int row = typeCfgs.size() - 1;
@@ -101,7 +100,7 @@ public class TypeConfigsPanel extends JPanel {
 
         // remove items
         for (int i = selectedRows.length - 1; i >= 0; i--) {
-            TypeCfg typeCfg = typeCfgs.get(selectedRows[i]).getTypeCfg();
+            TypeCfg typeCfg = typeCfgs.get(selectedRows[i]).getEntry();
             typeCfgs.remove(selectedRows[i]);
 
             config.getTypes().remove(typeCfg);

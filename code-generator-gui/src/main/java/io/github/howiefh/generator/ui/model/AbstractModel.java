@@ -10,7 +10,7 @@ import java.io.Serializable;
  * The Beans Binding library invokes {@link #addPropertyChangeListener} and
  * {@link #removePropertyChangeListener} and listens to property changes.
  */
-public class AbstractModel implements ObservableModel, Serializable {
+public abstract class AbstractModel<T> implements WrapModel<T>, ObservableModel, Serializable {
 
     private static final long serialVersionUID = -383058655678905296L;
     protected final PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);

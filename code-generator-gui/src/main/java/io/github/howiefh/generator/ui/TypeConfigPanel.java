@@ -277,6 +277,14 @@ public class TypeConfigPanel extends JPanel {
         }
     }
 
+    private void addImplColumns(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void deleteImplColumns(ActionEvent e) {
+        // TODO add your code here
+    }
+
     private void initComponents() {
         // Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         ResourceBundle bundle = ResourceBundle.getBundle("lang.language");
@@ -609,6 +617,12 @@ public class TypeConfigPanel extends JPanel {
                 //---- addColumnsButton ----
                 addColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/arrow_right.png")));
                 addColumnsButton.setToolTipText(bundle.getString("TypeConfigPanel.addColumnsButton.toolTipText"));
+                addColumnsButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        addImplColumns(e);
+                    }
+                });
                 panel1.add(addColumnsButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
                     GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                     new Insets(0, 0, 5, 5), 0, 0));
@@ -624,6 +638,12 @@ public class TypeConfigPanel extends JPanel {
                 //---- deleteColumnsButton ----
                 deleteColumnsButton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
                 deleteColumnsButton.setToolTipText(bundle.getString("TypeConfigPanel.deleteColumnsButton.toolTipText"));
+                deleteColumnsButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        deleteImplColumns(e);
+                    }
+                });
                 panel1.add(deleteColumnsButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
                     GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                     new Insets(0, 0, 5, 5), 0, 0));

@@ -1,35 +1,58 @@
 package io.github.howiefh.generator.ui.model;
 
 import io.github.howiefh.generator.common.config.TableCfg;
-import io.github.howiefh.generator.common.config.TypeCfg;
 import io.github.howiefh.generator.common.util.CollectionUtils;
+import io.github.howiefh.generator.ui.util.WrapList;
 
-import java.util.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author fenghao, 2016/7/11
  * @version 1.0
  * @since 1.0
  */
-public class TableCfgModel extends AbstractModel {
+public class TableCfgModel extends AbstractModel<TableCfg> {
     private static final long serialVersionUID = 2605151232541360423L;
     private TableCfg tableCfg;
+    private List<TypeCfgModel> types;
+
 
     public TableCfgModel() {
-        tableCfg = new TableCfg();
+        this(new TableCfg());
     }
 
-    /**
-     * @return tableCfg
-     */
-    public TableCfg getTableCfg() {
+    public TableCfgModel(TableCfg tableCfg) {
+        this.tableCfg = tableCfg;
+        if (tableCfg.getTypes() == null) {
+            types = new WrapList<TypeCfgModel>();
+            tableCfg.setTypes(((WrapList)types).getEntries());
+        } else {
+            try {
+                types = new WrapList<TypeCfgModel>(tableCfg.getTypes(), TypeCfgModel.class);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public TableCfg getEntry() {
         return tableCfg;
     }
 
     /**
      * @param tableCfg
      */
-    public void setTableCfg(TableCfg tableCfg) {
+    @Override
+    public void setEntry(TableCfg tableCfg) {
         this.tableCfg = tableCfg;
     }
 
@@ -178,8 +201,8 @@ public class TableCfgModel extends AbstractModel {
      *
      * @return types
      */
-    public List<TypeCfg> getTypes() {
-        return CollectionUtils.convertSetToList(tableCfg.getTypes());
+    public List<TypeCfgModel> getTypes() {
+        return types;
     }
 
     /**
@@ -187,9 +210,9 @@ public class TableCfgModel extends AbstractModel {
      *
      * @param types
      */
-    public void setTypes(List<TypeCfg> types) {
+    public void setTypes(List<TypeCfgModel> types) {
         List<String> oldValue = getIgnoreTypes();
-        tableCfg.setTypes(CollectionUtils.convertListToSet(types));
+        this.types = types;
         changeSupport.firePropertyChange("types", oldValue, types);
     }
 
