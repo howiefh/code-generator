@@ -344,13 +344,14 @@ new FormModel {
 			addBinding( new FormBinding( "this", "typeCfgModel.impls", "implsList", "elements" ) )
 			addBinding( new FormBinding( "this", "typeCfgModel.ignoreImpls", "ignoreImplsList", "elements" ) )
 			addBinding( new FormBinding( "this", "types", "dependenciesComboBox", "elements" ) )
+			addBinding( new FormBinding( "templateTextField", "${text != \"\"}", "templateButton", "enabled" ) )
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "enablementBindingGroup"
-			addBinding( new FormBinding( "ignoreImplsList", "${selectedElements != null}", "deleteIgnoreImplButton", "enabled" ) )
-			addBinding( new FormBinding( "implsList", "${selectedElements != null}", "ignoreImplementButton", "enabled" ) )
+			addBinding( new FormBinding( "ignoreImplsList", "${selectedElement != null}", "deleteIgnoreImplButton", "enabled" ) )
+			addBinding( new FormBinding( "implsList", "${selectedElement != null}", "ignoreImplementButton", "enabled" ) )
 			addBinding( new FormBinding( "this", "${typeCfgModel != null}", "this", "enabled" ) )
-			addBinding( new FormBinding( "dependenciesList", "${selectedElements != null}", "deleteDependenceButton", "enabled" ) )
+			addBinding( new FormBinding( "dependenciesList", "${selectedElement != null}", "deleteDependenceButton", "enabled" ) )
 		} )
 	}
 }

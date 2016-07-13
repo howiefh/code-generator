@@ -1,10 +1,14 @@
 package io.github.howiefh.generator.ui;
 
+import com.google.common.collect.Lists;
+import io.github.howiefh.generator.ui.handle.JListActionHandler;
 import io.github.howiefh.generator.ui.model.TableCfgModel;
+import io.github.howiefh.generator.ui.util.SimpleEntry;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.SwingBindings;
 
 import javax.swing.*;
@@ -20,6 +24,7 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class TableConfigPanel extends JPanel {
+    private JListActionHandler listActionHandler;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JLabel nameLabel;
     private JTextField nameTextField;
@@ -68,11 +73,59 @@ public class TableConfigPanel extends JPanel {
     private JButton deleteIgnoreTypesButton;
     private List<java.lang.String> columns;
     private TableCfgModel tableCfgModel;
-    private JButton addTypeButton2;
+    private List<java.lang.String> queryTypes;
+    private List<java.lang.String> showTypes;
     private BindingGroup bindingGroup;
     private BindingGroup enablementBindingGroup;
     // End of variables declaration  //GEN-END:variables
 
+    /**
+     * @return queryTypes
+     */
+    public List<String> getQueryTypes() {
+        return queryTypes;
+    }
+
+    /**
+     * @param queryTypes
+     */
+    public void setQueryTypes(List<String> queryTypes) {
+        List<String> oldValue = getQueryTypes();
+        this.queryTypes = queryTypes;
+        firePropertyChange("queryTypes", oldValue, queryTypes);
+    }
+
+    /**
+     * @return showTypes
+     */
+    public List<String> getShowTypes() {
+        return showTypes;
+    }
+
+    /**
+     * @param showTypes
+     */
+    public void setShowTypes(List<String> showTypes) {
+        List<String> oldValue = getShowTypes();
+        this.showTypes = showTypes;
+        firePropertyChange("showTypes", oldValue, showTypes);
+    }
+
+    /**
+     * @return columns
+     */
+    public List<String> getColumns() {
+        return columns;
+    }
+
+    /**
+     * @param columns
+     */
+    public void setColumns(List<String> columns) {
+        List<String> oldValue = getColumns();
+        this.columns = columns;
+        firePropertyChange("columns", oldValue, columns);
+    }
 
     /**
      * @return tableCfgModel
@@ -105,39 +158,50 @@ public class TableConfigPanel extends JPanel {
     }
 
     public TableConfigPanel() {
+        columns = ObservableCollections.observableList(Lists.newArrayList("aaa","bbb"));
+        queryTypes = ObservableCollections.observableList(Lists.newArrayList("=","like"));
+        showTypes = ObservableCollections.observableList(Lists.newArrayList("input-email","input-tel"));
         initComponents();
+
+        listActionHandler = new JListActionHandler();
     }
 
     private void addPk(ActionEvent e) {
-        // TODO add your code here
+        String text = (String) pkComboBox.getSelectedItem();
+        listActionHandler.addItem(text, tableCfgModel, "pks", pksList);
     }
 
     private void deletePks(ActionEvent e) {
-        // TODO add your code here
+        listActionHandler.deleteItem(tableCfgModel, "pks", pksList);
     }
 
     private void addUpdateColumn(ActionEvent e) {
-        // TODO add your code here
+        String text = (String) updateComboBox.getSelectedItem();
+        listActionHandler.addItem(text, tableCfgModel, "updates", updatesList);
     }
 
     private void deleteUpdateColumns(ActionEvent e) {
-        // TODO add your code here
+        listActionHandler.deleteItem(tableCfgModel, "updates", updatesList);
     }
 
     private void addQueryColumn(ActionEvent e) {
-        // TODO add your code here
+        String queryColumn = (String) queriesComboBox.getSelectedItem();
+        String queryType = (String) queryTypesComboBox.getSelectedItem();
+        listActionHandler.addItem(new SimpleEntry<String, String>(queryColumn, queryType) , tableCfgModel, "queries", queriesList);
     }
 
     private void deleteQueryColumns(ActionEvent e) {
-        // TODO add your code here
+        listActionHandler.deleteItem(tableCfgModel, "queries", queriesList);
     }
 
     private void addShowType(ActionEvent e) {
-        // TODO add your code here
+        String showTypeColumn = (String) showTypeColumnsComboBox.getSelectedItem();
+        String showType = (String) showTypesComboBox.getSelectedItem();
+        listActionHandler.addItem(new SimpleEntry<String, String>(showTypeColumn, showType) , tableCfgModel, "showTypes", showTypesList);
     }
 
     private void deleteShowTypes(ActionEvent e) {
-        // TODO add your code here
+        listActionHandler.deleteItem(tableCfgModel, "showTypes", showTypesList);
     }
 
     private void addType(ActionEvent e) {
@@ -201,7 +265,6 @@ public class TableConfigPanel extends JPanel {
         panel6 = new JPanel();
         deleteIgnoreTypesButton = new JButton();
         tableCfgModel = new TableCfgModel();
-        addTypeButton2 = new JButton();
 
         //======== this ========
         setLayout(new GridBagLayout());
@@ -345,7 +408,7 @@ public class TableConfigPanel extends JPanel {
             panel3.setLayout(new GridBagLayout());
             ((GridBagLayout)panel3.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
             ((GridBagLayout)panel3.getLayout()).rowHeights = new int[] {0, 0, 0};
-            ((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout)panel3.getLayout()).columnWeights = new double[] {1.0, 1.0, 0.0, 0.0, 1.0E-4};
             ((GridBagLayout)panel3.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
             panel3.add(queriesComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -401,7 +464,7 @@ public class TableConfigPanel extends JPanel {
             panel4.setLayout(new GridBagLayout());
             ((GridBagLayout)panel4.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
             ((GridBagLayout)panel4.getLayout()).rowHeights = new int[] {0, 0, 0};
-            ((GridBagLayout)panel4.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout)panel4.getLayout()).columnWeights = new double[] {1.0, 1.0, 0.0, 0.0, 1.0E-4};
             ((GridBagLayout)panel4.getLayout()).rowWeights = new double[] {0.0, 0.0, 1.0E-4};
             panel4.add(showTypeColumnsComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -534,9 +597,6 @@ public class TableConfigPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
-        //---- addTypeButton2 ----
-        addTypeButton2.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
-
         //---- bindings ----
         bindingGroup = new BindingGroup();
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
@@ -557,6 +617,18 @@ public class TableConfigPanel extends JPanel {
             this, (BeanProperty) BeanProperty.create("tableCfgModel.types"), typesList));
         bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
             this, (BeanProperty) BeanProperty.create("tableCfgModel.ignoreTypes"), ignoreTypesList));
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
+            columns, pkComboBox));
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
+            columns, updateComboBox));
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
+            columns, queriesComboBox));
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
+            columns, showTypeColumnsComboBox));
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
+            queryTypes, queryTypesComboBox));
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
+            showTypes, showTypesComboBox));
         bindingGroup.bind();
         enablementBindingGroup = new BindingGroup();
         enablementBindingGroup.bind();

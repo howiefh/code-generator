@@ -102,6 +102,7 @@ new FormModel {
 						} )
 						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 							name: "typeScrollPane"
+							"horizontalScrollBarPolicy": 31
 							add( new FormComponent( "io.github.howiefh.generator.ui.TypeConfigsPanel" ) {
 								name: "typeConfigsPanel"
 							} )
@@ -110,6 +111,7 @@ new FormModel {
 						} )
 						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 							name: "tableScrollPane"
+							"horizontalScrollBarPolicy": 31
 							add( new FormComponent( "io.github.howiefh.generator.ui.TableConfigsPanel" ) {
 								name: "tableConfigsPanel"
 							} )

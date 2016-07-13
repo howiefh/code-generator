@@ -3,7 +3,7 @@ package io.github.howiefh.generator.ui;
 import com.google.common.io.Files;
 import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.config.ImplementCfg;
-import io.github.howiefh.generator.common.util.StringUtils;
+import io.github.howiefh.generator.ui.handle.JListActionHandler;
 import io.github.howiefh.generator.ui.handle.SelectFileHandler;
 import io.github.howiefh.generator.ui.model.TypeCfgModel;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -33,6 +32,7 @@ import java.util.ResourceBundle;
 public class TypeConfigPanel extends JPanel {
     private static final Logger LOGGER = LoggerFactory.getLogger(TypeConfigPanel.class);
     private SelectFileHandler selectFileHandler;
+    private JListActionHandler listActionHandler;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JLabel nameLabel;
     private JTextField nameTextField;
@@ -136,7 +136,6 @@ public class TypeConfigPanel extends JPanel {
         ignoreImplsLabel.setEnabled(enabled);
         ignoreImplsList.setEnabled(enabled);
 
-        templateButton.setEnabled(enabled);
         targetDirButton.setEnabled(enabled);
         addDependenceButton.setEnabled(enabled);
         addImplementButton.setEnabled(enabled);
@@ -146,10 +145,13 @@ public class TypeConfigPanel extends JPanel {
         initComponents();
 
         selectFileHandler = new SelectFileHandler(targetTextField);
+        listActionHandler = new JListActionHandler();
     }
 
     private void addDependence(ActionEvent e) {
         String dep = showDependenciesDialog("Add dependence");
+        listActionHandler.addItem(dep, typeCfgModel, "dependencies", dependenciesList);
+        /*
         if (StringUtils.isBlank(dep))
             return;
 
@@ -166,6 +168,7 @@ public class TypeConfigPanel extends JPanel {
         int row = typeCfgModel.getDependencies().size() - 1;
         dependenciesList.setSelectedIndex(row);
         dependenciesList.scrollRectToVisible(dependenciesList.getCellBounds(row, row));
+        */
     }
 
     private String showDependenciesDialog(String title) {
@@ -181,6 +184,8 @@ public class TypeConfigPanel extends JPanel {
     }
 
     private void deleteDependence(ActionEvent e) {
+        listActionHandler.deleteItem(typeCfgModel, "dependencies", dependenciesList);
+        /*
         int[] selectedRows = dependenciesList.getSelectedIndices();
         if (selectedRows.length == 0)
             return;
@@ -198,6 +203,7 @@ public class TypeConfigPanel extends JPanel {
             dependenciesList.setSelectedIndex(newSel);
             dependenciesList.scrollRectToVisible(dependenciesList.getCellBounds(newSel, newSel));
         }
+        */
     }
 
     private void selectTargetDir(ActionEvent e) {
@@ -678,19 +684,22 @@ public class TypeConfigPanel extends JPanel {
             this, (BeanProperty) BeanProperty.create("typeCfgModel.ignoreImpls"), ignoreImplsList));
         bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
             this, (BeanProperty) BeanProperty.create("types"), dependenciesComboBox));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            templateTextField, ELProperty.create("${text != \"\"}"),
+            templateButton, BeanProperty.create("enabled")));
         bindingGroup.bind();
         enablementBindingGroup = new BindingGroup();
         enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
-            ignoreImplsList, ELProperty.create("${selectedElements != null}"),
+            ignoreImplsList, ELProperty.create("${selectedElement != null}"),
             deleteIgnoreImplButton, BeanProperty.create("enabled")));
         enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
-            implsList, ELProperty.create("${selectedElements != null}"),
+            implsList, ELProperty.create("${selectedElement != null}"),
             ignoreImplementButton, BeanProperty.create("enabled")));
         enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             this, ELProperty.create("${typeCfgModel != null}"),
             this, BeanProperty.create("enabled")));
         enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
-            dependenciesList, ELProperty.create("${selectedElements != null}"),
+            dependenciesList, ELProperty.create("${selectedElement != null}"),
             deleteDependenceButton, BeanProperty.create("enabled")));
         enablementBindingGroup.bind();
         // End of component initialization  //GEN-END:initComponents

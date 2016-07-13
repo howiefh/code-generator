@@ -206,12 +206,14 @@ public class MainFrame extends JFrame {
 
                     //======== typeScrollPane ========
                     {
+                        typeScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                         typeScrollPane.setViewportView(typeConfigsPanel);
                     }
                     configTabbedPane.addTab(bundle.getString("Generator.MainFrame.typeConfigsPanel.tab.title"), typeScrollPane);
 
                     //======== tableScrollPane ========
                     {
+                        tableScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                         tableScrollPane.setViewportView(tableConfigsPanel);
                     }
                     configTabbedPane.addTab(bundle.getString("Generator.MainFrame.tableConfigsPanel.tab.title"), tableScrollPane);

@@ -110,7 +110,7 @@ public class CollectionUtils {
      * @return
      */
     public static <E> Set<E> convertListToSet(final List<E> list) {
-        return list == null ? null : new HashSet<E>(list);
+        return list == null ? null : new LinkedHashSet<E>(list);
     }
 
     /**

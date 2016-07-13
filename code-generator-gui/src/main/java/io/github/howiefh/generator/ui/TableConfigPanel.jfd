@@ -134,7 +134,7 @@ new FormModel {
 				"gridy": 4
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-				"$columnSpecs": "0:1.0, 0, 0, 0"
+				"$columnSpecs": "0:1.0, 0:1.0, 0, 0"
 				"$rowSpecs": "0, 0"
 				"$hGap": 5
 				"$vGap": 5
@@ -184,7 +184,7 @@ new FormModel {
 				"gridy": 5
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-				"$columnSpecs": "0:1.0, 0, 0, 0"
+				"$columnSpecs": "0:1.0, 0:1.0, 0, 0"
 				"$rowSpecs": "0, 0"
 				"$hGap": 5
 				"$vGap": 5
@@ -317,11 +317,21 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 85, 470 )
 		} )
-		add( new FormComponent( "javax.swing.JButton" ) {
-			name: "addTypeButton2"
-			"icon": #SwingIcon0
+		add( new FormNonVisual( "java.util.List" ) {
+			name: "queryTypes"
+			auxiliary() {
+				"JavaCodeGenerator.typeParameters": "java.lang.String"
+			}
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 75, 525 )
+			"location": new java.awt.Point( 235, 470 )
+		} )
+		add( new FormNonVisual( "java.util.List" ) {
+			name: "showTypes"
+			auxiliary() {
+				"JavaCodeGenerator.typeParameters": "java.lang.String"
+			}
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 340, 470 )
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "bindingGroup"
@@ -333,6 +343,12 @@ new FormModel {
 			addBinding( new FormBinding( "this", "tableCfgModel.showTypes", "showTypesList", "elements" ) )
 			addBinding( new FormBinding( "this", "tableCfgModel.types", "typesList", "elements" ) )
 			addBinding( new FormBinding( "this", "tableCfgModel.ignoreTypes", "ignoreTypesList", "elements" ) )
+			addBinding( new FormBinding( "columns", null, "pkComboBox", "elements" ) )
+			addBinding( new FormBinding( "columns", null, "updateComboBox", "elements" ) )
+			addBinding( new FormBinding( "columns", null, "queriesComboBox", "elements" ) )
+			addBinding( new FormBinding( "columns", null, "showTypeColumnsComboBox", "elements" ) )
+			addBinding( new FormBinding( "queryTypes", null, "queryTypesComboBox", "elements" ) )
+			addBinding( new FormBinding( "showTypes", null, "showTypesComboBox", "elements" ) )
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "enablementBindingGroup"
