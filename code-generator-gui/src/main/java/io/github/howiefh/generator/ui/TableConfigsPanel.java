@@ -16,6 +16,8 @@ import org.jdesktop.swingbinding.SwingBindings;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -50,6 +52,40 @@ public class TableConfigsPanel extends JPanel {
         initComponents();
     }
 
+    private void addTableCfg(ActionEvent e) {
+        TableCfgModel tableCfgModel = new TableCfgModel();
+        tableCfgs.add(tableCfgModel);
+        config.getTables().add(tableCfgModel.getEntry());
+
+        // select new task in table and scroll row to visible area
+        int row = tableCfgs.size() - 1;
+        tableConfigTable.setRowSelectionInterval(row, row);
+        tableConfigTable.scrollRectToVisible(tableConfigTable.getCellRect(row, 0, true));
+
+        tableConfigPanel.requestFocusInWindow();
+    }
+
+    private void deleteTableCfgs(ActionEvent e) {
+        int[] selectedRows = tableConfigTable.getSelectedRows();
+        if (selectedRows.length == 0)
+            return;
+
+        // remove items
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            TableCfg tableCfg = tableCfgs.get(selectedRows[i]).getEntry();
+            tableCfgs.remove(selectedRows[i]);
+
+            config.getTypes().remove(tableCfg);
+        }
+
+        // select row
+        if (tableConfigTable.getRowCount() > 0) {
+            int newSel = Math.min(selectedRows[0], tableConfigTable.getRowCount() - 1);
+            tableConfigTable.setRowSelectionInterval(newSel, newSel);
+            tableConfigTable.scrollRectToVisible(tableConfigTable.getCellRect(newSel, 0, true));
+        }
+    }
+
     private void initComponents() {
         // Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         ResourceBundle bundle = ResourceBundle.getBundle("lang.language");
@@ -79,6 +115,12 @@ public class TableConfigsPanel extends JPanel {
         //---- addButton ----
         addButton.setToolTipText(bundle.getString("TableConfigPanel.addButton.toolTipText"));
         addButton.setIcon(new ImageIcon(getClass().getResource("/icons/new.png")));
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addTableCfg(e);
+            }
+        });
         add(addButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
@@ -86,6 +128,12 @@ public class TableConfigsPanel extends JPanel {
         //---- deleteBbutton ----
         deleteBbutton.setToolTipText("\u5220\u9664");
         deleteBbutton.setIcon(new ImageIcon(getClass().getResource("/icons/delete.png")));
+        deleteBbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteTableCfgs(e);
+            }
+        });
         add(deleteBbutton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));

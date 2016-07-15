@@ -2,6 +2,7 @@ package io.github.howiefh.generator.common.config;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import io.github.howiefh.generator.common.entity.NamedModel;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -17,7 +18,7 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptyMapIf
  * @version 1.0
  * @since 1.0
  */
-public class ImplementCfg implements Serializable {
+public class ImplementCfg implements Serializable, NamedModel {
     private static final long serialVersionUID = 9036889977947537906L;
     /**
      * 实现名称

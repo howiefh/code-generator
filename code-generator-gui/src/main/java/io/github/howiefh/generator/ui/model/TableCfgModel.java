@@ -1,10 +1,10 @@
 package io.github.howiefh.generator.ui.model;
 
 import io.github.howiefh.generator.common.config.TableCfg;
+import io.github.howiefh.generator.common.entity.NamedModel;
 import io.github.howiefh.generator.common.util.CollectionUtils;
 import io.github.howiefh.generator.ui.util.WrapList;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-public class TableCfgModel extends AbstractModel<TableCfg> {
+public class TableCfgModel extends AbstractModel<TableCfg> implements NamedModel {
     private static final long serialVersionUID = 2605151232541360423L;
     private TableCfg tableCfg;
     private List<TypeCfgModel> types;
@@ -29,17 +29,7 @@ public class TableCfgModel extends AbstractModel<TableCfg> {
             types = new WrapList<TypeCfgModel>();
             tableCfg.setTypes(((WrapList)types).getEntries());
         } else {
-            try {
-                types = new WrapList<TypeCfgModel>(tableCfg.getTypes(), TypeCfgModel.class);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            }
+            types = WrapList.newWrapList(tableCfg.getTypes(), TypeCfgModel.class);
         }
     }
 

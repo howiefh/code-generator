@@ -1,12 +1,12 @@
 package io.github.howiefh.generator.ui.util;
 
+import io.github.howiefh.generator.ui.model.AbstractModel;
 import io.github.howiefh.generator.ui.model.WrapModel;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author fenghao, 2016/7/12.
@@ -24,14 +24,19 @@ public class WrapList<T extends WrapModel> extends ArrayList<T>{
         entries = new HashSet();
     }
 
-    public WrapList(Set c, Class<T> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        super();
-        entries = c;
-        for (Object o : c) {
-            Constructor<T> constructor = clazz.getConstructor(new Class[]{o.getClass()});
-            T t = constructor.newInstance(new Object[]{o});
-            add(t);
+    public static <T extends AbstractModel> WrapList<T> newWrapList(Set c, Class<T> clazz){
+        WrapList<T> list = new WrapList<T>();
+        list.setEntries(c);
+        try {
+            for (Object o : c) {
+                Constructor<T> constructor = clazz.getConstructor(new Class[]{o.getClass()});
+                T t = constructor.newInstance(new Object[]{o});
+                list.add(t);
+            }
+        } catch (Exception e) {
+            return null;
         }
+        return list;
     }
 
     @Override

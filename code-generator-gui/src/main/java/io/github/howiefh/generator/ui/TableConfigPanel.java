@@ -3,6 +3,7 @@ package io.github.howiefh.generator.ui;
 import com.google.common.collect.Lists;
 import io.github.howiefh.generator.ui.handle.JListActionHandler;
 import io.github.howiefh.generator.ui.model.TableCfgModel;
+import io.github.howiefh.generator.ui.model.TypeCfgModel;
 import io.github.howiefh.generator.ui.util.SimpleEntry;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -172,7 +173,7 @@ public class TableConfigPanel extends JPanel {
     }
 
     private void deletePks(ActionEvent e) {
-        listActionHandler.deleteItem(tableCfgModel, "pks", pksList);
+        listActionHandler.deleteItems(tableCfgModel, "pks", pksList);
     }
 
     private void addUpdateColumn(ActionEvent e) {
@@ -181,7 +182,7 @@ public class TableConfigPanel extends JPanel {
     }
 
     private void deleteUpdateColumns(ActionEvent e) {
-        listActionHandler.deleteItem(tableCfgModel, "updates", updatesList);
+        listActionHandler.deleteItems(tableCfgModel, "updates", updatesList);
     }
 
     private void addQueryColumn(ActionEvent e) {
@@ -191,7 +192,7 @@ public class TableConfigPanel extends JPanel {
     }
 
     private void deleteQueryColumns(ActionEvent e) {
-        listActionHandler.deleteItem(tableCfgModel, "queries", queriesList);
+        listActionHandler.deleteItems(tableCfgModel, "queries", queriesList);
     }
 
     private void addShowType(ActionEvent e) {
@@ -201,19 +202,27 @@ public class TableConfigPanel extends JPanel {
     }
 
     private void deleteShowTypes(ActionEvent e) {
-        listActionHandler.deleteItem(tableCfgModel, "showTypes", showTypesList);
+        listActionHandler.deleteItems(tableCfgModel, "showTypes", showTypesList);
     }
 
     private void addType(ActionEvent e) {
-        // TODO add your code here
+        TypeCfgModel typeCfgModel = new TypeCfgModel();
+        tableCfgModel.getTypes().add(typeCfgModel);
+
+        // select new task in table and scroll row to visible area
+        int row = tableCfgModel.getTypes().size() - 1;
+        typesList.setSelectedIndex(row);
+        typesList.scrollRectToVisible(typesList.getCellBounds(row, row));
+
+        setTableCfgModel(tableCfgModel);
     }
 
     private void ignoreTypes(ActionEvent e) {
-        // TODO add your code here
+        listActionHandler.moveItems(tableCfgModel, tableCfgModel.getTypes(), "ignoreTypes", typesList, ignoreTypesList);
     }
 
     private void deleteIgnoreTypes(ActionEvent e) {
-        // TODO add your code here
+        listActionHandler.deleteItems(tableCfgModel, "ignoreTypes", ignoreTypesList);
     }
 
     private void initComponents() {

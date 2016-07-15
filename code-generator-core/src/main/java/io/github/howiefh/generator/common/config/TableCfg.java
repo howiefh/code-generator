@@ -2,6 +2,7 @@ package io.github.howiefh.generator.common.config;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import io.github.howiefh.generator.common.entity.NamedModel;
 import io.github.howiefh.generator.common.util.DBUtils;
 
 import java.io.Serializable;
@@ -27,7 +28,7 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptySetIf
  * @see DBUtils#initColumnField(io.github.howiefh.generator.entity.Table, io.github.howiefh.generator.common.config.TableCfg)
  * @since 1.0
  */
-public class TableCfg implements Serializable {
+public class TableCfg implements Serializable, NamedModel {
     private static final long serialVersionUID = -1593705685818161200L;
     /**
      * 表名

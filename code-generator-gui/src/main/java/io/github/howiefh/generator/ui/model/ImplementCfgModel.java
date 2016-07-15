@@ -1,6 +1,7 @@
 package io.github.howiefh.generator.ui.model;
 
 import io.github.howiefh.generator.common.config.ImplementCfg;
+import io.github.howiefh.generator.common.entity.NamedModel;
 import io.github.howiefh.generator.common.util.CollectionUtils;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0
  */
-public class ImplementCfgModel extends AbstractModel<ImplementCfg> {
+public class ImplementCfgModel extends AbstractModel<ImplementCfg> implements NamedModel {
     private static final long serialVersionUID = -1383291859250632681L;
     
     private ImplementCfg implementCfg;

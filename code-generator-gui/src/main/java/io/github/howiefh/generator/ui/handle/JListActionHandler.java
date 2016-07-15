@@ -2,6 +2,7 @@ package io.github.howiefh.generator.ui.handle;
 
 import io.github.howiefh.generator.common.util.StringUtils;
 import io.github.howiefh.generator.ui.model.AbstractModel;
+import io.github.howiefh.generator.common.entity.NamedModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +56,7 @@ public class JListActionHandler extends CommonHandler {
         }
     }
 
-    public void deleteItem(AbstractModel model, String listFieldName, JList jList) {
+    public void deleteItems(AbstractModel model, String listFieldName, JList jList) {
         try {
             if (model == null || listFieldName == null || jList == null) {
                 return;
@@ -80,6 +81,34 @@ public class JListActionHandler extends CommonHandler {
             }
         } catch (Exception e) {
             LOGGER.warn("Delete items error", e);
+        }
+    }
+
+    public void moveItems(AbstractModel model, List src, String destListFieldName, JList source, JList dest) {
+        try {
+            if (model == null || src == null || destListFieldName ==null || source == null || dest == null) {
+                return;
+            }
+            int[] selectedRows = source.getSelectedIndices();
+            if (selectedRows.length == 0)
+                return;
+
+            List des = (List) invokeGetMethod(model, destListFieldName);
+            if (des == null) {
+                des = new ArrayList();
+            }
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                Object object = src.get(selectedRows[i]);
+                if (object instanceof NamedModel){
+                    des.add(((NamedModel) object).getName());
+                } else {
+                    des.add(object.toString());
+                }
+            }
+
+            invokeSetMethod(model, destListFieldName, des);
+        } catch (Exception e) {
+            LOGGER.warn("Ignore items error", e);
         }
     }
 }

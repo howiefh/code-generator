@@ -2,6 +2,7 @@ package io.github.howiefh.generator.common.config;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import io.github.howiefh.generator.common.entity.NamedModel;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -22,7 +23,7 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptySetIf
  * @version 1.0
  * @since 1.0
  */
-public class TypeCfg implements Serializable, Cloneable {
+public class TypeCfg implements Serializable, Cloneable, NamedModel {
     private static final long serialVersionUID = 332289349837091330L;
     public static final String EMPTY = "";
     /**
