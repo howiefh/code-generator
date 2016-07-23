@@ -21,6 +21,8 @@ public class TableCfgModel extends AbstractModel<TableCfg> implements NamedModel
 
     public TableCfgModel() {
         this(new TableCfg());
+
+        init();
     }
 
     public TableCfgModel(TableCfg tableCfg) {
@@ -31,6 +33,18 @@ public class TableCfgModel extends AbstractModel<TableCfg> implements NamedModel
         } else {
             types = WrapList.newWrapList(tableCfg.getTypes(), TypeCfgModel.class);
         }
+    }
+
+    public void init(){
+        setName(null);
+        setAttributes(null);
+        setClassName(null);
+        setIgnoreTypes(null);
+        setPks(null);
+        setQueries(null);
+        setShowTypes(null);
+        setTypes(null);
+        setUpdates(null);
     }
 
     @Override

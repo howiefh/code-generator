@@ -11,6 +11,9 @@ import io.github.howiefh.generator.common.util.ResourceUtils;
 import io.github.howiefh.generator.common.util.StringUtils;
 import io.github.howiefh.generator.common.validation.Rule;
 import io.github.howiefh.generator.common.validation.Validator;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +37,8 @@ public class Configuration {
      */
     private static Config config = null;
 
+    private static SqlSessionFactory sqlSessionFactory = null;
+
     public static Config getConfig() {
         if (config == null) {
             LOGGER.warn("Config is null. Init default config.");
@@ -46,6 +51,17 @@ public class Configuration {
         return config;
     }
 
+    public static SqlSessionFactory getSqlSessionFactory(){
+        if (sqlSessionFactory == null) {
+            try {
+                initMybatis();
+            } catch (IOException e) {
+                LOGGER.error("Init Mybatis error.");
+            }
+        }
+        return sqlSessionFactory;
+    }
+
     public static Config init(String configFile) throws ConfigInitException {
         try {
             if (StringUtils.isBlank(configFile)) {
@@ -53,14 +69,24 @@ public class Configuration {
             }
             load(configFile);
             validate();
+            initMybatis();
         } catch (IntrospectionException e) {
             LOGGER.error("Can not get field. {}", e.getMessage());
             throw new ConfigInitException("Can not get field.", e);
         } catch (ValidationException e) {
             LOGGER.error("Validation error. {}", e.getMessage());
             throw new ConfigInitException("Validation error.", e);
+        } catch (IOException e) {
+            LOGGER.error("Init mybatis error. {}", e.getMessage());
+            throw new ConfigInitException("Init Mybatis error.", e);
         }
         return config;
+    }
+
+    private static void initMybatis() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, Configuration.jdbcProperties());
     }
 
     private static void load(String configFileName) throws ConfigInitException {

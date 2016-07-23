@@ -50,6 +50,8 @@ public class TableConfigsPanel extends JPanel {
         }
 
         initComponents();
+
+        typeConfigPanel.setShowImplements(true);
     }
 
     private void addTableCfg(ActionEvent e) {
@@ -194,7 +196,7 @@ public class TableConfigsPanel extends JPanel {
             bindingGroup.addBinding(binding);
         }
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
-            tableConfigTable, ELProperty.create("${selectedElements != null}"),
+            tableConfigTable, ELProperty.create("${selectedElement != null}"),
             deleteBbutton, BeanProperty.create("enabled")));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             tableConfigTable, BeanProperty.create("selectedElement"),

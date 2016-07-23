@@ -1,6 +1,9 @@
 package io.github.howiefh.generator.ui;
 
-import com.google.common.collect.Lists;
+import io.github.howiefh.generator.common.QueryType;
+import io.github.howiefh.generator.common.ShowType;
+import io.github.howiefh.generator.common.util.StringUtils;
+import io.github.howiefh.generator.service.TableMetaDataService;
 import io.github.howiefh.generator.ui.handle.JListActionHandler;
 import io.github.howiefh.generator.ui.model.TableCfgModel;
 import io.github.howiefh.generator.ui.model.TypeCfgModel;
@@ -9,13 +12,18 @@ import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.ELProperty;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.SwingBindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,7 +33,21 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class TableConfigPanel extends JPanel {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TableConfigPanel.class);
     private JListActionHandler listActionHandler;
+    private Runnable synchThread = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (tableCfgModel != null && StringUtils.isNotBlank(tableCfgModel.getName())) {
+                            List<String> columns = TableMetaDataService.getInstance().findColumnList(tableCfgModel.getName());
+                            setColumns(columns);
+                        }
+                    } catch (Exception e) {
+                        LOGGER.warn("获取列名异常 ", e.getMessage());
+                    }
+                }
+            };
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JLabel nameLabel;
     private JTextField nameTextField;
@@ -66,7 +88,7 @@ public class TableConfigPanel extends JPanel {
     private JList typesList;
     private JPanel panel5;
     private JButton addTypeButton;
-    private JButton ignoreTypesButton3;
+    private JButton ignoreTypesButton;
     private JLabel ignoreTypesLabel;
     private JScrollPane scrollPane6;
     private JList ignoreTypesList;
@@ -79,6 +101,51 @@ public class TableConfigPanel extends JPanel {
     private BindingGroup bindingGroup;
     private BindingGroup enablementBindingGroup;
     // End of variables declaration  //GEN-END:variables
+
+    public void setEnabled(boolean enabled){
+        super.setEnabled(enabled);
+
+        nameLabel.setEnabled(enabled);
+        nameTextField.setEditable(enabled);
+        classNameLabel.setEnabled(enabled);
+        classNameTextField.setEnabled(enabled);
+        pksLabel.setEnabled(enabled);
+        panel1.setEnabled(enabled);
+        pkComboBox.setEnabled(enabled);
+        addPkButton.setEnabled(enabled);
+        scrollPane1.setEnabled(enabled);
+        pksList.setEnabled(enabled);
+        updatesLabel.setEnabled(enabled);
+        panel2.setEnabled(enabled);
+        updateComboBox.setEnabled(enabled);
+        addUpdateColumnButton.setEnabled(enabled);
+        scrollPane2.setEnabled(enabled);
+        updatesList.setEnabled(enabled);
+        queriesLabel.setEnabled(enabled);
+        panel3.setEnabled(enabled);
+        queriesComboBox.setEnabled(enabled);
+        queryTypesComboBox.setEnabled(enabled);
+        addQueryColumnButton.setEnabled(enabled);
+        scrollPane3.setEnabled(enabled);
+        queriesList.setEnabled(enabled);
+        showTypesLabel.setEnabled(enabled);
+        panel4.setEnabled(enabled);
+        showTypeColumnsComboBox.setEnabled(enabled);
+        showTypesComboBox.setEnabled(enabled);
+        addShowTypeButton.setEnabled(enabled);
+        scrollPane4.setEnabled(enabled);
+        showTypesList.setEnabled(enabled);
+        typesLabel.setEnabled(enabled);
+        scrollPane5.setEnabled(enabled);
+        typesList.setEnabled(enabled);
+        panel5.setEnabled(enabled);
+        addTypeButton.setEnabled(enabled);
+        ignoreTypesLabel.setEnabled(enabled);
+        scrollPane6.setEnabled(enabled);
+        ignoreTypesList.setEnabled(enabled);
+        panel6.setEnabled(enabled);
+    }
+
 
     /**
      * @return queryTypes
@@ -138,10 +205,12 @@ public class TableConfigPanel extends JPanel {
     /**
      * @param tableCfgModel
      */
-    public void setTableCfgModel(TableCfgModel tableCfgModel) {
+    public void setTableCfgModel(final TableCfgModel tableCfgModel) {
         TableCfgModel oldValue = getTableCfgModel();
         this.tableCfgModel = tableCfgModel;
         firePropertyChange("tableCfgModel", oldValue, tableCfgModel);
+
+        new Thread(synchThread).start();
     }
 
     /**
@@ -159,9 +228,8 @@ public class TableConfigPanel extends JPanel {
     }
 
     public TableConfigPanel() {
-        columns = ObservableCollections.observableList(Lists.newArrayList("aaa","bbb"));
-        queryTypes = ObservableCollections.observableList(Lists.newArrayList("=","like"));
-        showTypes = ObservableCollections.observableList(Lists.newArrayList("input-email","input-tel"));
+        queryTypes = ObservableCollections.observableList(ShowType.getShowTypes());
+        showTypes = ObservableCollections.observableList(QueryType.getQueryTypes());
         initComponents();
 
         listActionHandler = new JListActionHandler();
@@ -225,6 +293,16 @@ public class TableConfigPanel extends JPanel {
         listActionHandler.deleteItems(tableCfgModel, "ignoreTypes", ignoreTypesList);
     }
 
+    private void focusOutNameTextField(FocusEvent e) {
+        String oldValue = tableCfgModel.getName();
+        String newValue = nameTextField.getText();
+        if (newValue.equals(oldValue)) {
+            return;
+        }
+
+        new Thread(synchThread).start();
+    }
+
     private void initComponents() {
         // Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         ResourceBundle bundle = ResourceBundle.getBundle("lang.language");
@@ -267,7 +345,7 @@ public class TableConfigPanel extends JPanel {
         typesList = new JList();
         panel5 = new JPanel();
         addTypeButton = new JButton();
-        ignoreTypesButton3 = new JButton();
+        ignoreTypesButton = new JButton();
         ignoreTypesLabel = new JLabel();
         scrollPane6 = new JScrollPane();
         ignoreTypesList = new JList();
@@ -287,6 +365,14 @@ public class TableConfigPanel extends JPanel {
         add(nameLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
+
+        //---- nameTextField ----
+        nameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                focusOutNameTextField(e);
+            }
+        });
         add(nameTextField, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
@@ -552,15 +638,15 @@ public class TableConfigPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
 
-            //---- ignoreTypesButton3 ----
-            ignoreTypesButton3.setIcon(new ImageIcon(getClass().getResource("/icons/exclude.png")));
-            ignoreTypesButton3.addActionListener(new ActionListener() {
+            //---- ignoreTypesButton ----
+            ignoreTypesButton.setIcon(new ImageIcon(getClass().getResource("/icons/exclude.png")));
+            ignoreTypesButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ignoreTypes(e);
                 }
             });
-            panel5.add(ignoreTypesButton3, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+            panel5.add(ignoreTypesButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 5, 0), 0, 0));
         }
@@ -640,6 +726,27 @@ public class TableConfigPanel extends JPanel {
             showTypes, showTypesComboBox));
         bindingGroup.bind();
         enablementBindingGroup = new BindingGroup();
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            queriesList, ELProperty.create("${selectedElement != null}"),
+            deleteQueryColumnsButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            typesList, ELProperty.create("${selectedElement != null}"),
+            ignoreTypesButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            pksList, ELProperty.create("${selectedElement != null}"),
+            deletePkButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            ignoreTypesList, ELProperty.create("${selectedElement != null}"),
+            deleteIgnoreTypesButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            updatesList, ELProperty.create("${selectedElement != null}"),
+            deleteUpdateColumnsButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            showTypesList, ELProperty.create("${selectedElement != null}"),
+            deleteShowTypesButton, BeanProperty.create("enabled")));
+        enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, ELProperty.create("${tableCfgModel != null}"),
+            this, BeanProperty.create("enabled")));
         enablementBindingGroup.bind();
         // End of component initialization  //GEN-END:initComponents
     }

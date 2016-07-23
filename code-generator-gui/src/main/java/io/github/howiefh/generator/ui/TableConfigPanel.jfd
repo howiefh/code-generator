@@ -22,6 +22,7 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "nameTextField"
+				addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "focusOutNameTextField", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
 			} )
@@ -257,7 +258,7 @@ new FormModel {
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addType", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "ignoreTypesButton3"
+					name: "ignoreTypesButton"
 					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/exclude.png" )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ignoreTypes", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
@@ -352,6 +353,13 @@ new FormModel {
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "enablementBindingGroup"
+			addBinding( new FormBinding( "queriesList", "${selectedElement != null}", "deleteQueryColumnsButton", "enabled" ) )
+			addBinding( new FormBinding( "typesList", "${selectedElement != null}", "ignoreTypesButton", "enabled" ) )
+			addBinding( new FormBinding( "pksList", "${selectedElement != null}", "deletePkButton", "enabled" ) )
+			addBinding( new FormBinding( "ignoreTypesList", "${selectedElement != null}", "deleteIgnoreTypesButton", "enabled" ) )
+			addBinding( new FormBinding( "updatesList", "${selectedElement != null}", "deleteUpdateColumnsButton", "enabled" ) )
+			addBinding( new FormBinding( "showTypesList", "${selectedElement != null}", "deleteShowTypesButton", "enabled" ) )
+			addBinding( new FormBinding( "this", "${tableCfgModel != null}", "this", "enabled" ) )
 		} )
 	}
 }

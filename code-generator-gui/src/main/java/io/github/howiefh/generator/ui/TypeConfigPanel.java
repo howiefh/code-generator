@@ -1,6 +1,5 @@
 package io.github.howiefh.generator.ui;
 
-import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.config.ImplementCfg;
@@ -14,7 +13,6 @@ import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.BindingGroup;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.ELProperty;
-import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.swingbinding.SwingBindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +21,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +35,7 @@ import java.util.ResourceBundle;
  */
 public class TypeConfigPanel extends JPanel {
     private static final Logger LOGGER = LoggerFactory.getLogger(TypeConfigPanel.class);
+    private boolean showImplements = false;
     private SelectFileHandler selectFileHandler;
     private JListActionHandler listActionHandler;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
@@ -86,6 +87,22 @@ public class TypeConfigPanel extends JPanel {
     private BindingGroup bindingGroup;
     private BindingGroup enablementBindingGroup;
     // End of variables declaration  //GEN-END:variables
+
+    /**
+     * @return showImplements
+     */
+    public boolean isShowImplements() {
+        return showImplements;
+    }
+
+    /**
+     * @param showImplements
+     */
+    public void setShowImplements(boolean showImplements) {
+        boolean oldValue = isShowImplements();
+        this.showImplements = showImplements;
+        firePropertyChange("showImplements", oldValue, showImplements);
+    }
 
     /**
      * @return typeCfgModel
@@ -180,9 +197,6 @@ public class TypeConfigPanel extends JPanel {
     public TypeConfigPanel() {
         initComponents();
 
-        columns = ObservableCollections.observableList(Lists.newArrayList("123","11"));
-        columnsList.setListData(columns.toArray());
-
         selectFileHandler = new SelectFileHandler(targetTextField);
         listActionHandler = new JListActionHandler();
     }
@@ -256,6 +270,18 @@ public class TypeConfigPanel extends JPanel {
         listActionHandler.deleteItems(implementCfgModel, "columns", implColumnsList);
     }
 
+    private void focusOutNameTextField(FocusEvent e) {
+        String oldValue = typeCfgModel.getName();
+        String newValue = nameTextField.getText();
+        if (newValue.equals(oldValue)) {
+            return;
+        }
+
+        int index = types.indexOf(oldValue);
+        types.remove(index);
+        types.add(newValue);
+    }
+
     private void initComponents() {
         // Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         ResourceBundle bundle = ResourceBundle.getBundle("lang.language");
@@ -315,6 +341,14 @@ public class TypeConfigPanel extends JPanel {
         add(nameLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
+
+        //---- nameTextField ----
+        nameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                focusOutNameTextField(e);
+            }
+        });
         add(nameTextField, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
@@ -640,6 +674,24 @@ public class TypeConfigPanel extends JPanel {
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             this, BeanProperty.create("implementCfgModel.name"),
             implementNameTextField, BeanProperty.create("text")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("showImplements"),
+            ignoreImplsLabel, BeanProperty.create("visible")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("showImplements"),
+            scrollPane3, BeanProperty.create("visible")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("showImplements"),
+            ignoreImplsButtonPanel, BeanProperty.create("visible")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("showImplements"),
+            implsLabel, BeanProperty.create("visible")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("showImplements"),
+            scrollPane2, BeanProperty.create("visible")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("showImplements"),
+            implementBtnPanel, BeanProperty.create("visible")));
         bindingGroup.bind();
         enablementBindingGroup = new BindingGroup();
         enablementBindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,

@@ -54,6 +54,7 @@ public class TypeConfigsPanel extends JPanel {
 
         initComponents();
 
+        typeConfigFormPanel.setShowImplements(false);
         typeConfigFormPanel.setTypes(types);
     }
 
@@ -84,13 +85,6 @@ public class TypeConfigsPanel extends JPanel {
         typeConfigTable.scrollRectToVisible(typeConfigTable.getCellRect(row, 0, true));
 
         typeConfigFormPanel.requestFocusInWindow();
-
-        List<String> types = typeConfigFormPanel.getTypes();
-        if (types == null){
-            types = ObservableCollections.observableList(new ArrayList<String>());
-        }
-        types.add(typeCfgModel.getName());
-        typeConfigFormPanel.setTypes(types);
     }
 
     private void deleteTypeConfig(ActionEvent e) {
@@ -106,7 +100,7 @@ public class TypeConfigsPanel extends JPanel {
             config.getTypes().remove(typeCfg);
 
             List<String> types = typeConfigFormPanel.getTypes();
-            types.remove(selectedRows[i]);
+            types.remove(typeCfg.getName());
             typeConfigFormPanel.setTypes(types);
         }
 
@@ -204,14 +198,6 @@ public class TypeConfigsPanel extends JPanel {
                 .setEditable(false);
             binding.addColumnBinding(BeanProperty.create("dependencies"))
                 .setColumnName(bundle.getString("TypeConfigPanel.typeConfigTable.columnName_2"))
-                .setColumnClass(List.class)
-                .setEditable(false);
-            binding.addColumnBinding(BeanProperty.create("impls"))
-                .setColumnName(bundle.getString("TypeConfigPanel.typeConfigTable.columnName_4"))
-                .setColumnClass(List.class)
-                .setEditable(false);
-            binding.addColumnBinding(BeanProperty.create("ignoreImpls"))
-                .setColumnName(bundle.getString("TypeConfigPanel.typeConfigTable.columnName_3"))
                 .setColumnClass(List.class)
                 .setEditable(false);
             bindingGroup.addBinding(binding);

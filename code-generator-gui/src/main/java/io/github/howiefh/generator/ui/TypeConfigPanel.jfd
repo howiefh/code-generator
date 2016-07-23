@@ -22,6 +22,7 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "nameTextField"
+				addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "focusOutNameTextField", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
 			} )
@@ -339,6 +340,12 @@ new FormModel {
 			addBinding( new FormBinding( "columns", null, "columnsList", "elements" ) )
 			addBinding( new FormBinding( "this", "implementCfgModel.columns", "implColumnsList", "elements" ) )
 			addBinding( new FormBinding( "this", "implementCfgModel.name", "implementNameTextField", "text" ) )
+			addBinding( new FormBinding( "this", "showImplements", "ignoreImplsLabel", "visible" ) )
+			addBinding( new FormBinding( "this", "showImplements", "scrollPane3", "visible" ) )
+			addBinding( new FormBinding( "this", "showImplements", "ignoreImplsButtonPanel", "visible" ) )
+			addBinding( new FormBinding( "this", "showImplements", "implsLabel", "visible" ) )
+			addBinding( new FormBinding( "this", "showImplements", "scrollPane2", "visible" ) )
+			addBinding( new FormBinding( "this", "showImplements", "implementBtnPanel", "visible" ) )
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "enablementBindingGroup"

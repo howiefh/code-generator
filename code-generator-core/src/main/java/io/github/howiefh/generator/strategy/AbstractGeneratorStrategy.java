@@ -8,20 +8,15 @@ import io.github.howiefh.generator.common.config.*;
 import io.github.howiefh.generator.common.exception.ConfigInitException;
 import io.github.howiefh.generator.common.exception.GeneratorException;
 import io.github.howiefh.generator.common.util.*;
-import io.github.howiefh.generator.dao.TableMetaDataDao;
 import io.github.howiefh.generator.entity.Table;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -43,20 +38,14 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
     @Override
     public void generate() throws GeneratorException {
         try {
-            String resource = "mybatis-config.xml";
-            InputStream inputStream = Resources.getResourceAsStream(resource);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, Configuration.jdbcProperties());
-            SqlSession session = sqlSessionFactory.openSession();
-
             beforeGenerate();
             try {
-                TableMetaDataDao tableMetaDataDao = session.getMapper(TableMetaDataDao.class);
                 for (TableCfg tableCfg : config.getTables()) {
                     if (config.getIgnoreTables() != null && config.getIgnoreTables().contains(tableCfg.getName())) {
                         LOGGER.info("Table {} is ignored!", tableCfg.getName());
                         continue;
                     }
-                    Table table = DBUtils.fetchTableFormDb(tableMetaDataDao, tableCfg);
+                    Table table = DBUtils.fetchTableFormDb(tableCfg);
                     if (table == null || table.getName() == null) {
                         LOGGER.warn("Table {} not exits!", tableCfg.getName());
                         continue;
@@ -85,17 +74,13 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
                 afterGenerate();
             } catch (CloneNotSupportedException e) {
                 LOGGER.error("Error {}", e.getMessage());
-            } finally {
-                session.close();
             }
-        } catch (IOException e) {
-            LOGGER.error("IO error. {}", e.getMessage());
         } catch (ConfigInitException e) {
             LOGGER.error("Config init error. {}", e.getMessage());
         } catch (GeneratorException e) {
             LOGGER.error("Generate error. {}", e.getMessage());
         } catch (Exception e) {
-            LOGGER.error("Unknown error. {}", e.getStackTrace());
+            LOGGER.error("Unknown error. {}", Arrays.toString(e.getStackTrace()));
         }
     }
 

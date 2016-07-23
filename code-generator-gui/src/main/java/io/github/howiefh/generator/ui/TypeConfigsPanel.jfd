@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.2.2.228" Java: "1.7.0_79" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -84,14 +84,6 @@ new FormModel {
 					"editable": false
 				}, new FormBinding( null, "dependencies", null, null ) {
 					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_2" )
-					"columnClass": "java.util.List"
-					"editable": false
-				}, new FormBinding( null, "impls", null, null ) {
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_4" )
-					"columnClass": "java.util.List"
-					"editable": false
-				}, new FormBinding( null, "ignoreImpls", null, null ) {
-					"columnName": new FormMessage( null, "TypeConfigPanel.typeConfigTable.columnName_3" )
 					"columnClass": "java.util.List"
 					"editable": false
 				} ]

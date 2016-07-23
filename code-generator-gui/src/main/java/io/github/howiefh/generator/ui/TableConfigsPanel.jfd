@@ -103,7 +103,7 @@ new FormModel {
 					"columnClass": "java.util.List"
 				} ]
 			} )
-			addBinding( new FormBinding( "tableConfigTable", "${selectedElements != null}", "deleteBbutton", "enabled" ) )
+			addBinding( new FormBinding( "tableConfigTable", "${selectedElement != null}", "deleteBbutton", "enabled" ) )
 			addBinding( new FormBinding( "tableConfigTable", "selectedElement", "tableConfigPanel", "tableCfgModel" ) )
 			addBinding( new FormBinding( "tableConfigPanel", "typesList.selectedElement", "typeConfigPanel", "typeCfgModel" ) )
 		} )

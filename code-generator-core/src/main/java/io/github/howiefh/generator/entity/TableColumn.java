@@ -310,5 +310,3 @@ public class TableColumn extends BasicEntity {
     }
 
 }
-
-

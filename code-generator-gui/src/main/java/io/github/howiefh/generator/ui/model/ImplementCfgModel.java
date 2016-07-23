@@ -98,4 +98,8 @@ public class ImplementCfgModel extends AbstractModel<ImplementCfg> implements Na
         changeSupport.firePropertyChange("attributes", oldValue, attributes);
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

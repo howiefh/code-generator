@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.github.howiefh.generator.common.config.TableCfg;
-import io.github.howiefh.generator.dao.TableMetaDataDao;
 import io.github.howiefh.generator.entity.Table;
 import io.github.howiefh.generator.entity.TableColumn;
+import io.github.howiefh.generator.service.TableMetaDataService;
 import io.github.howiefh.generator.types.DefaultJavaTypeResolver;
 
 import java.util.List;
@@ -23,13 +23,13 @@ public class DBUtils {
     private static final String DEFAULT_SHOW_TYPE = "input-text";
     private static DefaultJavaTypeResolver javaTypeResolver = new DefaultJavaTypeResolver();
 
-    public static Table fetchTableFormDb(TableMetaDataDao tableMetaDataDao, TableCfg tableCfg) {
+    public static Table fetchTableFormDb(TableCfg tableCfg) {
         // 如果有表名，则获取物理表
         Table table = null;
         if (StringUtils.isNotBlank(tableCfg.getName())) {
             Table t = new Table();
             t.setName(tableCfg.getName());
-            List<Table> list = tableMetaDataDao.findTableList(t);
+            List<Table> list = TableMetaDataService.getInstance().findTableList(t);
             if (list.size() > 0) {
                 table = list.get(0);
 
@@ -42,11 +42,11 @@ public class DBUtils {
                 }
 
                 // 添加列
-                List<TableColumn> columns = tableMetaDataDao.findTableColumnList(table);
+                List<TableColumn> columns = TableMetaDataService.getInstance().findTableColumnList(table);
                 table.setColumns(columns);
 
                 // 获取主键
-                table.setPks(tableMetaDataDao.findTablePks(table));
+                table.setPks(TableMetaDataService.getInstance().findTablePks(table));
                 // 配置中的主键覆盖数据库的
                 Set<String> pks = tableCfg.getPks();
                 if (CollectionUtils.isNotEmpty(pks)) {

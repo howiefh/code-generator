@@ -20,10 +20,23 @@ public class TypeCfgModel extends AbstractModel<TypeCfg> implements NamedModel {
 
     public TypeCfgModel() {
         this(new TypeCfg());
+        init();
     }
 
     public TypeCfgModel(TypeCfg typeCfg) {
         this.typeCfg = typeCfg;
+    }
+
+    public void init(){
+        setIgnoreImpls(null);
+        setDependencies(null);
+        setAttributes(null);
+        setImpls(null);
+        setName("");
+        setPkg(null);
+        setSuffix(null);
+        setTarget(null);
+        setTemplate(null);
     }
 
     /**
@@ -220,5 +233,10 @@ public class TypeCfgModel extends AbstractModel<TypeCfg> implements NamedModel {
         Map<String, Object> oldValue = getAttributes();
         typeCfg.setAttributes(attributes);
         changeSupport.firePropertyChange("attributes", oldValue, attributes);
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

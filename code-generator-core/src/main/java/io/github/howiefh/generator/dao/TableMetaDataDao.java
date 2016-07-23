@@ -2,6 +2,7 @@ package io.github.howiefh.generator.dao;
 
 import io.github.howiefh.generator.entity.Table;
 import io.github.howiefh.generator.entity.TableColumn;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,6 +27,15 @@ public interface TableMetaDataDao {
      * @return
      */
     List<TableColumn> findTableColumnList(Table table);
+
+    /**
+     * 获取数据表字段
+     *
+     * @param name
+     * @param dbType
+     * @return
+     */
+    List<String> findColumnList(@Param("name") String name, @Param("dbType") String dbType);
 
     /**
      * 获取数据表主键

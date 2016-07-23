@@ -89,6 +89,40 @@
         </if>
     </select>
 
+    <select id="findColumnList" resultType="java.lang.String">
+        <if test="dbType == 'oracle'">
+            SELECT
+            t.COLUMN_NAME AS name
+            FROM user_tab_columns t, user_col_comments c
+            WHERE t.TABLE_NAME = c.table_name
+            AND t.COLUMN_NAME = c.column_name
+            <if test="name != null and name != ''">
+                AND t.TABLE_NAME = upper(#{name})
+            </if>
+            ORDER BY t.COLUMN_ID
+        </if>
+        <if test="dbType == 'mssql'">
+            SELECT t.COLUMN_NAME AS name
+            FROM INFORMATION_SCHEMA.COLUMNS t INNER JOIN sys.sysobjects o ON t.TABLE_NAME=o.name AND SCHEMA_NAME(o.uid)=t.TABLE_SCHEMA
+            LEFT JOIN sys.extended_properties g ON o.id = g.major_id
+            AND t.ORDINAL_POSITION = g.minor_id AND g.name='MS_Description'
+            WHERE t.TABLE_SCHEMA = (SCHEMA_NAME())
+            <if test="name != null and name != ''">
+                AND t.TABLE_NAME = upper(#{name})
+            </if>
+            ORDER BY t.ORDINAL_POSITION
+        </if>
+        <if test="dbType == 'mysql'">
+            SELECT t.COLUMN_NAME AS name
+            FROM information_schema.`COLUMNS` t
+            WHERE t.TABLE_SCHEMA = (select database())
+            <if test="name != null and name != ''">
+                AND t.TABLE_NAME = #{name}
+            </if>
+            ORDER BY t.ORDINAL_POSITION
+        </if>
+    </select>
+
     <select id="findTablePks" resultType="io.github.howiefh.generator.entity.TableColumn">
         <if test="dbType == 'oracle'">
             SELECT lower(cu.COLUMN_NAME) AS name
