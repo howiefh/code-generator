@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class BaseConfigPanel extends JPanel {
+    private static final long serialVersionUID = -2934739600494831543L;
     private SelectFileHandler  selectFileHandler;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JLabel authorLabel;

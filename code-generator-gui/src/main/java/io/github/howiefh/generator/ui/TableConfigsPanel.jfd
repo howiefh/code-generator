@@ -64,7 +64,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 530, 365 )
+			"size": new java.awt.Dimension( 635, 365 )
 		} )
 		add( new FormNonVisual( "java.util.List" ) {
 			name: "tableCfgs"
@@ -106,6 +106,7 @@ new FormModel {
 			addBinding( new FormBinding( "tableConfigTable", "${selectedElement != null}", "deleteBbutton", "enabled" ) )
 			addBinding( new FormBinding( "tableConfigTable", "selectedElement", "tableConfigPanel", "tableCfgModel" ) )
 			addBinding( new FormBinding( "tableConfigPanel", "typesList.selectedElement", "typeConfigPanel", "typeCfgModel" ) )
+			addBinding( new FormBinding( "tableConfigPanel", "columns", "typeConfigPanel", "columns" ) )
 		} )
 	}
 }

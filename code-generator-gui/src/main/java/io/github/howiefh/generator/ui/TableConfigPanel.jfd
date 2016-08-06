@@ -234,10 +234,40 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 6
 			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane5"
-				add( new FormComponent( "javax.swing.JList" ) {
-					name: "typesList"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0, 0, 0"
+				"$rowSpecs": "0, 0"
+				"$hGap": 5
+				"$vGap": 5
+				"$alignTop": true
+				"$alignLeft": true
+			} ) {
+				name: "panel7"
+				add( new FormComponent( "javax.swing.JComboBox" ) {
+					name: "typesComboBox"
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "addTypeButton"
+					"icon": #SwingIcon0
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addType", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "ignoreTypesButton"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/exclude.png" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ignoreTypes", true ) )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridx": 2
+				} )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane5"
+					add( new FormComponent( "javax.swing.JList" ) {
+						name: "typesList"
+					} )
+				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+					"gridy": 1
+					"gridwidth": 3
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 2
@@ -252,18 +282,6 @@ new FormModel {
 				"$alignTop": true
 			} ) {
 				name: "panel5"
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "addTypeButton"
-					"icon": #SwingIcon0
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addType", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "ignoreTypesButton"
-					"icon": new com.jformdesigner.model.SwingIcon( 0, "/icons/exclude.png" )
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ignoreTypes", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridy": 1
-				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 3
 				"gridy": 6
@@ -344,10 +362,10 @@ new FormModel {
 			addBinding( new FormBinding( "this", "tableCfgModel.showTypes", "showTypesList", "elements" ) )
 			addBinding( new FormBinding( "this", "tableCfgModel.types", "typesList", "elements" ) )
 			addBinding( new FormBinding( "this", "tableCfgModel.ignoreTypes", "ignoreTypesList", "elements" ) )
-			addBinding( new FormBinding( "columns", null, "pkComboBox", "elements" ) )
-			addBinding( new FormBinding( "columns", null, "updateComboBox", "elements" ) )
-			addBinding( new FormBinding( "columns", null, "queriesComboBox", "elements" ) )
-			addBinding( new FormBinding( "columns", null, "showTypeColumnsComboBox", "elements" ) )
+			addBinding( new FormBinding( "this", "columns", "pkComboBox", "elements" ) )
+			addBinding( new FormBinding( "this", "columns", "updateComboBox", "elements" ) )
+			addBinding( new FormBinding( "this", "columns", "queriesComboBox", "elements" ) )
+			addBinding( new FormBinding( "this", "columns", "showTypeColumnsComboBox", "elements" ) )
 			addBinding( new FormBinding( "queryTypes", null, "queryTypesComboBox", "elements" ) )
 			addBinding( new FormBinding( "showTypes", null, "showTypesComboBox", "elements" ) )
 		} )

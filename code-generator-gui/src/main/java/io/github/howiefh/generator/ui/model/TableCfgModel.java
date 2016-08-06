@@ -43,7 +43,6 @@ public class TableCfgModel extends AbstractModel<TableCfg> implements NamedModel
         setPks(null);
         setQueries(null);
         setShowTypes(null);
-        setTypes(null);
         setUpdates(null);
     }
 
@@ -215,7 +214,7 @@ public class TableCfgModel extends AbstractModel<TableCfg> implements NamedModel
      * @param types
      */
     public void setTypes(List<TypeCfgModel> types) {
-        List<String> oldValue = getIgnoreTypes();
+        List<TypeCfgModel> oldValue = getTypes();
         this.types = types;
         changeSupport.firePropertyChange("types", oldValue, types);
     }

@@ -28,17 +28,34 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class TypeConfigsPanel extends JPanel {
+    private static final long serialVersionUID = 2796409198741401609L;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane scrollPane;
     private JTable typeConfigTable;
     private JButton addButton;
     private JButton deleteButton;
-    private TypeConfigPanel typeConfigFormPanel;
+    private TypeConfigPanel typeConfigPanel;
     private List<io.github.howiefh.generator.ui.model.TypeCfgModel> typeCfgs;
     private BindingGroup bindingGroup;
     // End of variables declaration  //GEN-END:variables
 
     private Config config;
+
+    /**
+     * @return types
+     */
+    public List<String> getTypes() {
+        return typeConfigPanel.getTypes();
+    }
+
+    /**
+     * @param types
+     */
+    public void setTypes(List<String> types) {
+        List<String> oldValue = getTypes();
+        typeConfigPanel.setTypes(types);
+        firePropertyChange("types", oldValue, types);
+    }
 
     public TypeConfigsPanel() {
         List<String> types = ObservableCollections.observableList(new ArrayList<String>());
@@ -54,8 +71,8 @@ public class TypeConfigsPanel extends JPanel {
 
         initComponents();
 
-        typeConfigFormPanel.setShowImplements(false);
-        typeConfigFormPanel.setTypes(types);
+        typeConfigPanel.setShowImplements(false);
+        setTypes(types);
     }
 
     /**
@@ -84,7 +101,7 @@ public class TypeConfigsPanel extends JPanel {
         typeConfigTable.setRowSelectionInterval(row, row);
         typeConfigTable.scrollRectToVisible(typeConfigTable.getCellRect(row, 0, true));
 
-        typeConfigFormPanel.requestFocusInWindow();
+        typeConfigPanel.requestFocusInWindow();
     }
 
     private void deleteTypeConfig(ActionEvent e) {
@@ -99,9 +116,9 @@ public class TypeConfigsPanel extends JPanel {
 
             config.getTypes().remove(typeCfg);
 
-            List<String> types = typeConfigFormPanel.getTypes();
+            List<String> types = getTypes();
             types.remove(typeCfg.getName());
-            typeConfigFormPanel.setTypes(types);
+            setTypes(types);
         }
 
         // select row
@@ -119,7 +136,7 @@ public class TypeConfigsPanel extends JPanel {
         typeConfigTable = new JTable();
         addButton = new JButton();
         deleteButton = new JButton();
-        typeConfigFormPanel = new TypeConfigPanel();
+        typeConfigPanel = new TypeConfigPanel();
 
         //======== this ========
         setLayout(new GridBagLayout());
@@ -165,9 +182,9 @@ public class TypeConfigsPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        //---- typeConfigFormPanel ----
-        typeConfigFormPanel.setBorder(new TitledBorder(bundle.getString("TypeConfigPanel.typeConfigFormPanel.border")));
-        add(typeConfigFormPanel, new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0,
+        //---- typeConfigPanel ----
+        typeConfigPanel.setBorder(new TitledBorder(bundle.getString("TypeConfigPanel.typeConfigPanel.border")));
+        add(typeConfigPanel, new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
@@ -207,7 +224,7 @@ public class TypeConfigsPanel extends JPanel {
             deleteButton, BeanProperty.create("enabled")));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             typeConfigTable, BeanProperty.create("selectedElement"),
-            typeConfigFormPanel, BeanProperty.create("typeCfgModel")));
+            typeConfigPanel, BeanProperty.create("typeCfgModel")));
         bindingGroup.bind();
         // End of component initialization  //GEN-END:initComponents
     }

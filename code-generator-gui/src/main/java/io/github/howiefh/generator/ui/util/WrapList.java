@@ -4,9 +4,7 @@ import io.github.howiefh.generator.ui.model.AbstractModel;
 import io.github.howiefh.generator.ui.model.WrapModel;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author fenghao, 2016/7/12.
@@ -21,7 +19,12 @@ public class WrapList<T extends WrapModel> extends ArrayList<T>{
 
     public WrapList() {
         super();
-        entries = new HashSet();
+        entries = new LinkedHashSet();
+    }
+
+    public WrapList(List <T> list) {
+        this();
+        addAll(list);
     }
 
     public static <T extends AbstractModel> WrapList<T> newWrapList(Set c, Class<T> clazz){
@@ -50,6 +53,25 @@ public class WrapList<T extends WrapModel> extends ArrayList<T>{
         T t = super.remove(index);
         entries.remove(t.getEntry());
         return t;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+        boolean result = false;
+        if (c != null){
+            addAll(new LinkedHashSet<T>(c));
+            if (c instanceof WrapList) {
+                entries = new LinkedHashSet(((WrapList)c).getEntries());
+            } else {
+                for (Object o : c) {
+                    if (o instanceof WrapModel) {
+                        entries.add(((WrapModel) o).getEntry());
+                    }
+                }
+            }
+            result = true;
+        }
+        return result;
     }
 
     /**

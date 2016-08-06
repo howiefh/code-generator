@@ -25,6 +25,11 @@ new FormModel {
 					name: "generatorButton"
 					"text": new FormMessage( null, "Generator.MainFrame.generatorButton.text" )
 					"toolTipText": new FormMessage( null, "Generator.MainFrame.generatorButton.toolTipText" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "generateCode", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JCheckBox" ) {
+					name: "overrideCheckBox"
+					"text": new FormMessage( null, "Generator.MainFrame.overrideCheckBox.text" )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "aboutButton"
@@ -135,6 +140,10 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
 			"size": new java.awt.Dimension( 1095, 655 )
+		} )
+		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
+			"name": "bindingGroup"
+			addBinding( new FormBinding( "this", "override", "overrideCheckBox", "selected" ) )
 		} )
 	}
 }

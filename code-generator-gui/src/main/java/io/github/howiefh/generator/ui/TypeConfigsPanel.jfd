@@ -41,8 +41,8 @@ new FormModel {
 				"gridy": 1
 			} )
 			add( new FormComponent( "io.github.howiefh.generator.ui.TypeConfigPanel" ) {
-				name: "typeConfigFormPanel"
-				"border": new javax.swing.border.TitledBorder( "i18nKey=TypeConfigPanel.typeConfigFormPanel.border" )
+				name: "typeConfigPanel"
+				"border": new javax.swing.border.TitledBorder( "i18nKey=TypeConfigPanel.typeConfigPanel.border" )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridy": 4
 				"gridwidth": 2
@@ -89,7 +89,7 @@ new FormModel {
 				} ]
 			} )
 			addBinding( new FormBinding( "typeConfigTable", "${selectedElement != null}", "deleteButton", "enabled" ) )
-			addBinding( new FormBinding( "typeConfigTable", "selectedElement", "typeConfigFormPanel", "typeCfgModel" ) )
+			addBinding( new FormBinding( "typeConfigTable", "selectedElement", "typeConfigPanel", "typeCfgModel" ) )
 		} )
 	}
 }

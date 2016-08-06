@@ -328,7 +328,9 @@ new FormModel {
 		} )
 		addBindingGroup( new FormBindingGroup( class org.jdesktop.beansbinding.BindingGroup ) {
 			"name": "bindingGroup"
-			addBinding( new FormBinding( "this", "typeCfgModel.name", "nameTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
+			addBinding( new FormBinding( "this", "typeCfgModel.name", "nameTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) {
+				"name": "nameBinding"
+			} )
 			addBinding( new FormBinding( "this", "typeCfgModel.template", "templateTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
 			addBinding( new FormBinding( "this", "typeCfgModel.target", "targetTextField", "text" ) )
 			addBinding( new FormBinding( "this", "typeCfgModel.pkg", "packageTextField", "text_ON_ACTION_OR_FOCUS_LOST" ) )
@@ -337,7 +339,7 @@ new FormModel {
 			addBinding( new FormBinding( "this", "typeCfgModel.impls", "implsList", "elements" ) )
 			addBinding( new FormBinding( "this", "typeCfgModel.ignoreImpls", "ignoreImplsList", "elements" ) )
 			addBinding( new FormBinding( "this", "types", "dependenciesComboBox", "elements" ) )
-			addBinding( new FormBinding( "columns", null, "columnsList", "elements" ) )
+			addBinding( new FormBinding( "this", "columns", "columnsList", "elements" ) )
 			addBinding( new FormBinding( "this", "implementCfgModel.columns", "implColumnsList", "elements" ) )
 			addBinding( new FormBinding( "this", "implementCfgModel.name", "implementNameTextField", "text" ) )
 			addBinding( new FormBinding( "this", "showImplements", "ignoreImplsLabel", "visible" ) )

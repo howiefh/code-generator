@@ -1,7 +1,24 @@
 package io.github.howiefh.generator.ui;
 
+import io.github.howiefh.generator.common.exception.ConfigInitException;
+import io.github.howiefh.generator.common.exception.GeneratorException;
+import io.github.howiefh.generator.strategy.GeneratorStrategy;
+import io.github.howiefh.generator.strategy.MergeGeneratorStrategy;
+import io.github.howiefh.generator.strategy.OverrideGeneratorStrategy;
+import io.github.howiefh.generator.vcs.Gits;
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+import org.jdesktop.beansbinding.BeanProperty;
+import org.jdesktop.beansbinding.BindingGroup;
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.swingbinding.SwingBindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
@@ -12,10 +29,13 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class MainFrame extends JFrame {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainFrame.class);
+    private static final long serialVersionUID = 8386739357191883218L;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JToolBar toolBar;
     private JButton configButton;
     private JButton generatorButton;
+    private JCheckBox overrideCheckBox;
     private JButton aboutButton;
     private JSplitPane splitPane;
     private JPanel projectPanel;
@@ -33,11 +53,37 @@ public class MainFrame extends JFrame {
     private JScrollPane tableScrollPane;
     private TableConfigsPanel tableConfigsPanel;
     private JPanel generatorPanel;
+    private BindingGroup bindingGroup;
     // End of variables declaration  //GEN-END:variables
+    private boolean override;
+
+
+    /**
+     * @return override
+     */
+    public boolean isOverride() {
+        return override;
+    }
+
+    /**
+     * @param override
+     */
+    public void setOverride(boolean override) {
+        boolean oldValue = isOverride();
+        this.override = override;
+        firePropertyChange("override", oldValue, override);
+    }
 
     public MainFrame() {
         setPreferredSize(new Dimension(976, 678));
         initComponents();
+        //---- bindings ----
+        bindingGroup = new BindingGroup();
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ_WRITE,
+                typeConfigsPanel.getTypes(), tableConfigsPanel.getTypeConfigPanel().getDependenciesComboBox()));
+        bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(AutoBinding.UpdateStrategy.READ_WRITE,
+                typeConfigsPanel.getTypes(), tableConfigsPanel.getTableConfigPanel().getTypesComboBox()));
+        bindingGroup.bind();
     }
 
     private void effectsOnClosing(WindowEvent e) {
@@ -79,12 +125,36 @@ public class MainFrame extends JFrame {
         System.exit(0);
     }
 
+    private void generateCode(ActionEvent e) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GeneratorStrategy strategy;
+                    if (override) {
+                        strategy = new OverrideGeneratorStrategy();
+                    } else {
+                        strategy = new MergeGeneratorStrategy(Gits.DEFAULT_REPO_PATH);
+                    }
+                    strategy.generate();
+                } catch (IllegalArgumentException e) {
+                    LOGGER.error("Argument error. {}", e.getMessage());
+                } catch (ConfigInitException e) {
+                    LOGGER.error("Config init error. {}", e.getMessage());
+                } catch (GeneratorException e) {
+                    LOGGER.error("Generate error. {}", e.getMessage());
+                }
+            }
+        }).start();
+    }
+
     private void initComponents() {
         // Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         ResourceBundle bundle = ResourceBundle.getBundle("lang.language");
         toolBar = new JToolBar();
         configButton = new JButton();
         generatorButton = new JButton();
+        overrideCheckBox = new JCheckBox();
         aboutButton = new JButton();
         splitPane = new JSplitPane();
         projectPanel = new JPanel();
@@ -128,7 +198,17 @@ public class MainFrame extends JFrame {
             //---- generatorButton ----
             generatorButton.setText(bundle.getString("Generator.MainFrame.generatorButton.text"));
             generatorButton.setToolTipText(bundle.getString("Generator.MainFrame.generatorButton.toolTipText"));
+            generatorButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    generateCode(e);
+                }
+            });
             toolBar.add(generatorButton);
+
+            //---- overrideCheckBox ----
+            overrideCheckBox.setText(bundle.getString("Generator.MainFrame.overrideCheckBox.text"));
+            toolBar.add(overrideCheckBox);
 
             //---- aboutButton ----
             aboutButton.setText(bundle.getString("Generator.MainFrame.aboutButton.text"));
@@ -231,6 +311,13 @@ public class MainFrame extends JFrame {
         contentPane.add(splitPane, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(getOwner());
+
+        //---- bindings ----
+        bindingGroup = new BindingGroup();
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            this, BeanProperty.create("override"),
+            overrideCheckBox, BeanProperty.create("selected")));
+        bindingGroup.bind();
         // End of component initialization  //GEN-END:initComponents
     }
 }

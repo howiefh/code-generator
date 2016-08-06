@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
  * @since 1.0
  */
 public class TableConfigsPanel extends JPanel {
+    private static final long serialVersionUID = 7954925520583477064L;
     private Config config;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane scrollPane;
@@ -40,6 +41,35 @@ public class TableConfigsPanel extends JPanel {
     private List<io.github.howiefh.generator.ui.model.TableCfgModel> tableCfgs;
     private BindingGroup bindingGroup;
     // End of variables declaration  //GEN-END:variables
+
+
+    /**
+     * @return typeConfigPanel
+     */
+    public TypeConfigPanel getTypeConfigPanel() {
+        return typeConfigPanel;
+    }
+
+    /**
+     * @param typeConfigPanel
+     */
+    public void setTypeConfigPanel(TypeConfigPanel typeConfigPanel) {
+        this.typeConfigPanel = typeConfigPanel;
+    }
+
+    /**
+     * @return tableConfigPanel
+     */
+    public TableConfigPanel getTableConfigPanel() {
+        return tableConfigPanel;
+    }
+
+    /**
+     * @param tableConfigPanel
+     */
+    public void setTableConfigPanel(TableConfigPanel tableConfigPanel) {
+        this.tableConfigPanel = tableConfigPanel;
+    }
 
     public TableConfigsPanel() {
         config = Configuration.getConfig();
@@ -204,6 +234,9 @@ public class TableConfigsPanel extends JPanel {
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             tableConfigPanel, BeanProperty.create("typesList.selectedElement"),
             typeConfigPanel, BeanProperty.create("typeCfgModel")));
+        bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
+            tableConfigPanel, BeanProperty.create("columns"),
+            typeConfigPanel, BeanProperty.create("columns")));
         bindingGroup.bind();
         // End of component initialization  //GEN-END:initComponents
     }

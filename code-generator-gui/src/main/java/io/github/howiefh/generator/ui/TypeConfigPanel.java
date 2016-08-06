@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -35,9 +37,11 @@ import java.util.ResourceBundle;
  */
 public class TypeConfigPanel extends JPanel {
     private static final Logger LOGGER = LoggerFactory.getLogger(TypeConfigPanel.class);
+    private static final long serialVersionUID = 3729008043387471812L;
     private boolean showImplements = false;
     private SelectFileHandler selectFileHandler;
     private JListActionHandler listActionHandler;
+
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JLabel nameLabel;
     private JTextField nameTextField;
@@ -102,6 +106,34 @@ public class TypeConfigPanel extends JPanel {
         boolean oldValue = isShowImplements();
         this.showImplements = showImplements;
         firePropertyChange("showImplements", oldValue, showImplements);
+    }
+
+    /**
+     * @return nameTextField
+     */
+    public JTextField getNameTextField() {
+        return nameTextField;
+    }
+
+    /**
+     * @param nameTextField
+     */
+    public void setNameTextField(JTextField nameTextField) {
+        this.nameTextField = nameTextField;
+    }
+
+    /**
+     * @return dependenciesComboBox
+     */
+    public JComboBox getDependenciesComboBox() {
+        return dependenciesComboBox;
+    }
+
+    /**
+     * @param dependenciesComboBox
+     */
+    public void setDependenciesComboBox(JComboBox dependenciesComboBox) {
+        this.dependenciesComboBox = dependenciesComboBox;
     }
 
     /**
@@ -172,7 +204,9 @@ public class TypeConfigPanel extends JPanel {
         super.setEnabled(enabled);
 
         nameLabel.setEnabled(enabled);
-        nameTextField.setEditable(enabled);
+        if (!isShowImplements()) {
+            nameTextField.setEditable(enabled);
+        }
         templateLabel.setEnabled(enabled);
         templateTextField.setEditable(enabled);
         targetLabel.setEnabled(enabled);
@@ -199,6 +233,15 @@ public class TypeConfigPanel extends JPanel {
 
         selectFileHandler = new SelectFileHandler(targetTextField);
         listActionHandler = new JListActionHandler();
+
+        addPropertyChangeListener("showImplements", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (isShowImplements()) {
+                    nameTextField.setEditable(false);
+                }
+            }
+        });
     }
 
     private void addDependence(ActionEvent e) {
@@ -271,6 +314,9 @@ public class TypeConfigPanel extends JPanel {
     }
 
     private void focusOutNameTextField(FocusEvent e) {
+        if (isShowImplements()) {
+            return;
+        }
         String oldValue = typeCfgModel.getName();
         String newValue = nameTextField.getText();
         if (newValue.equals(oldValue)) {
@@ -278,7 +324,9 @@ public class TypeConfigPanel extends JPanel {
         }
 
         int index = types.indexOf(oldValue);
-        types.remove(index);
+        if (index > 0) {
+            types.remove(index);
+        }
         types.add(newValue);
     }
 
@@ -646,7 +694,7 @@ public class TypeConfigPanel extends JPanel {
         bindingGroup = new BindingGroup();
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             this, BeanProperty.create("typeCfgModel.name"),
-            nameTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
+            nameTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST"), "nameBinding"));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
             this, BeanProperty.create("typeCfgModel.template"),
             templateTextField, BeanProperty.create("text_ON_ACTION_OR_FOCUS_LOST")));
@@ -668,7 +716,7 @@ public class TypeConfigPanel extends JPanel {
         bindingGroup.addBinding(SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE,
             this, (BeanProperty) BeanProperty.create("types"), dependenciesComboBox));
         bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
-            columns, columnsList));
+            this, (BeanProperty) BeanProperty.create("columns"), columnsList));
         bindingGroup.addBinding(SwingBindings.createJListBinding(UpdateStrategy.READ_WRITE,
             this, (BeanProperty) BeanProperty.create("implementCfgModel.columns"), implColumnsList));
         bindingGroup.addBinding(Bindings.createAutoBinding(UpdateStrategy.READ_WRITE,
