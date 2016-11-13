@@ -59,7 +59,7 @@ public class WrapList<T extends WrapModel> extends ArrayList<T>{
     public boolean addAll(Collection<? extends T> c) {
         boolean result = false;
         if (c != null){
-            addAll(new LinkedHashSet<T>(c));
+            super.addAll(new LinkedHashSet<T>(c));
             if (c instanceof WrapList) {
                 entries = new LinkedHashSet(((WrapList)c).getEntries());
             } else {

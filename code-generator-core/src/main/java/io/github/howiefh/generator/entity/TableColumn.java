@@ -1,5 +1,6 @@
 package io.github.howiefh.generator.entity;
 
+import com.google.common.base.Objects;
 import io.github.howiefh.generator.common.entity.BasicEntity;
 import io.github.howiefh.generator.common.util.StringUtils;
 
@@ -309,4 +310,17 @@ public class TableColumn extends BasicEntity {
                 && !StringUtils.equals(getSimpleJavaField(), "modifiedDate");
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TableColumn that = (TableColumn) o;
+        return Objects.equal(table, that.table) &&
+                Objects.equal(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), table, name);
+    }
 }

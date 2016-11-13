@@ -51,4 +51,54 @@ public class ${implClassName} implements Serializable {
     }
     </#if>
 </#list>
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ${implClassName} ${className} = (${implClassName}) o;
+        <#assign fields>
+            <#list table.columns as c>
+                <#if implColumns?seq_contains(c.name) >
+            Objects.equal(${c.javaFieldId}, ${className}.${c.javaFieldId}) &&
+                </#if>
+            </#list>
+        </#assign>
+        <#if fields?last_index_of("&&") != -1 >
+        return ${fields?substring(0, fields?last_index_of("&&"))?trim};
+        <#else>
+        return ${fields?trim};
+        </#if>
+    }
+
+    @Override
+    public int hashCode() {
+        <#assign fields>
+            <#list table.columns as c>
+                <#if implColumns?seq_contains(c.name) >
+            ${c.javaFieldId},
+                </#if>
+            </#list>
+        </#assign>
+        <#if fields?last_index_of(",") != -1 >
+        return Objects.hashCode(${fields?substring(0, fields?last_index_of(","))?trim});
+        <#else>
+        return Objects.hashCode(${fields?trim});
+        </#if>
+    }
+
+    @Override
+    public String toString() {
+        <#assign fields>
+            <#list table.columns as c>
+                <#if implColumns?seq_contains(c.name) >
+            + "'${c.javaFieldId}': '" + ${c.javaFieldId} + "',"
+                </#if>
+            </#list>
+        </#assign>
+        <#if fields?last_index_of(" + \"',\"") != -1 >
+        return ${implClassName}.class  + "{" ${fields?substring(0, fields?last_index_of(" + \"',\""))?trim} + "'}";
+        <#else>
+        return ${implClassName}.class  + "{" ${fields?trim} + "'}";
+        </#if>
+    }
 }

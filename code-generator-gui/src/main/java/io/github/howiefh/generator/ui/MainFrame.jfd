@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_77" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.2.2.228" Java: "1.8.0_101" encoding: "UTF-8"
 
 new FormModel {
 	"i18n.autoExternalize": true
@@ -17,9 +17,10 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
 				name: "toolBar"
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "configButton"
-					"text": new FormMessage( null, "Generator.MainFrame.configButton.text" )
-					"toolTipText": new FormMessage( null, "Generator.MainFrame.configButton.toolTipText" )
+					name: "saveConfigButton"
+					"text": new FormMessage( null, "Generator.MainFrame.saveConfigButton.text" )
+					"toolTipText": new FormMessage( null, "Generator.MainFrame.saveConfigButton.toolTipText" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "saveConfig", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "generatorButton"

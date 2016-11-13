@@ -1,5 +1,12 @@
 package io.github.howiefh.generator.ui;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+import io.github.howiefh.generator.TemplateCodeGenerator;
+import io.github.howiefh.generator.common.config.Config;
+import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.exception.ConfigInitException;
 import io.github.howiefh.generator.common.exception.GeneratorException;
 import io.github.howiefh.generator.strategy.GeneratorStrategy;
@@ -21,6 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 
 /**
@@ -33,7 +42,7 @@ public class MainFrame extends JFrame {
     private static final long serialVersionUID = 8386739357191883218L;
     // Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JToolBar toolBar;
-    private JButton configButton;
+    private JButton saveConfigButton;
     private JButton generatorButton;
     private JCheckBox overrideCheckBox;
     private JButton aboutButton;
@@ -56,7 +65,6 @@ public class MainFrame extends JFrame {
     private BindingGroup bindingGroup;
     // End of variables declaration  //GEN-END:variables
     private boolean override;
-
 
     /**
      * @return override
@@ -148,11 +156,23 @@ public class MainFrame extends JFrame {
         }).start();
     }
 
+    private void saveConfig(ActionEvent e) {
+        Config config = Configuration.getConfig();
+        File configFile = new File(TemplateCodeGenerator.DEFAULT_CONFIG);
+        LOGGER.info("#saveConfig config:{}, configFile:{}", config, configFile.getAbsolutePath());
+
+        try {
+            JSON.writeJSONString(Files.newWriter(configFile, Charsets.UTF_8), config, SerializerFeature.PrettyFormat);
+        } catch (FileNotFoundException e1) {
+            LOGGER.warn("#saveConfig config:{}, configFile:{}, e:{}", config, configFile.getAbsolutePath(), e1);
+        }
+    }
+
     private void initComponents() {
         // Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         ResourceBundle bundle = ResourceBundle.getBundle("lang.language");
         toolBar = new JToolBar();
-        configButton = new JButton();
+        saveConfigButton = new JButton();
         generatorButton = new JButton();
         overrideCheckBox = new JCheckBox();
         aboutButton = new JButton();
@@ -190,10 +210,16 @@ public class MainFrame extends JFrame {
         //======== toolBar ========
         {
 
-            //---- configButton ----
-            configButton.setText(bundle.getString("Generator.MainFrame.configButton.text"));
-            configButton.setToolTipText(bundle.getString("Generator.MainFrame.configButton.toolTipText"));
-            toolBar.add(configButton);
+            //---- saveConfigButton ----
+            saveConfigButton.setText(bundle.getString("Generator.MainFrame.saveConfigButton.text"));
+            saveConfigButton.setToolTipText(bundle.getString("Generator.MainFrame.saveConfigButton.toolTipText"));
+            saveConfigButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    saveConfig(e);
+                }
+            });
+            toolBar.add(saveConfigButton);
 
             //---- generatorButton ----
             generatorButton.setText(bundle.getString("Generator.MainFrame.generatorButton.text"));

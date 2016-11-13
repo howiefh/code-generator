@@ -93,6 +93,6 @@ public class ${ClassName} extends BasicEntity {
                 </#if>
             </#list>
         </#assign>
-        return this.getClass().getSimpleName() + "{" ${fields?substring(0, fields?last_index_of(" + \"',\""))?trim} + "}";
+        return ${ClassName}.class + "{" ${fields?substring(0, fields?last_index_of(" + \"',\""))?trim} + "'}";
     }
 }

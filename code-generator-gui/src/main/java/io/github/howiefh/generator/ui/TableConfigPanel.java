@@ -247,8 +247,8 @@ public class TableConfigPanel extends JPanel {
     }
 
     public TableConfigPanel() {
-        queryTypes = ObservableCollections.observableList(ShowType.getShowTypes());
-        showTypes = ObservableCollections.observableList(QueryType.getQueryTypes());
+        queryTypes = ObservableCollections.observableList(QueryType.getQueryTypes());
+        showTypes = ObservableCollections.observableList(ShowType.getShowTypes());
         initComponents();
 
         listActionHandler = new JListActionHandler();

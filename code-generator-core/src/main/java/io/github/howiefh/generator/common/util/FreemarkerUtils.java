@@ -31,7 +31,7 @@ public class FreemarkerUtils {
 
         Writer out = null;
         try {
-            Configuration configuration = new Configuration(Configuration.VERSION_2_3_21);
+            Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
             FileTemplateLoader ftl = null;
             File ftlDir = new File(ftlPath);
             if (ftlDir.exists()) {

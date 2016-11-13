@@ -1,6 +1,5 @@
 package io.github.howiefh.generator.ui;
 
-import com.alee.laf.WebLookAndFeel;
 import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.exception.ConfigInitException;
 import org.apache.commons.lang3.SystemUtils;
@@ -9,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.util.Enumeration;
 
@@ -25,7 +25,8 @@ public class App {
         try {
             Configuration.init("config.json");
 
-            UIManager.setLookAndFeel(WebLookAndFeel.class.getCanonicalName());
+            //UIManager.setLookAndFeel(WebLookAndFeel.class.getCanonicalName());
+            UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
             if (SystemUtils.IS_OS_WINDOWS) {
                 //Windows下设置全局字体，否则weblaf会乱码,其他可供选择的字体Helvetica,Arial,sans-serif
                 initGlobalFont(new Font("Helvetica", 0, 12));

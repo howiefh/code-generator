@@ -38,7 +38,7 @@ public class DBUtils {
                 if (StringUtils.isBlank(className)) {
                     table.setClassName(StringUtils.toCapitalizeCamelCase(table.getName()));
                 } else {
-                    table.setClassName(className);
+                    table.setClassName(StringUtils.toCapitalizeCamelCase(className));
                 }
 
                 // 添加列
@@ -74,9 +74,9 @@ public class DBUtils {
      * @param table
      */
     public static void initColumnField(Table table, TableCfg tableCfg) {
-        Set<String> edits = tableCfg.getUpdates() == null ? tableCfg.getUpdates() : Sets.<String>newHashSet();
-        Map<String, String> queries = tableCfg.getQueries() == null ? tableCfg.getQueries() : Maps.<String, String>newHashMap();
-        Map<String, String> showTypes = tableCfg.getShowTypes() == null ? tableCfg.getShowTypes() : Maps.<String, String>newHashMap();
+        Set<String> edits = tableCfg.getUpdates() != null ? tableCfg.getUpdates() : Sets.<String>newHashSet();
+        Map<String, String> queries = tableCfg.getQueries() != null ? tableCfg.getQueries() : Maps.<String, String>newHashMap();
+        Map<String, String> showTypes = tableCfg.getShowTypes() != null ? tableCfg.getShowTypes() : Maps.<String, String>newHashMap();
 
         boolean isUseDefaultEdits = false;
         boolean isUseDefaultQueries = false;

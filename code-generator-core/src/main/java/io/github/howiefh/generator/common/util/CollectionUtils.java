@@ -1,5 +1,8 @@
 package io.github.howiefh.generator.common.util;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import java.util.*;
 
 /**
@@ -58,7 +61,7 @@ public class CollectionUtils {
      * @return
      */
     public static <T> Set<T> emptySetIfNull(final Set<T> set) {
-        return set == null ? Collections.<T>emptySet() : set;
+        return set == null ? Sets.<T>newHashSet() : set;
     }
 
     /**
@@ -70,7 +73,7 @@ public class CollectionUtils {
      * @return
      */
     public static <K, V> Map<K, V> emptyMapIfNull(final Map<K, V> map) {
-        return map == null ? Collections.<K, V>emptyMap() : map;
+        return map == null ? Maps.<K, V>newHashMap() : map;
     }
 
     /**
