@@ -92,4 +92,65 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
         return sb.toString();
     }
+
+
+    public static String toFirstChars(String s) {
+        if (s == null) {
+            return null;
+        }
+
+        s = s.toLowerCase();
+
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == SEPARATOR) {
+                first = true;
+            } else if (first) {
+                sb.append(c);
+                first = false;
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static String toFirstWord(String s) {
+        if (s == null) {
+            return null;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (i == 0) {
+                c = Character.toLowerCase(c);
+            }
+
+            if (c == SEPARATOR || Character.isUpperCase(c)) {
+                break;
+            }
+
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
+
+    public static String toUpperCaseFirstChar(String s) {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    public static String toLowerCaseFirstChar(String s) {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        return s.substring(0, 1).toLowerCase() + s.substring(1);
+    }
 }

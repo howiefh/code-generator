@@ -5,7 +5,6 @@ import io.github.howiefh.generator.dao.TableMetaDataDao;
 import io.github.howiefh.generator.entity.Table;
 import io.github.howiefh.generator.entity.TableColumn;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
 
@@ -16,14 +15,7 @@ import java.util.List;
  */
 public class TableMetaDataService {
     private static TableMetaDataService instance = new TableMetaDataService();
-    private SqlSessionFactory sqlSessionFactory = Configuration.getSqlSessionFactory();
 
-    /**
-     * @return sqlSessionFactory
-     */
-    public SqlSessionFactory getSqlSessionFactory() {
-        return sqlSessionFactory;
-    }
 
     /**
      * @return instance
@@ -39,7 +31,7 @@ public class TableMetaDataService {
      * @return
      */
     public List<Table> findTableList(Table table) {
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession session = Configuration.getSqlSessionFactory().openSession();
         try {
             TableMetaDataDao tableMetaDataDao = session.getMapper(TableMetaDataDao.class);
             return tableMetaDataDao.findTableList(table);
@@ -55,7 +47,7 @@ public class TableMetaDataService {
      * @return
      */
     public List<TableColumn> findTableColumnList(Table table) {
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession session = Configuration.getSqlSessionFactory().openSession();
         try {
             TableMetaDataDao tableMetaDataDao = session.getMapper(TableMetaDataDao.class);
             return tableMetaDataDao.findTableColumnList(table);
@@ -71,7 +63,7 @@ public class TableMetaDataService {
      * @return
      */
     public List<String> findColumnList(String table) {
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession session = Configuration.getSqlSessionFactory().openSession();
         try {
             TableMetaDataDao tableMetaDataDao = session.getMapper(TableMetaDataDao.class);
             return tableMetaDataDao.findColumnList(table, Configuration.getConfig().getDatabase());
@@ -87,7 +79,7 @@ public class TableMetaDataService {
      * @return
      */
     public List<TableColumn> findTablePks(Table table){
-        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession session = Configuration.getSqlSessionFactory().openSession();
         try {
             TableMetaDataDao tableMetaDataDao = session.getMapper(TableMetaDataDao.class);
             return tableMetaDataDao.findTablePks(table);

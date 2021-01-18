@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.parser.deserializer.ExtraProcessor;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.common.base.Charsets;
 import com.google.common.collect.Sets;
+import com.google.common.io.Files;
 import io.github.howiefh.generator.common.exception.ConfigInitException;
 import io.github.howiefh.generator.common.exception.ValidationException;
 import io.github.howiefh.generator.common.util.ResourceUtils;
@@ -18,12 +21,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.beans.IntrospectionException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.Set;
-
-import static io.github.howiefh.generator.TemplateCodeGenerator.DEFAULT_CONFIG;
 
 /**
  * @author fenghao on 2016/5/20
@@ -65,7 +72,7 @@ public class Configuration {
     public static Config init(String configFile) throws ConfigInitException {
         try {
             if (StringUtils.isBlank(configFile)) {
-                configFile = DEFAULT_CONFIG;
+                configFile = Config.DEFAULT_CONFIG;
             }
             load(configFile);
             validate();
@@ -83,7 +90,7 @@ public class Configuration {
         return config;
     }
 
-    private static void initMybatis() throws IOException {
+    public static void initMybatis() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream, Configuration.jdbcProperties());
@@ -95,7 +102,7 @@ public class Configuration {
         }
         Reader reader = null;
         try {
-            File configFile = ResourceUtils.getResourceFile(configFileName);
+            File configFile = ResourceUtils.getResourceFileOrCopyFileIfNotExists(configFileName);
             LOGGER.info("Begin load config from file {}", configFile.getAbsolutePath());
             reader = new FileReader(configFile);
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -106,7 +113,7 @@ public class Configuration {
                 stringBuilder.append(line);
             }
 
-            parse(stringBuilder.toString());
+            parse(configFileName, stringBuilder.toString());
         } catch (FileNotFoundException e) {
             LOGGER.error("File not Found. {}", e.getMessage());
             throw new ConfigInitException("File not Found.", e);
@@ -133,34 +140,51 @@ public class Configuration {
         }
     }
 
+    public static void saveConfig() {
+        try {
+            if (config == null) {
+                return;
+            }
+            File configFile = ResourceUtils.getResourceFile(config.getConfigPath());
+            LOGGER.info("#saveConfig config:{}, configFile:{}", config, configFile.getAbsolutePath());
+            JSON.writeJSONString(Files.newWriter(configFile, Charsets.UTF_8), config, SerializerFeature.PrettyFormat);
+        } catch (FileNotFoundException e1) {
+            LOGGER.warn("#saveConfig config:{}, configFile:{}, e:{}", config, config.getConfigPath(), e1);
+        } catch (URISyntaxException e) {
+            LOGGER.warn("#saveConfig config:{}, configFile:{}, e:{}", config, config.getConfigPath(), e);
+        }
+    }
+
     /**
      * attributes字段必须有默认值
      *
+     * @param configFileName
      * @param context
      */
-    private static void parse(String context) {
-        ExtraProcessor processor = new ExtraProcessor() {
-            public void processExtra(Object object, String key, Object value) {
-                if (object instanceof Config) {
-                    Config config = (Config) object;
-                    config.getAttributes().put(key, value);
-                } else if (object instanceof TableCfg) {
-                    TableCfg tableCfg = (TableCfg) object;
-                    tableCfg.getAttributes().put(key, value);
-                } else if (object instanceof TypeCfg) {
-                    TypeCfg typeCfg = (TypeCfg) object;
-                    typeCfg.getAttributes().put(key, value);
-                } else if (object instanceof ImplementCfg) {
-                    ImplementCfg implementCfg = (ImplementCfg) object;
-                    implementCfg.getAttributes().put(key, value);
-                }
+    private static void parse(String configFileName, String context) {
+        ExtraProcessor processor = (object, key, value) -> {
+            if (object instanceof Config) {
+                Config config = (Config) object;
+                config.getAttributes().put(key, value);
+            } else if (object instanceof TableCfg) {
+                TableCfg tableCfg = (TableCfg) object;
+                tableCfg.getAttributes().put(key, value);
+            } else if (object instanceof TypeCfg) {
+                TypeCfg typeCfg = (TypeCfg) object;
+                typeCfg.getAttributes().put(key, value);
+            } else if (object instanceof ImplementCfg) {
+                ImplementCfg implementCfg = (ImplementCfg) object;
+                implementCfg.getAttributes().put(key, value);
             }
         };
 
         config = JSON.parseObject(context, Config.class, processor, Feature.AllowComment);
+        if (config != null) {
+            config.setConfigPath(configFileName);
+        }
     }
 
-    public static Properties jdbcProperties(){
+    private static Properties jdbcProperties(){
         Properties properties = new Properties();
         properties.setProperty("jdbc.driver", config.getJdbcDriver());
         properties.setProperty("jdbc.url", config.getJdbcUrl());

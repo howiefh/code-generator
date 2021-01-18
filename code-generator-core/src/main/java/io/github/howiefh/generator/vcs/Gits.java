@@ -2,8 +2,12 @@ package io.github.howiefh.generator.vcs;
 
 import com.google.common.io.Files;
 import io.github.howiefh.generator.common.exception.GitException;
+import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.*;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRefNameException;
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
+import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.merge.MergeStrategy;
@@ -66,7 +70,9 @@ public class Gits {
                 repoPath = DEFAULT_REPO_PATH;
             }
             Git git = Git.init().setDirectory(repoPath).call();
-            FileUtils.setHidden(repoPath, true);
+            if (SystemUtils.IS_OS_WINDOWS) {
+                FileUtils.setHidden(repoPath, true);
+            }
             Files.write(GIT_IGNORE, new File(repoPath + File.separator + ".gitignore"), Charset.forName(UTF8));
             ;
             Gits gits = new Gits(repoPath, git);
@@ -192,9 +198,11 @@ public class Gits {
 
     public void copy(File src, File dest) {
         try {
-            Files.copy(src, dest);
+            if (src.exists()) {
+                Files.copy(src, dest);
+            }
         } catch (IOException e) {
-            LOGGER.warn("copy {} to {} error! Exception: {}", src, dest, e);
+            LOGGER.warn("copy {} to {} error! Exception: {}", src, dest, e.getMessage());
         }
     }
 

@@ -31,10 +31,14 @@ public class Config implements Serializable {
     public static final String DEFAULT_VERSION = "1.0";
     public static final String DEFAULT_SINCE = DEFAULT_VERSION;
     public static final String DEFAULT_TEMPLATE_DIR = "templates";
+    public static final String DEFAULT_BASE_PACKAGE = "";
+    public static final String DEFAULT_PREFIX = "";
     public static final String DEFAULT_DATABASE = DBType.MYSQL.getCode();
     public static final String DEFAULT_JDBC_DRIVER = "com.mysql.jdbc.Driver";
     public static final String DEFAULT_JDBC_USERNAME = "root";
     public static final String DEFAULT_JDBC_PASSWORD = "";
+    public static final String DEFAULT_CONFIG = "config.json";
+    private String configPath = DEFAULT_CONFIG;
     /**
      * 作者
      */
@@ -72,6 +76,22 @@ public class Config implements Serializable {
      */
     private String jdbcPassword;
     /**
+     * 包路径
+     */
+    private String basePackage;
+    /**
+     * 目标目录
+     */
+    private String baseTarget;
+    /**
+     * 表前缀
+     */
+    private String prefix;
+    /**
+     * 覆盖
+     */
+    private boolean override;
+    /**
      * 类型集合
      */
     private Set<TypeCfg> types;
@@ -87,6 +107,14 @@ public class Config implements Serializable {
      * 扩展字段
      */
     private Map<String, Object> attributes;
+
+    public String getConfigPath() {
+        return configPath;
+    }
+
+    public void setConfigPath(String configPath) {
+        this.configPath = configPath;
+    }
 
     /**
      * 作者
@@ -158,6 +186,38 @@ public class Config implements Serializable {
      */
     public void setTemplateDir(String templateDir) {
         this.templateDir = isBlank(templateDir) ? DEFAULT_TEMPLATE_DIR : templateDir;
+    }
+
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = isBlank(basePackage) ? DEFAULT_BASE_PACKAGE : basePackage;
+    }
+
+    public String getBaseTarget() {
+        return baseTarget;
+    }
+
+    public void setBaseTarget(String baseTarget) {
+        this.baseTarget = isBlank(baseTarget) ? DEFAULT_BASE_PACKAGE : baseTarget;
+    }
+
+    public String getPrefix() {
+        return prefix == null ? DEFAULT_PREFIX : prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = isBlank(prefix) ? DEFAULT_PREFIX : prefix;
+    }
+
+    public boolean isOverride() {
+        return override;
+    }
+
+    public void setOverride(boolean override) {
+        this.override = override;
     }
 
     /**

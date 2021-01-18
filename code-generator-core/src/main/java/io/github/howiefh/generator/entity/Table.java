@@ -36,6 +36,10 @@ public class Table extends BasicEntity {
      */
     private String className;
     /**
+     * 模块
+     */
+    private String model;
+    /**
      * 表列
      */
     private List<TableColumn> columns = Lists.newArrayList();
@@ -70,6 +74,14 @@ public class Table extends BasicEntity {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public List<TableColumn> getPks() {

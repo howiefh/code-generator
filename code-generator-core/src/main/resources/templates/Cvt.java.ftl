@@ -9,7 +9,7 @@ import ${i};
 import ${modelPkg}.${ClassName};
 
 /**
- * ${function} 转换器
+ * ${comments} 转换器
  * @author ${author} on ${date}
  * @version ${version}
  * @since ${since}
@@ -36,7 +36,7 @@ public class ${ClassName}Convertor {
     /**
      * Convert ${ClassName} to ${impl}
      *
-     * @param ${className} ${function} Entity
+     * @param ${className} ${comments} Entity
      */
     public static ${impl} to${impl}(${ClassName} ${className}) {
             <#assign implVar= impl?uncap_first >

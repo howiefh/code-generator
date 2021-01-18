@@ -8,7 +8,7 @@ package ${dtoPkg};
 import java.io.Serializable;
 
 /**
- * ${function}
+ * ${comments}
  * @author ${author} on ${date}
  * @version ${version}
  * @since ${since}

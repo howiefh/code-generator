@@ -42,7 +42,7 @@
                 t.DATA_LENGTH,
                 t.DATA_PRECISION,
                 t.DATA_SCALE, -->
-                (CASE WHEN t.NULLABLE = 'Y' THEN '1' ELSE '0' END) AS isNull,
+                (CASE WHEN t.NULLABLE = 'Y' THEN '0' ELSE '1' END) AS notNull,
                 (t.COLUMN_ID * 10) AS sort,
                 c.COMMENTS AS comments,
                 decode(t.DATA_TYPE,'DATE',t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
@@ -62,7 +62,7 @@
             ORDER BY t.COLUMN_ID
         </if>
         <if test="dbType == 'mssql'">
-            SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) AS isNull,
+            SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '0' ELSE '1' END) AS notNull,
                 (t.ORDINAL_POSITION * 10) AS sort,isnull(g.[value], '') AS comments,
                 (t.DATA_TYPE+
                     CASE WHEN t.DATA_TYPE IN ('varchar','char','nvarchar','nchar') THEN '('+CONVERT(VARCHAR,t.CHARACTER_MAXIMUM_LENGTH)+')'
@@ -78,7 +78,7 @@
             ORDER BY t.ORDINAL_POSITION
         </if>
         <if test="dbType == 'mysql'">
-            SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) AS isNull,
+            SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '0' ELSE '1' END) AS notNull,
                 (t.ORDINAL_POSITION * 10) AS sort,t.COLUMN_COMMENT AS comments,t.COLUMN_TYPE AS jdbcType
             FROM information_schema.`COLUMNS` t
             WHERE t.TABLE_SCHEMA = (select database())

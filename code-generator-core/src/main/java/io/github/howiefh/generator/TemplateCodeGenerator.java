@@ -1,5 +1,6 @@
 package io.github.howiefh.generator;
 
+import io.github.howiefh.generator.common.config.Config;
 import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.exception.ConfigInitException;
 import io.github.howiefh.generator.common.exception.GeneratorException;
@@ -24,10 +25,9 @@ import static io.github.howiefh.generator.common.util.Messages.getString;
 public class TemplateCodeGenerator {
 
     private static final String OVERWRITE = "-overwrite";
-    private static final String CONFIG = "-config";
-    private static final String HELP_1 = "-?";
-    private static final String HELP_2 = "-h";
-    public static final String DEFAULT_CONFIG = "config.json";
+    public static final String CONFIG = "-config";
+    public static final String HELP_1 = "-?";
+    public static final String HELP_2 = "-h";
     public static final Logger LOGGER = LoggerFactory.getLogger(TemplateCodeGenerator.class);
 
     public static void main(String[] args) {
@@ -43,11 +43,23 @@ public class TemplateCodeGenerator {
             if (StringUtils.isNoneBlank(arguments.get(CONFIG))) {
                 Configuration.init(arguments.get(CONFIG));
             } else {
-                Configuration.init(DEFAULT_CONFIG);
+                Configuration.init(Config.DEFAULT_CONFIG);
             }
 
+            generate(arguments.containsKey(OVERWRITE));
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Argument error. {}", e.getMessage());
+        } catch (ConfigInitException e) {
+            LOGGER.error("Config init error. {}", e.getMessage());
+        } catch (GeneratorException e) {
+            LOGGER.error("Generate error. {}", e.getMessage());
+        }
+    }
+
+    public static void generate(boolean override) {
+        try {
             GeneratorStrategy strategy;
-            if (arguments.containsKey(OVERWRITE)) {
+            if (override) {
                 strategy = new OverrideGeneratorStrategy();
             } else {
                 strategy = new MergeGeneratorStrategy(Gits.DEFAULT_REPO_PATH);
@@ -62,7 +74,7 @@ public class TemplateCodeGenerator {
         }
     }
 
-    private static Map<String, String> parseCommandLine(String[] args) {
+    public static Map<String, String> parseCommandLine(String[] args) {
         Map<String, String> arguments = new HashMap<String, String>();
 
         for (int i = 0; i < args.length; i++) {

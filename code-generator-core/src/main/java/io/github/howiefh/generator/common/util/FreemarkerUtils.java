@@ -1,11 +1,21 @@
 package io.github.howiefh.generator.common.util;
 
-import freemarker.cache.*;
+import com.google.common.base.Charsets;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import io.github.howiefh.generator.common.exception.GeneratorException;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -43,8 +53,10 @@ public class FreemarkerUtils {
             TemplateLoader[] loaders = new TemplateLoader[]{ftl, ctl};
             MultiTemplateLoader mtl = new MultiTemplateLoader(loaders);
             configuration.setTemplateLoader(mtl);
+            configuration.setDefaultEncoding(Charsets.UTF_8.name());
             Template template = configuration.getTemplate(ftlName);
-            out = new OutputStreamWriter(new FileOutputStream(outFile));
+            out = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(outFile), Charsets.UTF_8));
             template.process(model, out);
             result = true;
         } catch (Exception e) {

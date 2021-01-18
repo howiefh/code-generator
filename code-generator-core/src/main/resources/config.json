@@ -8,28 +8,31 @@
   "jdbcUsername": "root",
   "jdbcPassword": "",
   "database": "mysql",
+  "basePackage": "io.github.howiefh",
+  "baseTarget": "output",
+  "override": true,
   "ignoreTables": [],
   "types": [
     {
       "name": "model",
       "template": "Entity.java.ftl",
-      "target": "D:/",
-      "pkg": "io.github.howiefh.domain",
+      "target": "${baseTarget}",
+      "pkg": "${basePackage}.domain.${table.model}",
       "suffix": "${ClassName}.java",
       "dependencies": []
     },
     {
       "name": "dao",
       "template": "Dao.java.ftl",
-      "target": "D:/",
-      "pkg": "io.github.howiefh.dao",
+      "target": "${baseTarget}",
+      "pkg": "${basePackage}.dao.${table.model}",
       "suffix": "${ClassName}Dao.java",
       "dependencies": []
     },
     {
       "name": "mapper",
       "template": "Mapper.xml.ftl",
-      "target": "D:/",
+      "target": "${baseTarget}",
       "pkg": "mybatis.mappers",
       "suffix": "${ClassName}Mapper.xml",
       "dependencies": []
@@ -37,26 +40,17 @@
     {
       "name": "dto",
       "template": "DTO.java.ftl",
-      "target": "D:/",
-      "pkg": "io.github.howiefh.dto",
+      "target": "${baseTarget}",
+      "pkg": "${basePackage}.${table.model}.dto",
       "suffix": "${implClassName}.java",
       "dependencies": [],
-      "impls": [
-        {
-          "name": "UserRequest",
-          "columns": [
-            "username",
-            "password",
-            "email"
-          ]
-        }
-      ]
+      "impls": []
     },
     {
       "name": "convert",
       "template": "Cvt.java.ftl",
-      "target": "D:/",
-      "pkg": "io.github.howiefh.cvt",
+      "target": "${baseTarget}",
+      "pkg": "${basePackage}.cvt.${table.model}",
       "suffix": "${ClassName}Convertor.java",
       "dependencies": [
         "model",

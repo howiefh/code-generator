@@ -1,6 +1,7 @@
 package io.github.howiefh.generator;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.github.howiefh.generator.common.config.ImplementCfg;
 import io.github.howiefh.generator.common.config.TableCfg;
@@ -9,6 +10,7 @@ import io.github.howiefh.generator.common.util.StringUtils;
 import io.github.howiefh.generator.entity.Table;
 import io.github.howiefh.generator.entity.TableColumn;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -34,6 +36,8 @@ public class GeneratorContext {
      */
     private Table table;
 
+    private Map<String, Object> model = Maps.newHashMap();
+
     public GeneratorContext(TableCfg tableCfg, TypeCfg typeCfg, Table table) {
         this(tableCfg, typeCfg, null, table);
     }
@@ -41,7 +45,7 @@ public class GeneratorContext {
     public GeneratorContext(TableCfg tableCfg, TypeCfg typeCfg, ImplementCfg implementCfg, Table table) {
         if (implementCfg == null) { // 如果没有设置类型的实现，则设置默认类型实现
             implementCfg = new ImplementCfg();
-            implementCfg.setName("Default" + table.getClassName() + StringUtils.toCapitalizeCamelCase(typeCfg.getName()));
+            implementCfg.setName(table.getClassName() + StringUtils.toUpperCaseFirstChar(typeCfg.getName()));
             Set<String> columns = Sets.newHashSet();
             for (TableColumn column: table.getPks()) {
                 columns.add(column.getName());
@@ -124,6 +128,14 @@ public class GeneratorContext {
      */
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public Map<String, Object> getModel() {
+        return model;
+    }
+
+    public void setModel(Map<String, Object> model) {
+        this.model = model;
     }
 
     @Override

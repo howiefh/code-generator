@@ -41,27 +41,27 @@ public class TableColumn extends BasicEntity {
     /**
      * 是否主键（1：主键）
      */
-    private boolean isPk;
+    private boolean pk;
     /**
      * 是否可为空（1：可为空；0：不为空）
      */
-    private boolean isNull;
+    private boolean nil;
     /**
      * 是否为插入字段（1：插入字段）
      */
-    private boolean isInsert;
+    private boolean insert;
     /**
      * 是否编辑字段（1：编辑字段）
      */
-    private boolean isEdit;
+    private boolean edit;
     /**
      * 是否列表字段（1：列表字段）
      */
-    private boolean isList;
+    private boolean list;
     /**
      * 是否查询字段（1：查询字段）
      */
-    private boolean isQuery;
+    private boolean query;
     /**
      * 查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）
      */
@@ -132,51 +132,60 @@ public class TableColumn extends BasicEntity {
     }
 
     public boolean isPk() {
-        return isPk;
+        return pk;
     }
 
     public void setPk(boolean pk) {
-        isPk = pk;
+        this.pk = pk;
     }
 
     public boolean isNull() {
-        return isNull;
+        return nil;
     }
 
     public void setNull(boolean aNull) {
-        isNull = aNull;
+        nil = aNull;
     }
 
+    public boolean isNotNull() {
+        return !isNull();
+    }
+
+    public void setNotNull(boolean notNull) {
+        setNull(!notNull);
+    }
+
+
     public boolean isInsert() {
-        return isInsert;
+        return insert;
     }
 
     public void setInsert(boolean insert) {
-        isInsert = insert;
+        this.insert = insert;
     }
 
     public boolean isEdit() {
-        return isEdit;
+        return edit;
     }
 
     public void setEdit(boolean edit) {
-        isEdit = edit;
+        this.edit = edit;
     }
 
     public boolean isList() {
-        return isList;
+        return list;
     }
 
     public void setList(boolean list) {
-        isList = list;
+        this.list = list;
     }
 
     public boolean isQuery() {
-        return isQuery;
+        return query;
     }
 
     public void setQuery(boolean query) {
-        isQuery = query;
+        this.query = query;
     }
 
     public String getQueryType() {
@@ -261,7 +270,17 @@ public class TableColumn extends BasicEntity {
      */
     public String getSimpleJdbcType() {
         int index = jdbcType.indexOf('(');
-        return (index == -1 ? jdbcType : jdbcType.substring(0, index)).toUpperCase();
+        String simpleJdbcType = (index == -1 ? jdbcType : jdbcType.substring(0, index)).toUpperCase();
+        if ("DATETIME".equals(simpleJdbcType)) {
+            simpleJdbcType = "TIMESTAMP";
+        }
+        if ("INT".equals(simpleJdbcType)) {
+            simpleJdbcType = "INTEGER";
+        }
+        if ("BIT".equals(simpleJdbcType)) {
+            simpleJdbcType = "BOOLEAN";
+        }
+        return simpleJdbcType;
     }
 
     /**
@@ -280,6 +299,9 @@ public class TableColumn extends BasicEntity {
      */
     public String getJavaFieldName() {
         String[][] ss = getJavaFieldAttrs();
+        if (ss == null) {
+            return "";
+        }
         return ss.length > 0 ? getSimpleJavaField() + "." + ss[0][0] : "";
     }
 
@@ -290,14 +312,28 @@ public class TableColumn extends BasicEntity {
      */
     public String[][] getJavaFieldAttrs() {
         String[] ss = StringUtils.split(StringUtils.substringAfter(getJavaField(), "|"), "|");
+        if (ss == null) {
+            return null;
+        }
         String[][] sss = new String[ss.length][2];
-        if (ss != null) {
-            for (int i = 0; i < ss.length; i++) {
-                sss[i][0] = ss[i];
-                sss[i][1] = StringUtils.toUnderScoreCase(ss[i]);
-            }
+        for (int i = 0; i < ss.length; i++) {
+            sss[i][0] = ss[i];
+            sss[i][1] = StringUtils.toUnderScoreCase(ss[i]);
         }
         return sss;
+    }
+
+    /**
+     * 是否是基类字段
+     *
+     * @return
+     */
+    public Boolean isNotBaseEntityField() {
+        return !StringUtils.equals(getSimpleJavaField(), "id")
+                && !StringUtils.equals(getSimpleJavaField(), "version")
+                && !StringUtils.equals(getSimpleJavaField(), "isValid")
+                && !StringUtils.equals(getSimpleJavaField(), "createdDate")
+                && !StringUtils.equals(getSimpleJavaField(), "modifiedDate");
     }
 
     /**
@@ -312,8 +348,12 @@ public class TableColumn extends BasicEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TableColumn that = (TableColumn) o;
         return Objects.equal(table, that.table) &&
                 Objects.equal(name, that.name);

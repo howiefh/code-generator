@@ -2,7 +2,6 @@ package io.github.howiefh.generator.strategy;
 
 import io.github.howiefh.generator.common.config.TypeCfg;
 import io.github.howiefh.generator.common.exception.GeneratorException;
-import io.github.howiefh.generator.common.util.FreemarkerUtils;
 import io.github.howiefh.generator.common.util.StringUtils;
 
 import java.io.File;
@@ -26,15 +25,15 @@ public class OverrideGeneratorStrategy extends AbstractGeneratorStrategy {
      */
     @Override
     protected File generateTargetFile(Map<String, Object> model, TypeCfg type) throws GeneratorException {
-        if (type == null)
+        if (type == null) {
             throw new NullPointerException("Generate target file error, please check config! type:" + type);
-        String temp = type.getTarget()
+        }
+        String temp = type.getTarget(model)
                 + File.separator
-                + StringUtils.replaceEach(type.getPkg(), new String[]{"."}, new String[]{File.separator})
+                + StringUtils.replaceEach(type.getPkg(model), new String[]{"."}, new String[]{File.separator})
                 + File.separator
-                + type.getSuffix();
-        String actual = FreemarkerUtils.generateString(model, temp, UTF8);
-        return new File(actual);
+                + type.getSuffix(model);
+        return new File(temp);
     }
 
     @Override

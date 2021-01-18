@@ -1,18 +1,7 @@
 package io.github.howiefh.generator.ui;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 import io.github.howiefh.generator.TemplateCodeGenerator;
-import io.github.howiefh.generator.common.config.Config;
 import io.github.howiefh.generator.common.config.Configuration;
-import io.github.howiefh.generator.common.exception.ConfigInitException;
-import io.github.howiefh.generator.common.exception.GeneratorException;
-import io.github.howiefh.generator.strategy.GeneratorStrategy;
-import io.github.howiefh.generator.strategy.MergeGeneratorStrategy;
-import io.github.howiefh.generator.strategy.OverrideGeneratorStrategy;
-import io.github.howiefh.generator.vcs.Gits;
 import org.jdesktop.beansbinding.AutoBinding;
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -28,8 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 
 /**
@@ -135,37 +122,16 @@ public class MainFrame extends JFrame {
 
     private void generateCode(ActionEvent e) {
         new Thread(new Runnable() {
+
             @Override
             public void run() {
-                try {
-                    GeneratorStrategy strategy;
-                    if (override) {
-                        strategy = new OverrideGeneratorStrategy();
-                    } else {
-                        strategy = new MergeGeneratorStrategy(Gits.DEFAULT_REPO_PATH);
-                    }
-                    strategy.generate();
-                } catch (IllegalArgumentException e) {
-                    LOGGER.error("Argument error. {}", e.getMessage());
-                } catch (ConfigInitException e) {
-                    LOGGER.error("Config init error. {}", e.getMessage());
-                } catch (GeneratorException e) {
-                    LOGGER.error("Generate error. {}", e.getMessage());
-                }
+                TemplateCodeGenerator.generate(override);
             }
         }).start();
     }
 
     private void saveConfig(ActionEvent e) {
-        Config config = Configuration.getConfig();
-        File configFile = new File(TemplateCodeGenerator.DEFAULT_CONFIG);
-        LOGGER.info("#saveConfig config:{}, configFile:{}", config, configFile.getAbsolutePath());
-
-        try {
-            JSON.writeJSONString(Files.newWriter(configFile, Charsets.UTF_8), config, SerializerFeature.PrettyFormat);
-        } catch (FileNotFoundException e1) {
-            LOGGER.warn("#saveConfig config:{}, configFile:{}, e:{}", config, configFile.getAbsolutePath(), e1);
-        }
+        Configuration.saveConfig();
     }
 
     private void initComponents() {

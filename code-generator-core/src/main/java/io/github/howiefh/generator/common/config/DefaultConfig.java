@@ -63,8 +63,9 @@ public class DefaultConfig {
         Field[] fields = clazz.getDeclaredFields();
 
         for (Field f : fields) {
-            if (Modifier.isStatic(f.getModifiers()))
+            if (Modifier.isStatic(f.getModifiers())) {
                 continue;
+            }
 
             PropertyDescriptor pd = new PropertyDescriptor(f.getName(), clazz);
             //获得写方法

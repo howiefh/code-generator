@@ -12,7 +12,7 @@ public class StringUtilsTest {
 
     @Test
     public void testToCapitalizeCamelCase() throws Exception {
-        String src = "PersonLocal";
-        Assert.assertEquals(src, StringUtils.toCapitalizeCamelCase(src));
+        String src = "person_local";
+        Assert.assertEquals("PersonLocal", StringUtils.toCapitalizeCamelCase(src));
     }
 }

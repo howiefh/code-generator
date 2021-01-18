@@ -3,7 +3,6 @@ package io.github.howiefh.generator.strategy;
 import com.google.common.io.Files;
 import io.github.howiefh.generator.common.config.TypeCfg;
 import io.github.howiefh.generator.common.exception.GeneratorException;
-import io.github.howiefh.generator.common.util.FreemarkerUtils;
 import io.github.howiefh.generator.common.util.StringUtils;
 import io.github.howiefh.generator.vcs.Gits;
 import org.apache.commons.lang3.SystemUtils;
@@ -45,10 +44,10 @@ public class MergeGeneratorStrategy extends OverrideGeneratorStrategy {
     @Override
     protected File generateTargetFile(Map<String, Object> model, TypeCfg type) throws GeneratorException {
         File finalFile = super.generateTargetFile(model, type);
-        String targetTemp = StringUtils.replaceEach(type.getPkg(), new String[]{"."}, new String[]{File.separator})
+        String targetTemp = StringUtils.replaceEach(type.getPkg(model), new String[]{"."}, new String[]{File.separator})
                 + File.separator
-                + type.getSuffix();
-        File targetFile = new File(repoPath, FreemarkerUtils.generateString(model, targetTemp, UTF8));
+                + type.getSuffix(model);
+        File targetFile = new File(repoPath, targetTemp);
         fromTos.put(targetFile, finalFile);
         return targetFile;
     }

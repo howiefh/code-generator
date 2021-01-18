@@ -1,8 +1,11 @@
 package io.github.howiefh.generator.common.config;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import io.github.howiefh.generator.common.entity.NamedModel;
+import io.github.howiefh.generator.common.exception.GeneratorException;
+import io.github.howiefh.generator.common.util.FreemarkerUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -108,6 +111,10 @@ public class TypeCfg implements Serializable, Cloneable, NamedModel {
         return target;
     }
 
+    public String getTarget(Map<String, Object> model) throws GeneratorException {
+        return FreemarkerUtils.generateString(model, target, Charsets.UTF_8.name());
+    }
+
     /**
      * 目标文件存放目录
      *
@@ -126,6 +133,10 @@ public class TypeCfg implements Serializable, Cloneable, NamedModel {
         return pkg;
     }
 
+    public String getPkg(Map<String, Object> model) throws GeneratorException {
+        return FreemarkerUtils.generateString(model, pkg, Charsets.UTF_8.name());
+    }
+
     /**
      * 目标文件的类包
      *
@@ -142,6 +153,10 @@ public class TypeCfg implements Serializable, Cloneable, NamedModel {
      */
     public String getSuffix() {
         return suffix;
+    }
+
+    public String getSuffix(Map<String, Object> model) throws GeneratorException {
+        return FreemarkerUtils.generateString(model, suffix, Charsets.UTF_8.name());
     }
 
     /**

@@ -16,7 +16,7 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptySetIf
  * 1. name字段为必填
  * 2. pks、updates、queries、ignoreTypes、types、attributes都是非必填，有默认值，pk如果数据库和配置都空，设置第一列为主键
  * 3. className非必填，没有默认值, className如果为空，则设置为表名的驼峰式名称
- * {@link DBUtils#fetchTableFormDb(io.github.howiefh.generator.dao.TableMetaDataDao, io.github.howiefh.generator.common.config.TableCfg)},
+ * {@link DBUtils#fetchTableFormDb(TableCfg)},
  * {@link DBUtils#initColumnField(io.github.howiefh.generator.entity.Table, io.github.howiefh.generator.common.config.TableCfg)}
  * <p/>
  * 1. pks、updates、ignoreTypes、types默认空集合
@@ -24,7 +24,7 @@ import static io.github.howiefh.generator.common.util.CollectionUtils.emptySetIf
  *
  * @author fenghao on 2016/5/20
  * @version 1.0
- * @see DBUtils#fetchTableFormDb(io.github.howiefh.generator.dao.TableMetaDataDao, io.github.howiefh.generator.common.config.TableCfg)
+ * @see DBUtils#fetchTableFormDb(TableCfg)
  * @see DBUtils#initColumnField(io.github.howiefh.generator.entity.Table, io.github.howiefh.generator.common.config.TableCfg)
  * @since 1.0
  */
@@ -39,6 +39,10 @@ public class TableCfg implements Serializable, NamedModel {
      */
     private String className;
     /**
+     * 模块
+     */
+    private String model;
+    /**
      * 主键,配置的主键会覆盖从数据库中的主键
      */
     private Set<String> pks;
@@ -46,6 +50,10 @@ public class TableCfg implements Serializable, NamedModel {
      * 更新字段集合
      */
     private Set<String> updates;
+    /**
+     * 必填字段集合
+     */
+    private Set<String> requires;
     /**
      * 查询字段映射
      */
@@ -72,6 +80,7 @@ public class TableCfg implements Serializable, NamedModel {
      *
      * @return name
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -101,6 +110,24 @@ public class TableCfg implements Serializable, NamedModel {
      */
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    /**
+     * 模块
+     *
+     * @return
+     */
+    public String getModel() {
+        return model;
+    }
+
+    /**
+     * 模块
+     *
+     * @param model
+     */
+    public void setModel(String model) {
+        this.model = model;
     }
 
     /**
@@ -137,6 +164,24 @@ public class TableCfg implements Serializable, NamedModel {
      */
     public void setUpdates(Set<String> updates) {
         this.updates = emptySetIfNull(updates);
+    }
+
+    /**
+     * 必填字段集合
+     *
+     * @return requires
+     */
+    public Set<String> getRequires() {
+        return requires;
+    }
+
+    /**
+     * 必填字段集合
+     *
+     * @param requires
+     */
+    public void setRequires(Set<String> requires) {
+        this.requires = requires;
     }
 
     /**
@@ -231,13 +276,18 @@ public class TableCfg implements Serializable, NamedModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TableCfg tableCfg = (TableCfg) o;
         return Objects.equal(name, tableCfg.name) &&
                 Objects.equal(className, tableCfg.className) &&
                 Objects.equal(pks, tableCfg.pks) &&
                 Objects.equal(updates, tableCfg.updates) &&
+                Objects.equal(requires, tableCfg.requires) &&
                 Objects.equal(queries, tableCfg.queries) &&
                 Objects.equal(showTypes, tableCfg.showTypes) &&
                 Objects.equal(ignoreTypes, tableCfg.ignoreTypes) &&
@@ -247,7 +297,7 @@ public class TableCfg implements Serializable, NamedModel {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, className, pks, updates, queries, showTypes, ignoreTypes, types, attributes);
+        return Objects.hashCode(name, className, pks, updates, requires, queries, showTypes, ignoreTypes, types, attributes);
     }
 
     @Override
@@ -257,6 +307,7 @@ public class TableCfg implements Serializable, NamedModel {
                 .add("className", className)
                 .add("pks", pks)
                 .add("updates", updates)
+                .add("requires", requires)
                 .add("queries", queries)
                 .add("showTypes", showTypes)
                 .add("ignoreTypes", ignoreTypes)

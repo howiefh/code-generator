@@ -1,6 +1,5 @@
 package io.github.howiefh.generator.strategy;
 
-import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import io.github.howiefh.generator.GeneratorContext;
@@ -111,7 +110,7 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
         ImplementCfg implementCfg = context.getImplementCfg();
         Table table = context.getTable();
 
-        Map<String, Object> model = Maps.newHashMap();
+        Map<String, Object> model = context.getModel();
 
         BeansWrapperBuilder beansWrapperBuilder = new BeansWrapperBuilder(freemarker.template.Configuration.VERSION_2_3_21);
         model.put("statics", beansWrapperBuilder.build().getStaticModels());
@@ -123,10 +122,9 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
         model.put("author", config.getAuthor());
         model.put("version", config.getVersion());
         model.put("since", config.getSince());
+        model.put("baseTarget", config.getBaseTarget());
+        model.put("basePackage", config.getBasePackage());
         model.put("configAttrs", config.getAttributes());
-        for (TypeCfg type : config.getTypes()) {
-            model.put(StringUtils.lowerCase(type.getName()) + "Pkg", type.getPkg());
-        }
         model.put("tableCfg", tableCfg);
         model.put("typeCfg", typeCfg);
         model.put("implementCfg", implementCfg);
@@ -135,8 +133,20 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
         model.put("typeAttrs", typeCfg.getAttributes());
         model.put("implementAttrs", implementCfg.getAttributes());
 
-        model.put("package", typeCfg.getPkg());
-        model.put("target", typeCfg.getTarget());
+        model.put("implColumns", implementCfg.getColumns());
+        model.put("implClassName", implementCfg.getName());
+
+        model.put("className", StringUtils.uncapitalize(table.getClassName()));
+        model.put("ClassName", StringUtils.capitalize(table.getClassName()));
+        model.put("comments", table.getComments());
+
+        model.put("table", table);
+
+        model.put("target", typeCfg.getTarget(model));
+        for (TypeCfg type : config.getTypes()) {
+            model.put(StringUtils.lowerCase(type.getName()) + "Pkg", type.getPkg(model));
+        }
+        model.put("package", typeCfg.getPkg(model));
         Map<String, Set<String>> map = GeneratorUtils.parseDependencies(context);
         if (map != null) {
             Set<String> dependencies = map.get("dependencies");
@@ -144,15 +154,6 @@ public abstract class AbstractGeneratorStrategy implements GeneratorStrategy {
             model.put("dependencies", dependencies);
             model.put("impls", map);
         }
-
-        model.put("implColumns", implementCfg.getColumns());
-        model.put("implClassName", implementCfg.getName());
-
-        model.put("className", StringUtils.uncapitalize(table.getClassName()));
-        model.put("ClassName", StringUtils.capitalize(table.getClassName()));
-        model.put("function", table.getComments());
-
-        model.put("table", table);
         return model;
     }
 

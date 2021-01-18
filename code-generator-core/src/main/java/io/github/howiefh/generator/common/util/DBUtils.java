@@ -3,6 +3,7 @@ package io.github.howiefh.generator.common.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import io.github.howiefh.generator.common.config.Configuration;
 import io.github.howiefh.generator.common.config.TableCfg;
 import io.github.howiefh.generator.entity.Table;
 import io.github.howiefh.generator.entity.TableColumn;
@@ -12,6 +13,7 @@ import io.github.howiefh.generator.types.DefaultJavaTypeResolver;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author fenghao on 2016/5/17
@@ -36,9 +38,17 @@ public class DBUtils {
                 // 配置中的类名优先，如果没有配置，使用表名的驼峰式命名
                 String className = tableCfg.getClassName();
                 if (StringUtils.isBlank(className)) {
-                    table.setClassName(StringUtils.toCapitalizeCamelCase(table.getName()));
+                    String name = StringUtils.removePattern(table.getName(), "^(" + Configuration.getConfig().getPrefix() + ")");
+                    table.setClassName(StringUtils.toCapitalizeCamelCase(name));
                 } else {
                     table.setClassName(className);
+                }
+
+                String model = tableCfg.getModel();
+                if (StringUtils.isBlank(model)) {
+                    table.setModel(StringUtils.toFirstWord(table.getClassName()));
+                } else {
+                    table.setModel(model);
                 }
 
                 // 添加列
@@ -46,17 +56,19 @@ public class DBUtils {
                 table.setColumns(columns);
 
                 // 获取主键
-                table.setPks(TableMetaDataService.getInstance().findTablePks(table));
+                List<TableColumn> pkColumns = TableMetaDataService.getInstance().findTablePks(table);
+                Set<String> pkNames = pkColumns.stream().map(TableColumn::getName).collect(Collectors.toSet());
                 // 配置中的主键覆盖数据库的
-                Set<String> pks = tableCfg.getPks();
-                if (CollectionUtils.isNotEmpty(pks)) {
+                if (tableCfg.getPks() != null) {
+                    pkNames = tableCfg.getPks();
+                }
+                if (CollectionUtils.isNotEmpty(pkNames)) {
                     // 清空table.pks，设置为配置文件的pks
                     if (table.getPks() == null) {
                         table.setPks(Lists.<TableColumn>newArrayList());
                     }
-                    table.getPks().clear();
                     for (TableColumn column : columns) {
-                        if (tableCfg.getPks().contains(column.getName())) {
+                        if (pkNames.contains(column.getName())) {
                             table.getPks().add(column);
                         }
                     }
@@ -75,14 +87,20 @@ public class DBUtils {
      */
     public static void initColumnField(Table table, TableCfg tableCfg) {
         Set<String> edits = tableCfg.getUpdates() != null ? tableCfg.getUpdates() : Sets.<String>newHashSet();
+        Set<String> requires = tableCfg.getRequires() != null ? tableCfg.getRequires() : Sets.<String>newHashSet();
         Map<String, String> queries = tableCfg.getQueries() != null ? tableCfg.getQueries() : Maps.<String, String>newHashMap();
         Map<String, String> showTypes = tableCfg.getShowTypes() != null ? tableCfg.getShowTypes() : Maps.<String, String>newHashMap();
 
         boolean isUseDefaultEdits = false;
+        boolean isUseDefaultRequires= false;
         boolean isUseDefaultQueries = false;
         if (edits.size() == 0) {
             isUseDefaultEdits = true;
             tableCfg.setUpdates(edits);
+        }
+        if (requires.size() == 0) {
+            isUseDefaultRequires = true;
+            tableCfg.setRequires(requires);
         }
         if (queries.size() == 0) {
             isUseDefaultQueries = true;
@@ -119,6 +137,13 @@ public class DBUtils {
             } else if (isUseDefaultEdits && !column.isPk()) { //如果没有配置update字段，则更新除主键外的字段
                 column.setEdit(true);
                 edits.add(column.getName());
+            }
+            // 必填字段
+            if (!isUseDefaultRequires && requires.contains(column.getName())) {
+                column.setNotNull(true);
+            } else if (isUseDefaultRequires && column.isNotNull()) {
+                column.setNotNull(true);
+                requires.add(column.getName());
             }
             // 查询字段
             String queryType = queries.get(column.getName());

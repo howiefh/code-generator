@@ -9,7 +9,7 @@ import com.google.common.base.Objects;
 </#if>
 
 /**
- * ${function}
+ * ${comments}
  * @author ${author} on ${date}
  * @version ${version}
  * @since ${since}

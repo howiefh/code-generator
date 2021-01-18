@@ -159,7 +159,7 @@ public class GeneratorUtils {
                     tmpType = CollectionUtils.search(Configuration.getConfig().getTypes(), tmpType);
                     if (tmpType != null) {
                         // 解析依赖包
-                        dependencies.add(tmpType.getPkg() + ".*");
+                        dependencies.add(tmpType.getPkg(context.getModel()) + ".*");
                         // 将type.impls加入到返回的map中
                         TypeCfg tmpType2 = CollectionUtils.search(tableCfg.getTypes(), tmpType);
                         tmpType = union(tmpType, tmpType2);
