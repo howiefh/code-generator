@@ -1,26 +1,36 @@
-package ${modelPkg};
+package ${package};
 
 import com.google.common.base.Objects;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
+import ${basePackage}.domain.BaseEntity;
+import java.util.Date;
 <#if dependencies??>
     <#list dependencies as i>
-    import ${i};
+import ${i};
     </#list>
 </#if>
 
 /**
  * ${comments}
- * @author ${author} on ${date}
+ * @author ${author} ${date}
  * @version ${version}
  * @since ${since}
  */
-public class ${ClassName} extends BasicEntity {
+public class ${ClassName} extends BaseEntity {
     private static final long serialVersionUID = ${serialVersion};
 <#-- 生成字段属性 -->
 <#list table.columns as c>
-    <#if c.isNotBaseField() >
+    <#if c.isNotBaseEntityField() >
         <#if c.comments??>
     /** ${c.comments} */
+        </#if>
+        <#if c.isNotNull()>
+    <#--@NotNull(message = "${c.comments}不能为空")-->
+        </#if>
+        <#if c.javaType == 'java.lang.String'>
+    <#--@Length(max = ${c.dataLength}, message = "${c.comments}长度不能超过${c.dataLength}")-->
         </#if>
     private ${c.simpleJavaType} ${c.simpleJavaField};
     </#if>
@@ -32,9 +42,9 @@ public class ${ClassName} extends BasicEntity {
 <#-- 生成get和set方法 -->
 <#list table.columns as c>
 <#-- 如果不是基类属性 -->
-    <#if c.isNotBaseField() >
+    <#if c.isNotBaseEntityField() >
     /**
-     * Returns the value of the database column ${table.name}.${c.name}
+     * 获取 <#if c.comments??> ${c.comments}  </#if>
      *
      * @return ${c.simpleJavaField} <#if c.comments??> ${c.comments}  </#if>
      */
@@ -43,7 +53,7 @@ public class ${ClassName} extends BasicEntity {
     }
 
     /**
-     * Sets the value of the database column ${table.name}.${c.name}
+     * 设置 <#if c.comments??> ${c.comments}  </#if>
      *
      * @param ${c.simpleJavaField} <#if c.comments??> ${c.comments}  </#if>
      */
@@ -58,41 +68,14 @@ public class ${ClassName} extends BasicEntity {
 </#list>
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ${ClassName} ${className} = (${ClassName}) o;
-        <#assign fields>
-            <#list table.columns as c>
-                <#if c.isNotBaseField() >
-                Objects.equal(${c.javaFieldId}, ${className}.${c.javaFieldId}) &&
-                </#if>
-            </#list>
-        </#assign>
-        return ${fields?substring(0, fields?last_index_of("&&"))?trim};
-    }
-
-    @Override
-    public int hashCode() {
-    <#assign fields>
-        <#list table.columns as c>
-            <#if c.isNotBaseField() >
-        ${c.javaFieldId},
-            </#if>
-        </#list>
-    </#assign>
-        return Objects.hashCode(${fields?substring(0, fields?last_index_of(","))?trim});
-    }
-
-    @Override
     public String toString() {
         <#assign fields>
             <#list table.columns as c>
-                <#if c.isNotBaseField() >
+                <#if c.isNotBaseEntityField() >
             + "'${c.javaFieldId}': '" + ${c.javaFieldId} + "',"
                 </#if>
             </#list>
         </#assign>
-        return ${ClassName}.class + "{" ${fields?substring(0, fields?last_index_of(" + \"',\""))?trim} + "'}";
+        return "{" ${fields?substring(0, fields?last_index_of(" + \"',\""))?trim} + "'}";
     }
 }

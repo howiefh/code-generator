@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${daoPkg}.${ClassName}Dao">
-    <#assign aliasName=table.name?substring(0, 1)>
+    <#assign util = statics["io.github.howiefh.generator.common.util.StringUtils"] >
+    <#assign aliasName = util.toFirstChars(table.name) >
     <#assign wherePk>
         <#list table.pks as pk>
         ${pk.name} = ${"#"}{${pk.javaFieldId}} AND
@@ -16,7 +17,7 @@
     <sql id="${className}Columns">
     <#assign columnField>
         <#list table.columns as c>
-        ${aliasName}.${c.name} AS ${aliasName}_${c.name},
+            ${aliasName}.${c.name} AS ${aliasName}_${c.name},
         </#list>
     </#assign>
     ${columnField?substring(0, columnField?last_index_of(","))?trim}
@@ -42,23 +43,9 @@
             </if>
         </#if>
     </#list>
+            AND ${aliasName}.is_valid = ${"#"}{VALID}
         </where>
     </sql>
-
-    <sql id="${className}PksWhere">
-        <where>
-        <#list table.pks as pk>
-            <if test="${pk.javaFieldId} != null and ${pk.javaFieldId} != ''">
-                AND ${aliasName}.${pk.name} = ${"#"}{${pk.javaFieldId}}
-            </if>
-        </#list>
-        </where>
-    </sql>
-
-    <select id="count" resultType="long">
-        SELECT count(0)
-        FROM ${table.name}
-    </select>
 
     <select id="findOne" resultMap="${className}">
         SELECT
@@ -70,12 +57,13 @@
             </#list>
         </#assign>
         WHERE ${wherePkAlias?substring(0, wherePkAlias?last_index_of(" AND"))?trim}
+        AND ${aliasName}.is_valid = ${"#"}{VALID}
     </select>
 
-    <select id="findAll" resultMap="${className}">
-        SELECT
-        <include refid="${className}Columns"/>
+    <select id="countBy" resultType="long">
+        SELECT count(0)
         FROM ${table.name} ${aliasName}
+        <include refid="${className}Where"/>
     </select>
 
     <select id="findBy" resultMap="${className}">
@@ -83,6 +71,15 @@
         <include refid="${className}Columns"/>
         FROM ${table.name} ${aliasName}
         <include refid="${className}Where"/>
+    </select>
+
+    <select id="findPageBy" resultMap="${className}">
+        select
+        <include refid="${className}Columns" />
+        FROM ${table.name} ${aliasName}
+        <include refid="${className}Where"/>
+        order by ${aliasName}.id DESC
+        limit ${"#"}{offset}, ${"#"}{rows}
     </select>
 
     <insert id="save">
@@ -116,19 +113,29 @@
         <set>
         <#list table.columns as c>
             <#if c.isEdit()>
-                <#if c.isNotBaseField()>
+                <#if c.name == 'version' || c.name == 'created_date' || c.name == 'creator'>
+                <#elseif c.isNotBaseField() && c.javaType == 'java.lang.String'>
+            <if test="${c.javaFieldId} != null and ${c.javaFieldId} != ''"> ${c.name} = ${"#"}{${c.javaFieldId}},</if>
+                <#elseif c.isNotBaseField()>
             <if test="${c.javaFieldId} != null"> ${c.name} = ${"#"}{${c.javaFieldId}},</if>
                 <#else >
-            ${c.name} = now(),
+             ${c.name} = now(),
                 </#if>
             </#if>
         </#list>
+            <if test="version != null"> version = version + 1,</if>
         </set>
         WHERE ${wherePk?substring(0, wherePk?last_index_of(" AND"))?trim}
+        and version = ${"#"}{version}
     </update>
 
-    <delete id="delete" parameterType="java.lang.String">
-        DELETE FROM ${table.name}
-        <include refid="${className}PksWhere"/>
-    </delete>
+    <update id="delete">
+        UPDATE ${table.name}
+        <set>
+            <if test="version != null"> version = version + 1,</if>
+            is_valid = ${"#"}{INVALID}
+        </set>
+        WHERE ${wherePk?substring(0, wherePk?last_index_of(" AND"))?trim}
+        and version = ${"#"}{version}
+    </update>
 </mapper>

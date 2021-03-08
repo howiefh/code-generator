@@ -44,7 +44,7 @@
               </el-table-column>
               <el-table-column align="center" label="必填" width="70px">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="data[scope.$index].notNull" />
+                  <el-checkbox v-model="data[scope.$index].notNull" disabled />
                 </template>
               </el-table-column>
               <!--<el-table-column align="center" label="列表" width="70px">-->
