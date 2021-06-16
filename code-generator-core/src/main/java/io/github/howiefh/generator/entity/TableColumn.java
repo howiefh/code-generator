@@ -3,6 +3,7 @@ package io.github.howiefh.generator.entity;
 import com.google.common.base.Objects;
 import io.github.howiefh.generator.common.entity.BasicEntity;
 import io.github.howiefh.generator.common.util.StringUtils;
+import io.github.howiefh.generator.types.DefaultJdbcTypeResolver;
 
 /**
  * 业务表字段Entity
@@ -243,6 +244,30 @@ public class TableColumn extends BasicEntity {
     }
 
     /**
+     * 获取长度.
+     *
+     * @return
+     */
+    public Integer getLength() {
+        String dataLength = getDataLength();
+        return Integer.valueOf(dataLength);
+    }
+
+    /**
+     * 获取精度.
+     *
+     * @return
+     */
+    public Integer getScale() {
+        String[] ss = StringUtils.split(StringUtils.substringBetween(getJdbcType(), "(", ")"), ",");
+        String scale = "0";
+        if (ss != null && ss.length == 2) {
+            scale = ss[1];
+        }
+        return Integer.valueOf(scale);
+    }
+
+    /**
      * 获取简写Java类型
      *
      * @return
@@ -271,15 +296,7 @@ public class TableColumn extends BasicEntity {
     public String getSimpleJdbcType() {
         int index = jdbcType.indexOf('(');
         String simpleJdbcType = (index == -1 ? jdbcType : jdbcType.substring(0, index)).toUpperCase();
-        if ("DATETIME".equals(simpleJdbcType)) {
-            simpleJdbcType = "TIMESTAMP";
-        }
-        if ("INT".equals(simpleJdbcType)) {
-            simpleJdbcType = "INTEGER";
-        }
-        if ("BIT".equals(simpleJdbcType)) {
-            simpleJdbcType = "BOOLEAN";
-        }
+        simpleJdbcType = DefaultJdbcTypeResolver.getInstance().calculateJdbcType(simpleJdbcType);
         return simpleJdbcType;
     }
 
