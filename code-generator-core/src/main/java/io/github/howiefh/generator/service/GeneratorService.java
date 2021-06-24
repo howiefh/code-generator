@@ -43,6 +43,8 @@ public class GeneratorService {
         Configuration.getConfig().setVersion(config.getVersion());
         Configuration.getConfig().setTemplateDir(config.getTemplateDir());
         Configuration.getConfig().setBasePackage(config.getBasePackage());
+        Configuration.getConfig().setBaseTarget(config.getBaseTarget());
+        Configuration.getConfig().setOverride(config.isOverride());
         Configuration.getConfig().setPrefix(config.getPrefix());
         Configuration.getConfig().setDatabase(config.getDatabase());
         Configuration.getConfig().setJdbcDriver(config.getJdbcDriver());
