@@ -75,6 +75,37 @@ public class GeneratorService {
     }
 
     public void config(List<TableColumn> columns, final String tableName, String model, String className) {
+        doConfig(columns, tableName, model, className);
+        Configuration.saveConfig();
+    }
+
+    public void updateTableConfig(String tableNames) {
+        Set<String> ignoreTables = Collections.emptySet();
+        if (StringUtils.equals(tableNames, ASTERISKS)) {
+            createAllTableConfig();
+        } else if (StringUtils.isNotBlank(tableNames)) {
+            Set<String> finalTables = Sets.newHashSet(tableNames.split(","));
+            finalTables.forEach(tableName -> {
+                Table existsTable = listColumns(tableName);
+                doConfig(existsTable.getColumns(), existsTable.getName(), existsTable.getModel(), existsTable.getClassName());
+            });
+            ignoreTables = Configuration.getConfig().getTables().stream()
+                    .filter(v -> !finalTables.contains(v.getName())).map(TableCfg::getName).collect(Collectors.toSet());
+        }
+        Configuration.getConfig().setIgnoreTables(ignoreTables);
+        Configuration.saveConfig();
+    }
+
+    private void createAllTableConfig() {
+        List<Table> tables = TableMetaDataService.getInstance().findTableList(new Table());
+        tables.forEach(table -> {
+            String tableName = table.getName();
+            Table existsTable = listColumns(tableName);
+            doConfig(existsTable.getColumns(), existsTable.getName(), existsTable.getModel(), existsTable.getClassName());
+        });
+    }
+
+    private void doConfig(List<TableColumn> columns, final String tableName, String model, String className) {
         Optional<TableCfg> table = Configuration.getConfig().getTables().stream().filter(v -> Objects.equal(tableName, v.getName())).findFirst();
         TableCfg tableCfg = table.orElse(new TableCfg());
 
@@ -89,27 +120,5 @@ public class GeneratorService {
         if (!table.isPresent()) {
             Configuration.getConfig().getTables().add(tableCfg);
         }
-        Configuration.saveConfig();
-    }
-
-    public void updateTableConfig(String tableNames) {
-        Set<String> ignoreTables = Collections.emptySet();
-        createAllTableConfig();
-        if (!StringUtils.equals(tableNames, ASTERISKS) && StringUtils.isNotBlank(tableNames)) {
-            Set<String> finalTables = Sets.newHashSet(tableNames.split(","));
-            ignoreTables = Configuration.getConfig().getTables().stream()
-                    .filter(v -> !finalTables.contains(v.getName())).map(TableCfg::getName).collect(Collectors.toSet());
-        }
-        Configuration.getConfig().setIgnoreTables(ignoreTables);
-        Configuration.saveConfig();
-    }
-
-    private void createAllTableConfig() {
-        List<Table> tables = TableMetaDataService.getInstance().findTableList(new Table());
-        tables.forEach(table -> {
-            String tableName = table.getName();
-            Table existsTable = listColumns(tableName);
-            config(existsTable.getColumns(), existsTable.getName(), existsTable.getModel(), existsTable.getClassName());
-        });
     }
 }
